@@ -1,0 +1,67 @@
+/* Styly pro hlavní obsah */
+main {
+    width: 100%;
+    max-width: 100%; /* Obsah bude zabírat maximálně 100% šířky */
+    height: 95vh; /* Výška obsahu je 95% výšky stránky */
+    overflow-y: auto; /* Přidáme vertikální scrollování, pokud je obsah delší než 95% výšky stránky */
+    display: flex; /* Flexbox layout pro vertikální vycentrování obsahu */
+    align-items: center; /* Vertikální vycentrování obsahu */
+}
+
+/* Styly pro bublinu */
+.bublina {
+    background-color: #f0f0f0; /* šedá výplň bubliny */
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* lehký stín */
+    margin: 20px auto; /* Horizontální vycentrování a omezení na střed */
+    max-width: 600px; /* Maximální šířka bubliny */
+}
+
+/* Styly pro vnitřní ohraničení formuláře */
+.form-ohraniceni {
+    border: 2px solid #ccc; /* ohraničení formuláře */
+    padding: 20px; /* vnitřní odsazení */
+    background-color: #f5f5f5; /* světle šedý vnitřek */
+    border-radius: 15px; /* zaoblené rohy */
+    margin: 5px; /* Odsazení od okraje */
+}
+
+/* Styly pro prvky formuláře */
+input[type="email"],
+input[type="password"],
+input[type="submit"] {
+    width: calc(100% - 40px); /* Šířka obsahu minus dvojnásobná hodnota paddingu */
+    max-width: 300px; /* Pevná maximální šířka obsahu */
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+input[type="submit"] {
+    background-color: #007bff; /* barva tlačítka */
+    color: #fff; /* barva textu na tlačítku */
+    cursor: pointer;
+    margin: auto; /* Vycentrování tlačítka */
+    display: block; /* Přeskočit na nový řádek, aby bylo vycentrováno */
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3; /* barva tlačítka po najetí myší */
+}
+
+body {
+    overflow-y: hidden; /* Zakáže vertikální scrollování obsahu */
+    background-color: #ddcfb6; /* nová barva pozadí stránky */
+    text-align: center; /* Horizontální vycentrování obsahu */
+    display: flex; /* Flexbox layout */
+    align-items: center; /* Vertikální vycentrování obsahu */
+    justify-content: center; /* Horizontální vycentrování obsahu */
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}

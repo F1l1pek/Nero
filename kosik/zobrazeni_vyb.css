@@ -1,0 +1,103 @@
+/* CSS pro rozložení produktů */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    color: black;
+}
+
+.produkty {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; /* Rozložení produktů rovnoměrně mezi okraji kontejneru */
+}
+
+.produkt {
+    width: calc(31% - 20px); /* 33.33% pro tři produkty vedle sebe, odečíst mezery */
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 20px; /* Zakulacení rohů */
+    box-sizing: border-box; /* Zahrne border do celkové šířky */
+    display: flex;
+    flex-direction: column; /* Sloupcové uspořádání */
+    align-items: center; /* Zarovnání obsahu na střed */
+    background-color: rgb(255, 255, 247);
+    color: black;
+    overflow: hidden;
+}
+
+.produkt img {
+    width: 106%;
+    height: 70%;
+    margin-bottom: 10px; 
+    object-fit: cover;
+    margin-top: -11px;
+}
+
+.produkt-info {
+    text-align: center; /* Zarovnání textu na střed */
+}
+
+.produkt h2,h1 {
+    margin-top: 0;
+    margin-bottom: 10px; /* Mezera pod nadpisem */
+    color: black;
+}
+
+.ikonka {
+    margin-top: 5px;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: white;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.obrazek-vpravo {
+    order: 1; /* Změňte pořadí, aby obrázek byl vpravo */
+}
+
+.container {
+    display: flex;
+    justify-content: center; /* Centrování obsahu */
+    height: 100vh;
+    background-color: rgb(255, 255, 255); /* Obrázek jako pozadí */
+    background-size: cover; /* Obrázek bude pokrývat celou plochu */
+    background-position: center; /* Obrázek bude umístěn na střed */
+}
+
+.left-column, .right-column {
+    width: 275px;
+    height: 100%;
+    background-color: rgb(54, 54, 54); /* Barva sloupců */
+    opacity: 1; /* Průhlednost sloupců */
+}
+
+.content {
+    flex: 3; /* Obsah bude zabírat 3x více místa než sloupce */
+    text-align: center; /* Zarovnání obsahu na střed */
+    padding: 20px; /* Odsazení obsahu */
+    color: white; /* Barva textu */
+}
+.button-pridat {
+    background-color: rgb(247, 221, 108); /* Zelená barva pozadí */
+    color: white; /* Bílá barva textu */
+    padding: 10px 20px; /* Větší polštářkování */
+    font-size: 16px; /* Větší velikost písma */
+    border: none; /* Odstranění ohraničení */
+    border-radius: 5px; /* Zakulacené rohy */
+    cursor: pointer; /* Kurzor změní na ukazatel ruky */
+}
+
+.button-pridat:hover {
+    background-color: rgb(155, 140, 8); /* Změna barvy na ztmavenou zelenou při najetí myší */
+}

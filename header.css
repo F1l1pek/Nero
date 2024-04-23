@@ -1,0 +1,27 @@
+header {
+    background: #504e4e; /* světle šedá barva */
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: left;
+    margin-bottom: 20px;
+    top: 0;
+    z-index: 1000; /* zajistí, že header bude nad ostatními prvky na stránce */
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center; /* zarovnání položek menu na střed */
+}
+
+nav ul li {
+    margin-right: 20px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold; /* tučné písmo */
+}

@@ -1,0 +1,147 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    color: black;
+}
+
+body{
+    background-color: rgb(247, 247, 208);
+}
+
+.produkty{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Rozložení produktů rovnoměrně mezi okraji kontejneru */
+    text-align: center;
+    background-color: rgb(247, 247, 208);
+}
+
+.prod{
+    display: flex;
+    align-items: center;  /*vertikální zarovnání na střed*/ 
+    width: 60%;
+    flex-direction: column; /* Sloupcové uspořádání */
+    margin-bottom: 0px;
+}
+
+.produkt {
+    width: 1200px;
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 20px; /* Zakulacení rohů */
+    box-sizing: border-box; /* Zahrne border do celkové šířky */
+    display: flex;
+    flex-direction: column; /* Sloupcové uspořádání */
+    align-items: center; /* Zarovnání obsahu na střed */
+    background-color: rgb(202, 202, 194);
+    color: black;
+    overflow: hidden;
+}
+
+.produkt img {
+    width: 100%; /* Automatické nastavení šířky */
+    max-height: 800px; /* Nové maximální výška */
+    margin-bottom: 10px; 
+    object-fit: cover;
+    margin-top: -11px;
+}
+
+
+.info {
+    text-align: center;
+}
+
+.produkt h2,h1 {
+    margin-top: 0;
+    margin-bottom: 10px; /* Mezera pod nadpisem */
+    color: black;
+}
+
+.text{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+}
+
+.bublina{
+    width: 150%;
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 20px; /* Zakulacení rohů */
+    box-sizing: border-box; /* Zahrne border do celkové šířky */
+    display: flex;
+    flex-direction: column; /* Sloupcové uspořádání */
+    align-items: center; /* Zarovnání obsahu na střed */
+    background-color: rgb(202, 202, 194);
+    color: black;
+    overflow: hidden;
+}
+/* Část CSS kódu pro vytvoření seznamu pomocí teček */
+.footer-column ul {
+    list-style: disc;
+    padding-left: 0px; /* Resetování výchozího paddingu */
+}
+
+.footer-column ul li {
+    padding-left: 15px; /* Nastavení vlastního paddingu pro seznam */
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Přidání větší mezery mezi sloupci Kontakt a Otevírací doba */
+.footer-column:nth-child(2) {
+    margin-right: 40px; /* Zvětšení mezery mezi sloupci */
+}
+
+.text h2{
+    font-size: 30px;
+}
+/*--------Footer----------*/
+footer {
+    background-color: #504e4e !important; 
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+    width: 166.7%;
+    position: relative;
+    bottom: 0;
+    margin-top: 20px;
+    margin-bottom: 0px;
+    font-family: Arial, Helvetica, sans-serif;
+
+}
+
+footer .container {
+    display: flex;
+    justify-content: center;
+}
+
+.footer-columns {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.footer-column {
+    flex: 1;
+    margin: 0 40px; 
+    text-align: left;
+}
+
+.footer-column h3 {
+    margin-bottom: 10px;
+}
+
+a {
+    text-decoration: none;
+}
+
+ul li{
+    list-style-type: none;
+}
+

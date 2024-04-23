@@ -1,0 +1,59 @@
+<?php
+session_start();
+
+// Připojení k databázi
+$dbSpojeni = mysqli_connect("localhost", "root", null, "nero");
+if (!$dbSpojeni) {
+    die("Chyba připojení k databázi: " . mysqli_connect_error());
+}
+
+// Získání informací o přihlášeném uživateli
+$email = $_SESSION['email'];
+$stmt = $dbSpojeni->prepare("SELECT typ_uzivatele FROM user WHERE email = ?");
+$stmt->bind_param("s", $email);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows === 1) {
+    // Uživatel nalezen, získání typu uživatele
+    $user = $result->fetch_assoc();
+    $typ_uzivatele = $user['typ_uzivatele'];
+} else {
+    // Pokud uživatel není nalezen, přesměrovat na stránku přihlášení
+    header("Location: prihlaseni.php");
+    exit();
+}
+
+// Kontrola, zda je uživatel přihlášen a je "admin"
+if ($typ_uzivatele !== 'admin') {
+    // Pokud uživatel není přihlášen jako admin, přesměrovat ho na jinou stránku nebo zobrazit chybu
+    header("Location: Profil.php"); // Uprav podle potřeby
+    exit();
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrativní panel</title>
+    <link rel="stylesheet" href="admin.css"> <!-- Odkaz na základní CSS soubor -->
+
+</head>
+<?php include 'header.html'; ?> <!-- Připojení souboru header.html -->
+<body>
+    <div id="content"> <!-- Přidáváme třídu 'bublina' a id 'content' -->
+        <div class="bublina"> <!-- Přidáváme třídu 'bublina' -->
+            <h1>Administrativní panel</h1>
+            <div id="novy-obsah"> <!-- Přidání nového obsahu -->
+                <button class="button" onclick="window.location.href = 'kosik/jidla.php';">Přidání nových jídel</button> <!-- Přidáváme třídu 'button' -->
+                <button class="button" onclick="window.location.href = 'svatby_catering/svatby_pridani.php';">Přidání svateb</button>
+                <button class="button" onclick="window.location.href = 'svatby_catering/catering_pridani.php';">Přidání cateringu</button>
+                <button class="button" onclick="window.location.href = 'seznam_uzivatelu.php';">Seznam uživatelů</button> <!-- Přidáváme třídu 'button' -->
+                <button class="button" onclick="window.location.href = 'seznam_objednavek.php';">Seznam objednávek</button> <!-- Přidáváme třídu 'button' -->
+                <button class="button" onclick="window.location.href = 'profil.php';">Návrat na profil</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
