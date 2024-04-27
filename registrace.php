@@ -19,16 +19,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (mysqli_num_rows($existujiciUzivatel) > 0) {
         $error = "Uživatel s tímto emailem již existuje.";
     } else {
-        $sql = "INSERT INTO user (jmeno, prijmeni, email, heslo, dat_nar, tel_cislo, typ_uzivatele) VALUES ('$jmeno', '$prijmeni', '$email', '$hashedPassword', '$dat_nar', '$tel_cislo', '$typ_uzivatele')";
+        // Kontrola data narození
+        $today = date("Y-m-d"); // Získání aktuálního data
 
-        $vysledek = mysqli_query($dbSpojeni, $sql);
-        if (!$vysledek) {
-            $error = mysqli_error($dbSpojeni);
+        if ($dat_nar >= $today) {
+            $error = "Datum narození musí být v minulosti.";
         } else {
-            // Přihlášení uživatele po úspěšné registraci
-            $_SESSION['email'] = $email; // Přihlašovací údaje po registraci
-            header("Location: profil.php");
-            exit();
+            // Vložení nového uživatele do databáze
+            $sql = "INSERT INTO user (jmeno, prijmeni, email, heslo, dat_nar, tel_cislo, typ_uzivatele) VALUES ('$jmeno', '$prijmeni', '$email', '$hashedPassword', '$dat_nar', '$tel_cislo', '$typ_uzivatele')";
+
+            $vysledek = mysqli_query($dbSpojeni, $sql);
+            if (!$vysledek) {
+                $error = mysqli_error($dbSpojeni);
+            } else {
+                // Přihlášení uživatele po úspěšné registraci
+                $_SESSION['email'] = $email; // Přihlašovací údaje po registraci
+                header("Location: profil.php");
+                exit();
+            }
         }
     }
 }
@@ -62,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <label for="password">Heslo:</label>
                     <input type="password" id="password" name="password" required><br><br>
                     <label for="dat_nar">Datum narození:</label>
-                    <input type="date" id="dat_nar" name="dat_nar" required><br><br>
+                    <input type="date" id="dat_nar" name="dat_nar" max="<?php echo $today; ?>" required><br><br>
                     <label for="tel_cislo">Telefonní číslo:</label>
                     <input type="tel" id="tel_cislo" name="tel_cislo"><br><br>
                     <input type="submit" value="Registrovat">
