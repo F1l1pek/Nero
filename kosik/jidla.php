@@ -6,6 +6,22 @@ if (!$dbSpojeni) {
     die("Chyba připojení k databázi: " . mysqli_connect_error());
 }
 
+// Funkce pro generování GUID
+function guidv4($data = null) {
+    $data = $data ?? random_bytes(16);
+    assert(strlen($data) == 16);
+    $data[6] = chr(ord($data[6]) & 0x0f | 0x40);
+    $data[8] = chr(ord($data[8]) & 0x3f | 0x80);
+    return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
+}
+
+// Získání informací o přihlášeném uživateli
+$email = $_SESSION['email'];
+$stmt = $dbSpojeni->prepare("SELECT typ_uzivatele FROM user WHERE email = ?");
+$stmt->bind_param("s", $email);
+$stmt->execute();
+$result = $stmt->get_result();
+
 // Získání informací o přihlášeném uživateli
 $email = $_SESSION['email'];
 $stmt = $dbSpojeni->prepare("SELECT typ_uzivatele FROM user WHERE email = ?");
@@ -58,9 +74,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo "Chyba při přípravě dotazu.";
             }
         } elseif ($atribut == "img") {
+            // Náhodný název pro obrázek
+            function guidv4($data = null) {
+                // Generate 16 bytes (128 bits) of random data or use the data passed into the function.
+                $data = $data ?? random_bytes(16);
+                assert(strlen($data) == 16);
+
+                // Set version to 0100
+                $data[6] = chr(ord($data[6]) & 0x0f | 0x40);
+                // Set bits 6-7 to 10
+                $data[8] = chr(ord($data[8]) & 0x3f | 0x80);
+
+                // Output the 36 character UUID.
+                return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
+            }
+
+            // Nový název obrázku
+            $novy_nazev_obrazku = guidv4();
+
             // Nahrání nového obrázku
             $obrazek = $_FILES["obrazek"];
-            $nazev_souboru = $obrazky_adresar . basename($obrazek["name"]);
+            $nazev_souboru = $obrazky_adresar . basename($novy_nazev_obrazku);
             $cesta_k_souboru = $nazev_souboru;
 
             // Uložení obrázku do složky na serveru
@@ -71,7 +105,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 // Zabezpečení proti SQL injection pomocí bind_param
                 if ($stmt) {
-                    mysqli_stmt_bind_param($stmt, "si", $obrazek["name"], $id_jidla);
+                    mysqli_stmt_bind_param($stmt, "si", $novy_nazev_obrazku, $id_jidla);
                     if (mysqli_stmt_execute($stmt)) {
                         echo "Nový obrázek byl úspěšně nahrán a aktualizován.";
                     } else {
@@ -116,11 +150,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST["nazev"]) && !empty($_
     $typ = mysqli_real_escape_string($dbSpojeni, $_POST["typ"]);
     $cena = floatval($_POST["cena"]); // Nebo jiné vhodné formátování čísla
     $popis = mysqli_real_escape_string($dbSpojeni, $_POST["popis"]);
-    $nazev_obrazku = mysqli_real_escape_string($dbSpojeni, $_FILES["obrazek"]["name"]);
+
+    // Náhodný název obrázku
+    $novy_nazev_obrazku = guidv4();
 
     // Nahrání obrázku na server
     $obrazek = $_FILES["obrazek"];
-    $nazev_souboru = $obrazky_adresar . basename($obrazek["name"]);
+    $nazev_souboru = $obrazky_adresar . basename($novy_nazev_obrazku);
     $cesta_k_souboru = $nazev_souboru;
 
     // Uložení obrázku do složky na serveru
@@ -130,7 +166,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST["nazev"]) && !empty($_
         $stmt_insert = mysqli_prepare($dbSpojeni, $sql_insert);
         
         if ($stmt_insert) {
-            mysqli_stmt_bind_param($stmt_insert, "ssdss", $nazev, $typ, $cena, $popis, $nazev_obrazku);
+            mysqli_stmt_bind_param($stmt_insert, "ssdss", $nazev, $typ, $cena, $popis, $novy_nazev_obrazku);
             if (mysqli_stmt_execute($stmt_insert)) {
                 echo "Nové jídlo bylo úspěšně přidáno.";
             } else {

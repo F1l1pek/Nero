@@ -33,6 +33,11 @@ if ($typ_uzivatele !== 'admin') {
 // Adresář pro ukládání obrázků galerie na serveru
 $obrazky_adresar = "obrazky_galerie/";
 
+// Náhodný název pro obrázek
+function guidv4() {
+    // Generování náhodného řetězce s délkou 32 znaků (256 bitů)
+    return bin2hex(random_bytes(16)); // Vrací 32 znaků, každý znak reprezentuje 4 bity
+}
 
 // Odstranění obrázku
 if (isset($_GET['delete_id'])) {
@@ -42,41 +47,50 @@ if (isset($_GET['delete_id'])) {
         $result_select = mysqli_query($dbSpojeni, $sql_select_obrazek);
         if ($result_select && mysqli_num_rows($result_select) > 0) {
             $obrazek_row = mysqli_fetch_assoc($result_select);
-            $obrazek_path = $obrazek_row['obrazek'];
+            $obrazek_path = $obrazky_adresar . $obrazek_row['obrazek']; // Úprava cesty k obrázku
 
-            // Odstranění záznamu z databáze
-            $sql_delete = "DELETE FROM obrazky WHERE id = $delete_id";
-            if (mysqli_query($dbSpojeni, $sql_delete)) {
-                // Odstranění souboru z disku
-                if (unlink($obrazek_path)) {
-                    echo "Obrázek byl úspěšně smazán.";
-                } else {
-                    echo "Chyba při mazání souboru obrázku z disku.";
-                }
-            } else {
-                echo "Chyba při mazání záznamu obrázku z databáze: " . mysqli_error($dbSpojeni);
-            }
-        } else {
-            echo "Obrázek nenalezen v databázi.";
-        }
-    } else {
-        echo "Neplatné ID obrázku.";
-    }
-}
+             // Odstranění záznamu z databáze
+             $sql_delete = "DELETE FROM obrazky WHERE id = $delete_id";
+             if (mysqli_query($dbSpojeni, $sql_delete)) {
+                 // Odstranění souboru z disku
+                 if (unlink($obrazek_path)) {
+                     echo "Obrázek byl úspěšně smazán.";
+                 } else {
+                     echo "Chyba při mazání souboru obrázku z disku.";
+                 }
+             } else {
+                 echo "Chyba při mazání záznamu obrázku z databáze: " . mysqli_error($dbSpojeni);
+             }
+         } else {
+             echo "Obrázek nenalezen v databázi.";
+         }
+     } else {
+         echo "Neplatné ID obrázku.";
+     }
+ }
 
 // Přidání nového obrázku
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_FILES["obrazek"]) && isset($_POST["nazev"])) {
         $nazev_obrazku = $_POST["nazev"];
         $obrazek = $_FILES["obrazek"];
+        $novy_nazev_obrazku = guidv4(); // Generování nového náhodného názvu obrázku
+        $nazev_souboru = basename($novy_nazev_obrazku);
 
-        $nazev_souboru = $obrazky_adresar . $obrazek["name"];
-        if (move_uploaded_file($obrazek["tmp_name"], $nazev_souboru)) {
-            $sql_insert = "INSERT INTO obrazky (obrazek, nazev) VALUES ('$nazev_souboru', '$nazev_obrazku')";
-            if (mysqli_query($dbSpojeni, $sql_insert)) {
-                echo "Nový obrázek byl úspěšně přidán do galerie.";
+        if (move_uploaded_file($obrazek["tmp_name"], $obrazky_adresar . $nazev_souboru)) {
+            $sql_insert = "INSERT INTO obrazky (obrazek, nazev) VALUES (?, ?)";
+            $stmt_insert = mysqli_prepare($dbSpojeni, $sql_insert);
+            
+            if ($stmt_insert) {
+                mysqli_stmt_bind_param($stmt_insert, "ss", $nazev_souboru, $nazev_obrazku);
+                if (mysqli_stmt_execute($stmt_insert)) {
+                    echo "Nový obrázek byl úspěšně přidán do galerie.";
+                } else {
+                    echo "Chyba při přidávání nového obrázku do galerie: " . mysqli_error($dbSpojeni);
+                }
+                mysqli_stmt_close($stmt_insert);
             } else {
-                echo "Chyba při přidávání nového obrázku do galerie: " . mysqli_error($dbSpojeni);
+                echo "Chyba při přípravě dotazu na přidání nového obrázku do galerie.";
             }
         } else {
             echo "Nahrání nového obrázku do galerie selhalo.";
@@ -85,7 +99,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "Některé potřebné parametry nebyly poskytnuty.";
     }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -127,24 +140,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <h1>Galerie</h1> <!-- Popis galerie -->
     <!-- Galerie -->
     <div class="galerie">
-        <!-- PHP kód pro zobrazení obrázků v galerii -->
-        <?php
-        $sql_select_obrazky = "SELECT * FROM obrazky";
-        $result_obrazky = mysqli_query($dbSpojeni, $sql_select_obrazky);
+    <!-- PHP kód pro zobrazení obrázků v galerii -->
+    <?php
+    $sql_select_obrazky = "SELECT * FROM obrazky";
+    $result_obrazky = mysqli_query($dbSpojeni, $sql_select_obrazky);
 
-        if (mysqli_num_rows($result_obrazky) > 0) {
-            while ($row = mysqli_fetch_assoc($result_obrazky)) {
-                echo "<div class='obrazek'>";
-                echo "<img src='" . $row['obrazek'] . "' alt='" . $row['nazev'] . "'>";
-                echo "<p>" . $row['nazev'] . "</p>"; // Přidání názvu obrázku pod obrázek
-                echo "<a href='?delete_id=".$row['id']."'>Smazat</a>"; // Odkaz pro smazání obrázku
-                echo "</div>";
-            }
-        } else {
-            echo "<p>Žádné obrázky k zobrazení.</p>";
+    if (mysqli_num_rows($result_obrazky) > 0) {
+        while ($row = mysqli_fetch_assoc($result_obrazky)) {
+            echo "<div class='obrazek'>";
+            echo "<img src='" . $obrazky_adresar . $row['obrazek'] . "' alt='" . $row['nazev'] . "'>"; // Úprava cesty k obrázku
+            echo "<p>" . $row['nazev'] . "</p>"; // Přidání názvu obrázku pod obrázek
+            echo "<a href='?delete_id=".$row['id']."'>Smazat</a>"; // Odkaz pro smazání obrázku
+            echo "</div>";
         }
-        ?>
-    </div>
+    } else {
+        echo "<p>Žádné obrázky k zobrazení.</p>";
+    }
+    ?>
+</div>
 </div>
 
 </body>
