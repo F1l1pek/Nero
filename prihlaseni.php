@@ -53,6 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input type="submit" value="Přihlásit">
                 </form>
                 <p>Nemáte ještě účet? <a href="registrace.php">Zaregistrovat se</a></p>
+                <p>Zapomněli jste heslo? <a href="obnova_hesla.php" class="button">Zapomenuté heslo</a>
             </div>
         </div>
     </div>

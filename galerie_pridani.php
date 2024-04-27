@@ -1,0 +1,151 @@
+<?php
+session_start();
+$dbSpojeni = mysqli_connect("localhost", "root", null, "nero");
+mysqli_set_charset($dbSpojeni, "utf8mb4");
+if (!$dbSpojeni) {
+    die("Chyba připojení k databázi: " . mysqli_connect_error());
+}
+
+// Získání informací o přihlášeném uživateli
+$email = $_SESSION['email'];
+$stmt = $dbSpojeni->prepare("SELECT typ_uzivatele FROM user WHERE email = ?");
+$stmt->bind_param("s", $email);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows === 1) {
+    // Uživatel nalezen, získání typu uživatele
+    $user = $result->fetch_assoc();
+    $typ_uzivatele = $user['typ_uzivatele'];
+} else {
+    // Pokud uživatel není nalezen, přesměrovat na stránku přihlášení
+    header("Location: prihlaseni.php");
+    exit();
+}
+
+// Kontrola, zda je uživatel přihlášen a je "admin"
+if ($typ_uzivatele !== 'admin') {
+    // Pokud uživatel není přihlášen jako admin, přesměrovat ho na jinou stránku nebo zobrazit chybu
+    header("Location: Profil.php"); // Uprav podle potřeby
+    exit();
+}
+
+// Adresář pro ukládání obrázků galerie na serveru
+$obrazky_adresar = "obrazky_galerie/";
+
+
+// Odstranění obrázku
+if (isset($_GET['delete_id'])) {
+    $delete_id = $_GET['delete_id'];
+    if (!empty($delete_id)) {
+        $sql_select_obrazek = "SELECT obrazek FROM obrazky WHERE id = $delete_id";
+        $result_select = mysqli_query($dbSpojeni, $sql_select_obrazek);
+        if ($result_select && mysqli_num_rows($result_select) > 0) {
+            $obrazek_row = mysqli_fetch_assoc($result_select);
+            $obrazek_path = $obrazek_row['obrazek'];
+
+            // Odstranění záznamu z databáze
+            $sql_delete = "DELETE FROM obrazky WHERE id = $delete_id";
+            if (mysqli_query($dbSpojeni, $sql_delete)) {
+                // Odstranění souboru z disku
+                if (unlink($obrazek_path)) {
+                    echo "Obrázek byl úspěšně smazán.";
+                } else {
+                    echo "Chyba při mazání souboru obrázku z disku.";
+                }
+            } else {
+                echo "Chyba při mazání záznamu obrázku z databáze: " . mysqli_error($dbSpojeni);
+            }
+        } else {
+            echo "Obrázek nenalezen v databázi.";
+        }
+    } else {
+        echo "Neplatné ID obrázku.";
+    }
+}
+
+// Přidání nového obrázku
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_FILES["obrazek"]) && isset($_POST["nazev"])) {
+        $nazev_obrazku = $_POST["nazev"];
+        $obrazek = $_FILES["obrazek"];
+
+        $nazev_souboru = $obrazky_adresar . $obrazek["name"];
+        if (move_uploaded_file($obrazek["tmp_name"], $nazev_souboru)) {
+            $sql_insert = "INSERT INTO obrazky (obrazek, nazev) VALUES ('$nazev_souboru', '$nazev_obrazku')";
+            if (mysqli_query($dbSpojeni, $sql_insert)) {
+                echo "Nový obrázek byl úspěšně přidán do galerie.";
+            } else {
+                echo "Chyba při přidávání nového obrázku do galerie: " . mysqli_error($dbSpojeni);
+            }
+        } else {
+            echo "Nahrání nového obrázku do galerie selhalo.";
+        }
+    } else {
+        echo "Některé potřebné parametry nebyly poskytnuty.";
+    }
+}
+
+?>
+
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Úprava galerie</title>
+    <style>
+        /* Styl pro omezení velikosti obrázků */
+        .obrazek img {
+            max-width: 85%;
+            max-height: 85%;
+        }
+    </style>
+    <link rel="stylesheet" href="admin.css"> <!-- Odkaz na nový CSS soubor -->
+</head>
+<body>
+
+<div class="bublina" id="bublina-pridani-obrazku">
+    <h1>Přidání obrázku do galerie</h1> <!-- Popis přidávání obrázku do galerie nad formulářem -->
+    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" enctype="multipart/form-data" class="form-ohraniceni"> <!-- Přidání třídy form-ohraniceni pro ohraničení formuláře -->
+        <label for="obrazek">Vyberte obrázek:</label>
+        <input type="file" name="obrazek" id="obrazek" accept="image/*" required><br>
+        <label for="nazev">Název obrázku:</label>
+        <input type="text" name="nazev" id="nazev" required><br>
+        <input type="submit" value="Přidat do galerie">
+    </form>
+</div>
+
+
+<!-- Tlačítko pro návrat na admin.php -->
+<div class="bublina" id="bublina">
+<a href="admin.php" class="navrat-button">Zpět na administrační panel</a>
+</div>
+
+<!-- Zobrazení galerie -->
+<div class="bublina" id="bublina-galerie">
+    <h1>Galerie</h1> <!-- Popis galerie -->
+    <!-- Galerie -->
+    <div class="galerie">
+        <!-- PHP kód pro zobrazení obrázků v galerii -->
+        <?php
+        $sql_select_obrazky = "SELECT * FROM obrazky";
+        $result_obrazky = mysqli_query($dbSpojeni, $sql_select_obrazky);
+
+        if (mysqli_num_rows($result_obrazky) > 0) {
+            while ($row = mysqli_fetch_assoc($result_obrazky)) {
+                echo "<div class='obrazek'>";
+                echo "<img src='" . $row['obrazek'] . "' alt='" . $row['nazev'] . "'>";
+                echo "<p>" . $row['nazev'] . "</p>"; // Přidání názvu obrázku pod obrázek
+                echo "<a href='?delete_id=".$row['id']."'>Smazat</a>"; // Odkaz pro smazání obrázku
+                echo "</div>";
+            }
+        } else {
+            echo "<p>Žádné obrázky k zobrazení.</p>";
+        }
+        ?>
+    </div>
+</div>
+
+</body>
+</html>

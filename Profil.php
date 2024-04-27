@@ -55,18 +55,13 @@ if (isset($_GET['logout'])) {
         <p><strong>Email:</strong> <?php echo $email; ?></p>
         <p><strong>Jméno:</strong> <?php echo $jmeno; ?></p>
         <p><strong>Příjmení:</strong> <?php echo $prijmeni; ?></p>
-        <form action="zmena_hesla.php" method="GET">
-            <input type="submit" value="Změna hesla" class="button">
-        </form>
-        <form action="obnova_hesla.php" method="GET">
-            <input type="submit" value="Zapomenuté heslo" class="button">
-        </form>
+        <a href="zmena_hesla.php" class="button">Změna hesla</a>
+        <a href="obnova_hesla.php" class="button">Zapomenuté heslo</a>
+
         <?php
         // Zobrazení tlačítka pro admina
         if ($typ_uzivatele === 'admin') {
-            echo '<form action="admin.php" method="GET">';
-            echo '<input type="submit" value="Administrace" class="button">';
-            echo '</form>';
+           ?><a href="admin.php" class="button">Administrace</a><?php
         }
         ?>
         <form action="profil.php" method="GET">

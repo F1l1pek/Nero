@@ -77,9 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="password" id="znovu_nove_heslo" name="znovu_nove_heslo" required><br><br>
             <input type="submit" value="Změnit heslo">
         </form>
-        <form action="profil.php" class="form-ohraniceni">
-            <input type="submit" value="Zpět na profil">
-        </form>
+        <a href="profil.php" class="button">Zpět na profil</a>
     </div>
 </body>
 </html>
