@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header("Location: obnova_hesla_uspesne.php");
         exit();
     } else {
-        $error = "Zadaný email není registrován.";
+        $error = "Zadaný email není registrován."; //jgfbhkbgf
     }
 }
 ?>
