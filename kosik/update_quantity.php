@@ -2,7 +2,7 @@
 session_start();
 $server = "localhost";
 $username = "root";
-$password = ""; // Pokud máte heslo, vyplňte ho
+$password = null; // Pokud máte heslo, vyplňte ho
 $database = "nero";
 
 // Připojení k databázi
@@ -14,13 +14,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['item_id']) && isset($_
     $quantity = $_POST['quantity'];
     $order_id = $_POST['order_id'];
 
-    // Aktualizace množství v databázi
-    $update_query = "UPDATE košik SET mnozstvi = $quantity WHERE ID_J = $item_id AND ID_O = $order_id";
-
-    if (mysqli_query($dbSpojeni, $update_query)) {
+    // Aktualizace množství v databázi pomocí předpřipraveného dotazu
+    $update_query = "UPDATE košik SET mnozstvi = ? WHERE ID_J = ? AND ID_O = ?";
+    
+    // Použití předpřipraveného dotazu
+    $stmt = $dbSpojeni->prepare($update_query);
+    
+    // Vazba parametrů
+    $stmt->bind_param("iii", $quantity, $item_id, $order_id);
+    
+    // Spuštění dotazu
+    if ($stmt->execute()) {
         echo "Množství bylo aktualizováno.";
     } else {
-        echo "Chyba při aktualizaci množství: " . mysqli_error($dbSpojeni);
+        echo "Chyba při aktualizaci množství: " . $stmt->error;
     }
 }
 ?>

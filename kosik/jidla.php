@@ -198,7 +198,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST["nazev"]) && !empty($_
 
 <div class="bublina" id="bublina-priprava-jidel">
     <h1>Přidávání jídla</h1> <!-- Popis přidávání jídla nad formulářem -->
-    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" enctype="multipart/form-data" class="form-ohraniceni"> <!-- Přidání třídy form-ohraniceni pro ohraničení formuláře -->
+    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'); ?>" method="post" enctype="multipart/form-data" class="form-ohraniceni">
         <input type="text" name="nazev" placeholder="Nazev" required><br>
         <label for="typ">Typ jídla:</label><br>
         <select id="typ" name="typ" required>

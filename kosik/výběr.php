@@ -52,16 +52,27 @@ if (isset($_POST['typ_jidla'])) {
 
 // Zpracování změny množství a uložení do košíku
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] == 'pridat') {
+    // Získání ID jídla a množství z požadavku
     $id_jidla = $_POST['ID_j'];
     $mnozstvi = $_POST['mnozstvi'];
 
-    // Uložení změněného množství do košíku
-    $sql = "INSERT INTO košik (ID_U, ID_J, mnozstvi) VALUES ('$ID_U', '$id_jidla', '$mnozstvi') ON DUPLICATE KEY UPDATE mnozstvi = '$mnozstvi'";
-    $vysledek = mysqli_query($dbSpojeni, $sql);
-    if (!$vysledek) {
-        echo "Chyba při přidávání jídla: " . mysqli_error($dbSpojeni);
+    // Příprava dotazu pomocí předpřipraveného dotazu pro vložení nebo aktualizaci záznamu v košíku
+    $sql = "INSERT INTO košik (ID_U, ID_J, mnozstvi) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE mnozstvi = ?";
+    
+    // Použití předpřipraveného dotazu
+    $stmt = $dbSpojeni->prepare($sql);
+    
+    // Vazba parametrů
+    $stmt->bind_param("iiii", $ID_U, $id_jidla, $mnozstvi, $mnozstvi);
+    
+    // Spuštění dotazu
+    if ($stmt->execute()) {
+        // Dotaz byl úspěšně proveden
+    } else {
+        // Chyba při provedení dotazu
     }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -80,7 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
     <div class="content">
         <div class="nadpis-bublina">
             <h1 style="text-align: center;">Všechna jídla</h1> <!-- Přidáme centrování -->
-            <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" id="filtr">
+            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'); ?>" method="post" id="filtr">
                 <h2 style="text-align: center;">Filtr</h2> <!-- Přidáme centrování -->
                 <label for="typ_jidla">Vyberte typ jídla:</label>
                 <select name="typ_jidla" id="typ_jidla">
