@@ -31,7 +31,7 @@ CREATE TABLE `jidla` (
   `ID_jidla` int(11) NOT NULL,
   `název` text NOT NULL,
   `typ` text NOT NULL,
-  `cena_b` int(11) NOT NULL,
+  `cena` int(11) NOT NULL,
   `cena_s` int(11) NOT NULL,
   `cena_f` int(11) NOT NULL,
   `popis` text NOT NULL,
@@ -42,12 +42,12 @@ CREATE TABLE `jidla` (
 -- Vypisuji data pro tabulku `jidla`
 --
 
-INSERT INTO `jidla` (`ID_jidla`, `název`, `typ`, `cena`, `popis`, `img`) VALUES
-(1, 'Bageta Posh Cheddar ', 'Bagety', 59, 'Irský Chreddar, rajče, červená  cibule, polníček, majonéza', 'IMG_20230109_202339_377.jpg'),
-(2, 'Bageta B.L.T.', 'Bagety', 59, 'slanina, rajče, ledový salát, majonéza', 'IMG_20230909_080527_963.jpg'),
-(3, 'Kaiserka s vaječnou omeletou', 'Kaiserky', 35, 'vaječná omeleta , rajče, salát, domácí dresink', 'IMG_20230428_092643_363.jpg'),
-(4, 'Chlebíček Caprese', 'Chlebíčky', 45, 'Mozzarella, rajče, salát, bazalkové pesto , vícezrný chléb', 'IMG_20230428_092643_363.jpg'),
-(5, 'Nero Chlebíček', 'Chlebíčky', 33, 'bramborový salát, salám, šunka, vařené vejce, kyselá okurka, kapie, veka', 'IMG_20230428_092643_363.jpg');
+INSERT INTO `jidla` (`ID_jidla`, `název`, `typ`, `cena`, `cena_s`, `cena_f`, `popis`, `img`) VALUES
+(1, 'Bageta Posh Cheddar ', 'Bagety', 59, 56, 53, 'Irský Chreddar, rajče, červená  cibule, polníček, majonéza', 'IMG_20230109_202339_377.jpg'),
+(2, 'Bageta B.L.T.', 'Bagety', 59, 56, 53, 'slanina, rajče, ledový salát, majonéza', 'IMG_20230909_080527_963.jpg'),
+(3, 'Kaiserka s vaječnou omeletou', 'Kaiserky', 35, 32, 29, 'vaječná omeleta , rajče, salát, domácí dresink', 'IMG_20230428_092643_363.jpg'),
+(4, 'Chlebíček Caprese', 'Chlebíčky', 45, 42, 39, 'Mozzarella, rajče, salát, bazalkové pesto , vícezrný chléb', 'IMG_20230428_092643_363.jpg'),
+(5, 'Nero Chlebíček', 'Chlebíčky', 33, 30, 27, 'bramborový salát, salám, šunka, vařené vejce, kyselá okurka, kapie, veka', 'IMG_20230428_092643_363.jpg');
 
 --
 -- Indexy pro exportované tabulky
