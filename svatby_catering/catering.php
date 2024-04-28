@@ -49,15 +49,15 @@ $cateringy = mysqli_fetch_all($vysledek, MYSQLI_ASSOC);
                 <div class="prod">
                     <div class="produkt">
                         <?php if (!empty($catering['obrazek'])): ?>
-                            <img src="<?php echo $obrazky_adresar . $catering['obrazek']; ?>" alt="<?php echo $catering['nazev']; ?>">
+                            <img src="<?php echo $obrazky_adresar . htmlspecialchars($catering['obrazek']); ?>" alt="<?php echo htmlspecialchars($catering['nazev']); ?>">
                         <?php else: ?>
                             <p>Obrázek není k dispozici</p>
                         <?php endif; ?>
                         <div>
                             <h2><?php echo $catering['nazev']; ?></h2>
                             <div class="info">
-                                <p><strong>Cena:</strong> <?php echo $catering['cena']; ?> Kč</p>
-                                <p><strong>Popis:</strong> <?php echo $catering['popis']; ?></p>
+                                <p><strong>Cena:</strong> <?php echo htmlspecialchars($catering['cena']); ?> Kč</p>
+                                <p><strong>Popis:</strong> <?php echo htmlspecialchars($catering['popis']); ?></p>
                             </div>
                         </div>
                     </div>
