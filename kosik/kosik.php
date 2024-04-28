@@ -4,7 +4,7 @@ session_start(); // Inicializace session
 // Připojení k databázi
 $server = "localhost";
 $username = "root";
-$password = ""; // Pokud máte heslo, vyplňte ho
+$password = null; // Pokud máte heslo, vyplňte ho
 $database = "nero";
 
 // Připojení k databázi
@@ -15,21 +15,35 @@ if (!$dbSpojeni) {
     die("Chyba při připojení k databázi: " . mysqli_connect_error());
 }
 
-if (isset($_POST['submit_order'])) {
-    provedObjednavku();
-}
 
+$email = $_SESSION['email'];
+// Ověření, zda je hodnota $_SESSION['email'] legitimní
+if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    // Pouze pokračujeme, pokud je e-mailová adresa v platném formátu
+    $stmt = $dbSpojeni->prepare("SELECT * FROM user WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows === 1) {
+        // Uživatel nalezen, získání informací
+        $user = $result->fetch_assoc();
+        $ID_U = $user['ID_user'];
+        $typ_uzivatele = $user['typ_uzivatele']; // Získání typu uživatele
+    }
+}
 // Inicializace pole pro ukládání položek v košíku
 $polozky = array();
 
 // Dotaz na košík pro konkrétního uživatele (např. s ID_U = 1)
-$sql = "SELECT jidla.ID_jidla, jidla.název, jidla.typ, jidla.cena, košik.mnozstvi, košik.ID_O, košik.ID_U, košik.ID_J, SUM(košik.mnozstvi) AS celkove_mnozstvi
+$sql = "SELECT jidla.ID_jidla, jidla.`název`, jidla.typ, jidla.cena, jidla.cena_s, jidla.cena_f, košik.mnozstvi, košik.ID_O, košik.ID_U, košik.ID_J, SUM(košik.mnozstvi) AS celkove_mnozstvi
         FROM košik 
         INNER JOIN jidla ON košik.ID_J = jidla.ID_jidla 
-        WHERE košik.ID_U = 1
-        GROUP BY jidla.ID_jidla"; // Změňte ID_U podle aktuálního uživatele
-$vysledek = mysqli_query($dbSpojeni, $sql);
-
+        WHERE košik.ID_U = ?";
+$stmt = $dbSpojeni->prepare($sql);
+$stmt->bind_param("i", $ID_U); // "i" označuje, že se jedná o integer
+$stmt->execute();
+$vysledek = $stmt->get_result();
 // Zpracování výsledku dotazu a uložení položek do pole, pokud košík existuje
 if (mysqli_num_rows($vysledek) > 0) {
     while ($radek = mysqli_fetch_assoc($vysledek)) {
@@ -39,29 +53,49 @@ if (mysqli_num_rows($vysledek) > 0) {
     // Pokud košík neobsahuje žádné položky, inicializujeme $polozky jako prázdné pole
     $polozky = array();
 }
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit_order"])) {
+    provedObjednavku($ID_U, $typ_uzivatele);
+    
+    // Přesměrování na stejnou stránku po úspěšném zpracování objednávky
+    header("Location: " . $_SERVER['REQUEST_URI']);
+    exit(); // Ukončení běhu skriptu po přesměrování
+}
 
 // Funkce pro provedení objednávky
-function provedObjednavku() {
+function provedObjednavku($ID_U, $typ_uzivatele) {
     global $dbSpojeni, $polozky;
 
     // Vytvoření nové objednávky
-    $idUzivatele = 1; // ID uživatele (změňte podle aktuálního uživatele)
+  
     $stav = "zaplaceno"; // Nová objednávka je v stavu "zaplaceno"
-    $insert_order_query = "INSERT INTO obednavky (datum, ID_U, stav) VALUES (CURRENT_TIMESTAMP(), $idUzivatele, '$stav')";
+    $insert_order_query = "INSERT INTO obednavky (datum, ID_U, stav) VALUES (CURRENT_TIMESTAMP(), '$ID_U' , '$stav')";
     mysqli_query($dbSpojeni, $insert_order_query);
 
     // Získání ID nově vytvořené objednávky
     $idObjednavky = mysqli_insert_id($dbSpojeni);
 
     // Vložení položek z košíku do tabulky obednavky_produkty
-    if (is_array($polozky) && count($polozky) > 0) {
-        foreach ($polozky as $polozka) {
-            $idJidla = $polozka['ID_jidla'];
-            $mnozstvi = $polozka['celkove_mnozstvi'];
-            $insert_order_item_query = "INSERT INTO obednavky_produkty (ID_O, ID_J, mnozstvi) VALUES ($idObjednavky, $idJidla, $mnozstvi)";
-            mysqli_query($dbSpojeni, $insert_order_item_query);
-        }
+    foreach ($polozky as $polozka) {
+        $idJidla = $polozka['ID_jidla'];
+        $mnozstvi = $polozka['celkove_mnozstvi'];
+        
+        // Přidání ceny položky
+        $sql_cena = "SELECT cena, cena_s, cena_f FROM jidla WHERE ID_jidla = $idJidla";
+        $result_cena = mysqli_query($dbSpojeni, $sql_cena);
+        $radek_cena = mysqli_fetch_assoc($result_cena);
+        $cena = $radek_cena['cena'];
+        $cena_s = $radek_cena['cena_s'];
+        $cena_f = $radek_cena['cena_f'];
+        
+        if($typ_uzivatele=="velkoodberatel_s"){$cena=$cena_s;}
+        if($typ_uzivatele=="velkoodberatel_f"){$cena=$cena_f;}
+
+        // Vložení položky do tabulky obednavky_produkty
+        $insert_order_item_query = "INSERT INTO obednavky_produkty (ID_O, ID_J, mnozstvi, cena) VALUES ($idObjednavky, $idJidla, $mnozstvi, $cena)";
+        mysqli_query($dbSpojeni, $insert_order_item_query);
     }
+    $delete_cart_query = "DELETE FROM košik WHERE ID_U = $ID_U";
+    mysqli_query($dbSpojeni, $delete_cart_query);
 }
 ?>
 
@@ -108,15 +142,19 @@ include '../header.html';
             // Loop through items in the basket
             foreach ($polozky as $polozka):
                 // Calculate subtotal for each item
-                $subtotal = $polozka['cena'] * $polozka['mnozstvi'];
-                // Add subtotal to the total price
+                if($typ_uzivatele=="admin" || $typ_uzivatele=="běžný"){$subtotal = $polozka['cena'] * $polozka['mnozstvi'];}
+                if($typ_uzivatele=="velkoodberatel_s"){$subtotal = $polozka['cena_s'] * $polozka['mnozstvi'];}
+                if($typ_uzivatele=="velkoodberatel_f"){$subtotal = $polozka['cena_f'] * $polozka['mnozstvi'];}
+               // Add subtotal to the total price
                 $celkova_cena += $subtotal;
             ?>
                 <tr>
                     <td><?php echo $polozka['název']; ?></td>
                     <td><?php echo $polozka['typ']; ?></td>
-                    <td><?php echo $polozka['cena']; ?> Kč</td>
-                    <td>
+                    <?php if($typ_uzivatele=="admin" || $typ_uzivatele=="běžný"): ?><td><?php echo $polozka['cena']; ?> Kč</td><?php endif; ?>
+                    <?php if($typ_uzivatele=="velkoodberatel_s"): ?><td><?php echo $polozka['cena_s']; ?> Kč</td><?php endif; ?>
+                    <?php if($typ_uzivatele=="velkoodberatel_f"): ?><td><?php echo $polozka['cena_f']; ?> Kč</td><?php endif; ?>
+                   <td>
                         <!-- Tlačítka pro přidání a odebrání množství -->
                         <span class="ikonka" onclick="decrement(<?php echo $polozka['ID_jidla']; ?>, <?php echo $polozka['ID_O']; ?>)">-</span>
                         <input type="number" id="mnozstvi_<?php echo $polozka['ID_jidla']; ?>" name="mnozstvi_<?php echo $polozka['ID_jidla']; ?>" value="<?php echo $polozka['mnozstvi']; ?>" min="0">

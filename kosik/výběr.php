@@ -3,6 +3,22 @@ session_start();
 $dbSpojeni = mysqli_connect("localhost", "root", null, "nero");
 mysqli_set_charset($dbSpojeni, "UTF8");
 
+$email = $_SESSION['email'];
+// Ověření, zda je hodnota $_SESSION['email'] legitimní
+if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    // Pouze pokračujeme, pokud je e-mailová adresa v platném formátu
+    $stmt = $dbSpojeni->prepare("SELECT * FROM user WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows === 1) {
+        // Uživatel nalezen, získání informací
+        $user = $result->fetch_assoc();
+        $ID_U = $user['ID_user'];
+        $typ_uzivatele = $user['typ_uzivatele']; // Získání typu uživatele
+    }
+}
 // Adresář pro ukládání obrázků na serveru
 $obrazky_adresar = "../obrazky_jidla/";
 
@@ -40,7 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
     $mnozstvi = $_POST['mnozstvi'];
 
     // Uložení změněného množství do košíku
-    $sql = "INSERT INTO košik (ID_U, ID_J, mnozstvi) VALUES ('1', '$id_jidla', '$mnozstvi') ON DUPLICATE KEY UPDATE mnozstvi = '$mnozstvi'";
+    $sql = "INSERT INTO košik (ID_U, ID_J, mnozstvi) VALUES ('$ID_U', '$id_jidla', '$mnozstvi') ON DUPLICATE KEY UPDATE mnozstvi = '$mnozstvi'";
     $vysledek = mysqli_query($dbSpojeni, $sql);
     if (!$vysledek) {
         echo "Chyba při přidávání jídla: " . mysqli_error($dbSpojeni);
@@ -90,7 +106,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
                         <div class="produkt-info">
                             <h2><?php echo $jidlo['název']; ?></h2>
                             <p><strong>Typ:</strong> <?php echo $jidlo['typ']; ?></p>
-                            <p><strong>Cena:</strong> <?php echo $jidlo['cena']; ?> Kč</p>
+                            <?php if($typ_uzivatele=="velkoodberatel_s"): ?>
+    <p><strong>Cena:</strong> <?php echo $jidlo['cena_s']; ?> Kč</p>
+<?php elseif($typ_uzivatele=="velkoodberatel_f"): ?>
+    <p><strong>Cena:</strong> <?php echo $jidlo['cena_f']; ?> Kč</p>
+<?php else: ?>
+    <p><strong>Cena:</strong> <?php echo $jidlo['cena']; ?> Kč</p>
+<?php endif; ?>
                             <p><strong>Popis:</strong> <?php echo $jidlo['popis']; ?></p>
                             <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
                                 <input type="hidden" name="ID_j" value="<?php echo $jidlo['ID_jidla']; ?>">

@@ -42,32 +42,46 @@ function guidv4() {
 // Odstranění obrázku
 if (isset($_GET['delete_id'])) {
     $delete_id = $_GET['delete_id'];
-    if (!empty($delete_id)) {
-        $sql_select_obrazek = "SELECT obrazek FROM obrazky WHERE id = $delete_id";
-        $result_select = mysqli_query($dbSpojeni, $sql_select_obrazek);
-        if ($result_select && mysqli_num_rows($result_select) > 0) {
-            $obrazek_row = mysqli_fetch_assoc($result_select);
-            $obrazek_path = $obrazky_adresar . $obrazek_row['obrazek']; // Úprava cesty k obrázku
-
-             // Odstranění záznamu z databáze
-             $sql_delete = "DELETE FROM obrazky WHERE id = $delete_id";
-             if (mysqli_query($dbSpojeni, $sql_delete)) {
-                 // Odstranění souboru z disku
-                 if (unlink($obrazek_path)) {
-                     echo "Obrázek byl úspěšně smazán.";
-                 } else {
-                     echo "Chyba při mazání souboru obrázku z disku.";
-                 }
-             } else {
-                 echo "Chyba při mazání záznamu obrázku z databáze: " . mysqli_error($dbSpojeni);
-             }
-         } else {
-             echo "Obrázek nenalezen v databázi.";
-         }
-     } else {
-         echo "Neplatné ID obrázku.";
-     }
- }
+    if (!empty($delete_id) && is_numeric($delete_id)) { // Ověření, zda je delete_id platné číslo
+        // Příprava dotazu pomocí předpřipraveného dotazu pro získání názvu obrázku
+        $sql_select_obrazek = "SELECT obrazek FROM obrazky WHERE id = ?";
+        
+        // Použití předpřipraveného dotazu
+        $stmt = $dbSpojeni->prepare($sql_select_obrazek);
+        $stmt->bind_param("i", $delete_id); // "i" označuje, že se jedná o integer
+        $stmt->execute();
+        $result_select = $stmt->get_result();
+        
+        // Ověření, zda byl vrácen nějaký výsledek
+        if ($result_select->num_rows === 1) {
+            // Získání názvu obrázku
+            $row = $result_select->fetch_assoc();
+            $obrazek = $row['obrazek'];
+            
+            // Odstranění záznamu z databáze
+            $sql_delete = "DELETE FROM obrazky WHERE id = ?";
+            
+            // Použití předpřipraveného dotazu pro smazání záznamu
+            $stmt_delete = $dbSpojeni->prepare($sql_delete);
+            $stmt_delete->bind_param("i", $delete_id); // "i" označuje, že se jedná o integer
+            if ($stmt_delete->execute()) {
+                // Odstranění souboru z disku
+                $obrazek_path = $obrazky_adresar . $obrazek;
+                if (unlink($obrazek_path)) {
+                    echo "Obrázek byl úspěšně smazán.";
+                } else {
+                    echo "Chyba při mazání souboru obrázku z disku.";
+                }
+            } else {
+                echo "Chyba při mazání záznamu obrázku z databáze: " . $stmt_delete->error;
+            }
+        } else {
+            echo "Obrázek nenalezen v databázi.";
+        }
+    } else {
+        echo "Neplatné ID obrázku.";
+    }
+}
 
 // Přidání nového obrázku
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -120,7 +134,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <div class="bublina" id="bublina-pridani-obrazku">
     <h1>Přidání obrázku do galerie</h1> <!-- Popis přidávání obrázku do galerie nad formulářem -->
-    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" enctype="multipart/form-data" class="form-ohraniceni"> <!-- Přidání třídy form-ohraniceni pro ohraničení formuláře -->
+    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'); ?>" method="post" enctype="multipart/form-data" class="form-ohraniceni">
         <label for="obrazek">Vyberte obrázek:</label>
         <input type="file" name="obrazek" id="obrazek" accept="image/*" required><br>
         <label for="nazev">Název obrázku:</label>

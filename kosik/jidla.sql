@@ -31,7 +31,9 @@ CREATE TABLE `jidla` (
   `ID_jidla` int(11) NOT NULL,
   `název` text NOT NULL,
   `typ` text NOT NULL,
-  `cena` int(11) NOT NULL,
+  `cena_b` int(11) NOT NULL,
+  `cena_s` int(11) NOT NULL,
+  `cena_f` int(11) NOT NULL,
   `popis` text NOT NULL,
   `img` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

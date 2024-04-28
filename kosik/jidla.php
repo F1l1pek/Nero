@@ -15,24 +15,23 @@ function guidv4($data = null) {
     return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
 }
 
-// Získání informací o přihlášeném uživateli
-$email = $_SESSION['email'];
-$stmt = $dbSpojeni->prepare("SELECT typ_uzivatele FROM user WHERE email = ?");
-$stmt->bind_param("s", $email);
-$stmt->execute();
-$result = $stmt->get_result();
 
 // Získání informací o přihlášeném uživateli
 $email = $_SESSION['email'];
-$stmt = $dbSpojeni->prepare("SELECT typ_uzivatele FROM user WHERE email = ?");
-$stmt->bind_param("s", $email);
-$stmt->execute();
-$result = $stmt->get_result();
+// Ověření, zda je hodnota $_SESSION['email'] legitimní
+if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    // Pouze pokračujeme, pokud je e-mailová adresa v platném formátu
+    $stmt = $dbSpojeni->prepare("SELECT * FROM user WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-if ($result->num_rows === 1) {
-    // Uživatel nalezen, získání typu uživatele
-    $user = $result->fetch_assoc();
-    $typ_uzivatele = $user['typ_uzivatele'];
+    if ($result->num_rows === 1) {
+        // Uživatel nalezen, získání informací
+        $user = $result->fetch_assoc();
+        $ID_U = $user['ID_user'];
+        $typ_uzivatele = $user['typ_uzivatele']; // Získání typu uživatele
+    }
 } else {
     // Pokud uživatel není nalezen, přesměrovat na stránku přihlášení
     header("Location: prihlaseni.php");
@@ -148,7 +147,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST["nazev"]) && !empty($_POST["typ"]) && !empty($_POST["cena"]) && isset($_FILES["obrazek"])) {
     $nazev = mysqli_real_escape_string($dbSpojeni, $_POST["nazev"]);
     $typ = mysqli_real_escape_string($dbSpojeni, $_POST["typ"]);
-    $cena = floatval($_POST["cena"]); // Nebo jiné vhodné formátování čísla
+    $cena = floatval($_POST["cena_b"]); // Nebo jiné vhodné formátování čísla
+    $cena_s = floatval($_POST["cena_s"]);
+    $cena_f = floatval($_POST["cena_f"]);
     $popis = mysqli_real_escape_string($dbSpojeni, $_POST["popis"]);
 
     // Náhodný název obrázku
@@ -208,7 +209,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST["nazev"]) && !empty($_
             <option value="Dezerty">Dezerty</option>
         </select><br>
         <input type="number" name="cena" placeholder="Cena" min="0" step="0.01" required><br>
-
+        <input type="number" name="cena_s" placeholder="Cena pro školy" min="0" step="0.01" required><br>
+        <input type="number" name="cena_f" placeholder="Cena pro firmy" min="0" step="0.01" required><br>
         <input type="text" name="popis" placeholder="Popis"><br>
         <label for="obrazek">Vyberte obrázek:</label>
         <input type="file" name="obrazek" id="obrazek" accept="image/*" required><br>
@@ -232,6 +234,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST["nazev"]) && !empty($_
                 <th><a href="?order=název">Název</a></th>
                 <th><a href="?order=typ">Typ</a></th>
                 <th><a href="?order=cena">Cena</a></th>
+                <th><a href="?order=cena_s">Cena pro školy</a></th>
+                <th><a href="?order=cena_f">Cena pro firmy</a></th>
                 <th>Popis</th>
                 <th>Obrázek</th>
                 <th>Odstranit</th>
@@ -258,6 +262,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST["nazev"]) && !empty($_
                     echo "<td><form'".$_SERVER['PHP_SELF']."' method='post'><input type='hidden' name='id_jidla' value='".htmlspecialchars($row['ID_jidla'])."'><input type='hidden' name='atribut' value='název'><input type='text' name='nova_hodnota' value='" . htmlspecialchars($row['název']) . "'><input type='submit' value='Uložit'></form></td>";
                     echo "<td><form'".$_SERVER['PHP_SELF']."' method='post'><input type='hidden' name='id_jidla' value='".htmlspecialchars($row['ID_jidla'])."'><input type='hidden' name='atribut' value='typ'><select name='nova_hodnota'><option value='Bagety'" . (htmlspecialchars($row['typ']) == 'Bagety' ? ' selected' : '') . ">Bagety</option><option value='Chlebíčky'" . (htmlspecialchars($row['typ']) == 'Chlebíčky' ? ' selected' : '') . ">Chlebíčky</option><option value='Kaiserky'" . (htmlspecialchars($row['typ']) == 'Kaiserky' ? ' selected' : '') . ">Kaiserky</option><option value='Croissanty'" . (htmlspecialchars($row['typ']) == 'Croissanty' ? ' selected' : '') . ">Croissanty</option><option value='Dezerty'" . (htmlspecialchars($row['typ']) == 'Dezerty' ? ' selected' : '') . ">Dezerty</option></select><input type='submit' value='Uložit'></form></td>";
                     echo "<td><form'".$_SERVER['PHP_SELF']."' method='post'><input type='hidden' name='id_jidla' value='".htmlspecialchars($row['ID_jidla'])."'><input type='hidden' name='atribut' value='cena'><input type='number' name='nova_hodnota' value='" . htmlspecialchars($row['cena']) . "'><input type='submit' value='Uložit'></form></td>";
+                    echo "<td><form'".$_SERVER['PHP_SELF']."' method='post'><input type='hidden' name='id_jidla' value='".htmlspecialchars($row['ID_jidla'])."'><input type='hidden' name='atribut' value='cena'><input type='number' name='nova_hodnota' value='" . htmlspecialchars($row['cena_s']) . "'><input type='submit' value='Uložit'></form></td>";
+                    echo "<td><form'".$_SERVER['PHP_SELF']."' method='post'><input type='hidden' name='id_jidla' value='".htmlspecialchars($row['ID_jidla'])."'><input type='hidden' name='atribut' value='cena'><input type='number' name='nova_hodnota' value='" . htmlspecialchars($row['cena_f']) . "'><input type='submit' value='Uložit'></form></td>";
                     echo "<td><form'".$_SERVER['PHP_SELF']."' method='post'><input type='hidden' name='id_jidla' value='".htmlspecialchars($row['ID_jidla'])."'><input type='hidden' name='atribut' value='popis'><input type='text' name='nova_hodnota' value='" . htmlspecialchars($row['popis']) . "'><input type='submit' value='Uložit'></form></td>";
                     echo "<td><form'".$_SERVER['PHP_SELF']."' method='post' enctype='multipart/form-data'><input type='hidden' name='id_jidla' value='".htmlspecialchars($row['ID_jidla'])."'><input type='hidden' name='atribut' value='img'><input type='file' name='obrazek' accept='image/*'><input type='submit' value='Nahrát nový obrázek'></form><img src='" . $obrazky_adresar . htmlspecialchars($row['img']) . "' alt='" . htmlspecialchars($row['název']) . "' style='width:100px;height:100px;'></td>";
                     echo "<td><form'".$_SERVER['PHP_SELF']."' method='post'><input type='hidden' name='id_jidla' value='".htmlspecialchars($row['ID_jidla'])."'><input type='hidden' name='atribut' value='delete'><input type='submit' value='Odstranit'></form></td>";
