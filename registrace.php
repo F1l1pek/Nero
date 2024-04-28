@@ -12,23 +12,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $dat_nar = $_POST['dat_nar'];
     $tel_cislo = !empty($_POST['tel_cislo']) ? $_POST['tel_cislo'] : null;
 
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-    $typ_uzivatele = "běžný";
-
     $existujiciUzivatel = mysqli_query($dbSpojeni, "SELECT * FROM user WHERE email = '{$email}'");
+
+    // Kontrola, zda uživatel s daným emailem již existuje
     if (mysqli_num_rows($existujiciUzivatel) > 0) {
         $error = "Uživatel s tímto emailem již existuje.";
     } else {
         // Kontrola data narození
         $today = date("Y-m-d"); // Získání aktuálního data
-
         if ($dat_nar >= $today) {
             $error = "Datum narození musí být v minulosti.";
         } else {
-            // Vložení nového uživatele do databáze
-            $sql = "INSERT INTO user (jmeno, prijmeni, email, heslo, dat_nar, tel_cislo, typ_uzivatele) VALUES ('$jmeno', '$prijmeni', '$email', '$hashedPassword', '$dat_nar', '$tel_cislo', '$typ_uzivatele')";
+            // Šifrování hesla
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-            $vysledek = mysqli_query($dbSpojeni, $sql);
+            // Vložení nového uživatele do databáze
+            $sql = "INSERT INTO user (jmeno, prijmeni, email, heslo, dat_nar, tel_cislo, typ_uzivatele) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            $stmt = $dbSpojeni->prepare($sql);
+            $stmt->bind_param("sssssss", $jmeno, $prijmeni, $email, $hashedPassword, $dat_nar, $tel_cislo, $typ_uzivatele);
+            $vysledek = $stmt->execute();
             if (!$vysledek) {
                 $error = mysqli_error($dbSpojeni);
             } else {

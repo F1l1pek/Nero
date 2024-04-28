@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $token = bin2hex(random_bytes(16));
 
     // Připojení k databázi
-    $dbSpojeni = mysqli_connect("localhost", "root", "", "nero");
+    $dbSpojeni = mysqli_connect("localhost", "root", null, "nero");
     if (!$dbSpojeni) {
         die("Chyba připojení k databázi: " . mysqli_connect_error());
     }

@@ -7,22 +7,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Ověření a přihlášení uživatele
     $email = isset($_POST['email']) ? $_POST['email'] : null;
     $password = isset($_POST['password']) ? $_POST['password'] : null;
-
+    
+    // Zkontrolovat, zda jsou email a heslo neprázdné
     if ($email && $password) {
-        $existujiciUzivatel = mysqli_query($dbSpojeni, "SELECT * FROM user WHERE email = '{$email}'");
-        if ($existujiciUzivatel && mysqli_num_rows($existujiciUzivatel) > 0) {
-            $uzivatel = mysqli_fetch_assoc($existujiciUzivatel);
-            $ulozeneHeslo = $uzivatel['heslo'];
-            
-            if (password_verify($password, $ulozeneHeslo)) {
-                $_SESSION['email'] = $email;
-                header("Location: profil.php");
-                exit();
-            }
-        }
-    }
+        // Použití předpřipraveného dotazu pro zamezení SQL Injection
+        $stmt = $dbSpojeni->prepare("SELECT * FROM user WHERE email = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-    $error = "Neplatný email nebo heslo.";
+        // Zkontrolovat, zda byl uživatel nalezen
+        if ($result->num_rows === 1) {
+            // Získání řádku s uživatelem
+            $user = $result->fetch_assoc();
+            // Porovnání hesla s uloženým heslem v databázi
+            if (password_verify($password, $user['password'])) {
+                // Přihlášení uživatele, např. nastavení session nebo cookie
+                // ...
+                echo "Uživatel úspěšně přihlášen.";
+            } else {
+                echo "Neplatné heslo.";
+            }
+        } else {
+            echo "Uživatel s tímto e-mailem neexistuje.";
+        }
+    } else {
+        echo "Chybí e-mail nebo heslo.";
+    }
 }
 ?>
 

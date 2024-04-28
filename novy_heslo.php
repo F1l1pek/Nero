@@ -59,8 +59,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         ?>
         <form action="novy_heslo.php" method="post">
-            <input type="hidden" name="email" value="<?php echo $_GET['email']; ?>">
-            <input type="hidden" name="token" value="<?php echo $_GET['token']; ?>">
+        <input type="hidden" name="email" value="<?php echo htmlspecialchars($_GET['email'], ENT_QUOTES, 'UTF-8'); ?>">
+        <input type="hidden" name="token" value="<?php echo htmlspecialchars($_GET['token'], ENT_QUOTES, 'UTF-8'); ?>">
             <label for="nove_heslo">Nové heslo:</label>
             <input type="password" id="nove_heslo" name="nove_heslo" class="form-control" required><br><br> <!-- Přidání třídy form-control -->
             <label for="znovu_nove_heslo">Znovu nové heslo:</label>
