@@ -249,7 +249,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST["nazev"]) && !empty($_
             // Přidání řazení podle zvoleného sloupce, pokud je to žádoucí
             if(isset($_GET['order'])){
                 $order = $_GET['order'];
-                $sql_select_jidla .= " ORDER BY $order";
+                $sql_select_jidla .= " ORDER BY ?";
+                $stmt = $dbSpojeni->prepare($sql_select_jidla);
+                $stmt->bind_param("s", $order);
+                $stmt->execute();
+                $result_jidla = $stmt->get_result();
             }
             
             $result_jidla = mysqli_query($dbSpojeni, $sql_select_jidla);
