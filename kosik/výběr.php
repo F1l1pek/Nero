@@ -66,11 +66,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
     $stmt->bind_param("iiii", $ID_U, $id_jidla, $mnozstvi, $mnozstvi);
     
     // Spuštění dotazu
-    if ($stmt->execute()) {
+    /*if ($stmt->execute()) {
         // Dotaz byl úspěšně proveden
     } else {
         // Chyba při provedení dotazu
-    }
+    }*/
 }
 
 ?>
@@ -125,7 +125,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
     <p><strong>Cena:</strong> <?php echo $jidlo['cena']; ?> Kč</p>
 <?php endif; ?>
                             <p><strong>Popis:</strong> <?php echo $jidlo['popis']; ?></p>
-                            <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+                            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'); ?>" method="post">
                                 <input type="hidden" name="ID_j" value="<?php echo $jidlo['ID_jidla']; ?>">
                                 <div class="center">
                                     <span class="ikonka" onclick="decrement(<?php echo $jidlo['ID_jidla']; ?>)">-</span>
