@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['email'] = $email; // Přihlašovací údaje po registraci
                 header("Location: profil.php");
                 echo "Uživatel úspěšně přihlášen.";
-                
+                exit();
             } else {
                 echo "Neplatné heslo.";
             }
