@@ -171,7 +171,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
         // Přesměrování na stejnou stránku po zpracování formuláře
-        header("Location: ".$_SERVER['PHP_SELF']);
+        $redirect_url = htmlspecialchars($_SERVER['PHP_SELF']);
+header("Location: " . $redirect_url);
         exit();
     } else {
         echo "Některé potřebné parametry nebyly poskytnuty.";
@@ -191,7 +192,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <div class="bublina" id="bublina-priprava-jidel">
     <h1>Přidávání svateb</h1> <!-- Popis přidávání svateb nad formulářem -->
-    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" enctype="multipart/form-data" class="form-ohraniceni"> <!-- Přidání třídy form-ohraniceni pro ohraničení formuláře -->
+    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" enctype="multipart/form-data" class="form-ohraniceni"> <!-- Přidání třídy form-ohraniceni pro ohraničení formuláře -->
         <input type="text" name="nazev" placeholder="Název" required><br>
         <input type="number" name="cena" placeholder="Cena" min="0" step="1" required><br>
         <input type="text" name="popis" placeholder="Popis"><br>
@@ -229,13 +230,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Přidání řazení podle zvoleného sloupce, pokud je to žádoucí
             if(isset($_GET['order'])){
                 $order = $_GET['order'];
-                $sql_select_svatby .= " ORDER BY $order";
+                $sql_select_catering .= " ORDER BY ?";
+                $stmt = $dbSpojeni->prepare($sql_select_catering);
+                $stmt->bind_param("s", $order);
+                $stmt->execute();
+                $result_catering = $stmt->get_result();
             }
 
-            $result_svatby = mysqli_query($dbSpojeni, $sql_select_svatby);
+            $result_result_cateringsvatby = mysqli_query($dbSpojeni, $sql_select_catering);
 
-            if (mysqli_num_rows($result_svatby) > 0) {
-                while ($row = mysqli_fetch_assoc($result_svatby)) {
+            if (mysqli_num_rows($result_catering) > 0) {
+                while ($row = mysqli_fetch_assoc($result_catering)) {
 
                     echo "<tr>";
                     echo "<td>" . $row['id'] . "</td>";
@@ -247,7 +252,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     echo "</tr>";
                 }
             } else {
-                echo "<tr><td colspan='6'>Žádné svatby k zobrazení.</td></tr>";
+                echo "<tr><td colspan='6'>Žádný catering k zobrazení.</td></tr>";
             }
             ?>
         </tbody>

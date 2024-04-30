@@ -7,13 +7,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Ověření a uložení registračních údajů
     $jmeno = $_POST['jmeno'];
     $prijmeni = $_POST['prijmeni'];
-    $email = $_POST['email'];
+    $email = isset($_POST['email']) ? $_POST['email'] : null; // Ověření existence proměnné
     $password = $_POST['password'];
     $dat_nar = $_POST['dat_nar'];
     $tel_cislo = !empty($_POST['tel_cislo']) ? $_POST['tel_cislo'] : null;
-
-    $existujiciUzivatel = mysqli_query($dbSpojeni, "SELECT * FROM user WHERE email = '{$email}'");
-
+    
+    // Použití předpřipraveného dotazu pro zamezení SQL Injection
+    $stmt = $dbSpojeni->prepare("SELECT * FROM user WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $existujiciUzivatel = $stmt->get_result();
+    
     // Kontrola, zda uživatel s daným emailem již existuje
     if (mysqli_num_rows($existujiciUzivatel) > 0) {
         $error = "Uživatel s tímto emailem již existuje.";

@@ -94,9 +94,18 @@ if (isset($_POST['delete_user'])) {
 }
 
 // Nastavení výchozího řazení podle ID uživatele
-$sort_column = isset($_GET['sort']) ? $_GET['sort'] : 'ID_user';
-$sql_select_users = "SELECT ID_user, jmeno, prijmeni, email, tel_cislo, dat_nar, typ_uzivatele FROM user ORDER BY $sort_column";
-$result_users = mysqli_query($dbSpojeni, $sql_select_users);
+if(isset($_GET['order'])){
+    $order = $_GET['order'];
+    $sql_select_users = "SELECT ID_user, jmeno, prijmeni, email, tel_cislo, dat_nar, typ_uzivatele FROM user ORDER BY ?";
+    $stmt = $dbSpojeni->prepare($sql_select_users);
+    $stmt->bind_param("s", $order);
+    $stmt->execute();
+    $result_users = $stmt->get_result();
+} else {
+    // Pokud není zadané žádné řazení, výběr uživatelů bez řazení
+    $sql_select_users = "SELECT ID_user, jmeno, prijmeni, email, tel_cislo, dat_nar, typ_uzivatele FROM user";
+    $result_users = mysqli_query($dbSpojeni, $sql_select_users);
+}
 ?>
 
 <!DOCTYPE html>
@@ -111,7 +120,7 @@ $result_users = mysqli_query($dbSpojeni, $sql_select_users);
 
 <div class="bublina" id="bublina-priprava-jidel">
     <h1>Vytvoření uživatele</h1>
-    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" class="form-ohraniceni">
+    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" class="form-ohraniceni">
         <label for="jmeno">Jméno:</label>
         <input type="text" name="jmeno" required><br>
         <label for="prijmeni">Příjmení:</label>
@@ -163,7 +172,7 @@ $result_users = mysqli_query($dbSpojeni, $sql_select_users);
                     <td><?php echo $row['tel_cislo']; ?></td>
                     <td><?php echo $row['dat_nar']; ?></td>
                     <td>
-                        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+                    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
                             <input type="hidden" name="user_id" value="<?php echo $row['ID_user']; ?>">
                             <select name="change_type">
                                 <option value="běžný" <?php echo ($row['typ_uzivatele'] === 'běžný') ? 'selected' : ''; ?>>Běžný</option>
@@ -174,7 +183,7 @@ $result_users = mysqli_query($dbSpojeni, $sql_select_users);
                         </form>
                     </td>
                     <td>
-                        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+                    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
                             <input type="hidden" name="delete_user" value="<?php echo $row['ID_user']; ?>">
                             <button type="submit">Smazat</button>
                         </form>
