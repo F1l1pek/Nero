@@ -23,8 +23,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Porovnání hesla s uloženým heslem v databázi
             if (password_verify($password, $user['password'])) {
                 // Přihlášení uživatele, např. nastavení session nebo cookie
-                // ...
+                $_SESSION['email'] = $email; // Přihlašovací údaje po registraci
+                header("Location: profil.php");
                 echo "Uživatel úspěšně přihlášen.";
+                
             } else {
                 echo "Neplatné heslo.";
             }
