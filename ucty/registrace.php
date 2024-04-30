@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Registrace</title>
     <link rel="stylesheet" type="text/css" href="loginy.css">
 </head>
-<?php include 'header.html'; ?> <!-- Připojení souboru header.html -->
+<?php include '../header.html'; ?> <!-- Připojení souboru header.html -->
 <body>
     <div id="content">
         <div class="bublina"> <!-- Přidána třída bublina -->
