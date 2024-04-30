@@ -46,7 +46,7 @@ if (isset($_GET['logout'])) {
     <link rel="stylesheet" type="text/css" href="admin.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
-<?php include 'header.html'; ?> <!-- Připojení souboru header.html -->
+<?php include '../header.html'; ?> <!-- Připojení souboru header.html -->
 <body>
     
 <main>
