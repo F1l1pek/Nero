@@ -156,9 +156,9 @@ include '../header.html';
                     <?php if($typ_uzivatele=="velkoodberatel_f"): ?><td><?php echo $polozka['cena_f']; ?> Kč</td><?php endif; ?>
                    <td>
                         <!-- Tlačítka pro přidání a odebrání množství -->
-                        <span class="ikonka" onclick="decrement(<?php echo $polozka['ID_jidla']; ?>, <?php echo $polozka['ID_O']; ?>)">-</span>
-                        <input type="number" id="mnozstvi_<?php echo $polozka['ID_jidla']; ?>" name="mnozstvi_<?php echo $polozka['ID_jidla']; ?>" value="<?php echo $polozka['mnozstvi']; ?>" min="0">
-                        <span class="ikonka" onclick="increment(<?php echo $polozka['ID_jidla']; ?>, <?php echo $polozka['ID_O']; ?>)">+</span>
+                        <button aria-label="Decrease" onclick="decrement(<?php echo $polozka['ID_jidla']; ?>, <?php echo $polozka['ID_O']; ?>)" class="ikonka">-</button>
+<input type="number" id="mnozstvi_<?php echo $polozka['ID_jidla']; ?>" name="mnozstvi_<?php echo $polozka['ID_jidla']; ?>" value="<?php echo $polozka['mnozstvi']; ?>" min="0">
+<button aria-label="Increase" onclick="increment(<?php echo $polozka['ID_jidla']; ?>, <?php echo $polozka['ID_O']; ?>)" class="ikonka">+</button>
                     </td>
                     <td><?php echo $subtotal; ?> Kč</td>
                 </tr>

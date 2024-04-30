@@ -128,9 +128,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
                             <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'); ?>" method="post">
                                 <input type="hidden" name="ID_j" value="<?php echo $jidlo['ID_jidla']; ?>">
                                 <div class="center">
-                                    <span class="ikonka" onclick="decrement(<?php echo $jidlo['ID_jidla']; ?>)">-</span>
-                                    <input type="number" name="mnozstvi" id="mnozstvi_<?php echo $jidlo['ID_jidla']; ?>" value="0" min="0">
-                                    <span class="ikonka" onclick="increment(<?php echo $jidlo['ID_jidla']; ?>)">+</span>
+                                <button aria-label="Decrease" onclick="decrement(<?php echo $polozka['ID_jidla']; ?>, <?php echo $polozka['ID_O']; ?>)" class="ikonka">-</button>
+<input type="number" id="mnozstvi_<?php echo $polozka['ID_jidla']; ?>" name="mnozstvi_<?php echo $polozka['ID_jidla']; ?>" value="<?php echo $polozka['mnozstvi']; ?>" min="0">
+<button aria-label="Increase" onclick="increment(<?php echo $polozka['ID_jidla']; ?>, <?php echo $polozka['ID_O']; ?>)" class="ikonka">+</button>
                                 </div>
                                 <div class="center">
                                     <input type="hidden" name="action" value="pridat">
