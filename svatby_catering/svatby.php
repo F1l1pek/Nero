@@ -8,17 +8,12 @@ $sql = "SELECT * FROM svatby";
 $vysledek = mysqli_query($dbSpojeni, $sql);
 $svatby = mysqli_fetch_all($vysledek, MYSQLI_ASSOC);
 ?>
-<!DOCTYPE html>
-<html lang="cs">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Svatby</title>
+
     <link rel="stylesheet" href="svatby.css">
-</head>
+
 
 <?php include('../header.html');?>
-<body>
+
     <div class="produkty">
         <div class="prod">
             <div class="bublina">

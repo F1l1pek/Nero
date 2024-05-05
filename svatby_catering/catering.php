@@ -8,17 +8,12 @@ $sql = "SELECT * FROM catering";
 $vysledek = mysqli_query($dbSpojeni, $sql);
 $cateringy = mysqli_fetch_all($vysledek, MYSQLI_ASSOC);
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Svatby</title>
+
     <link rel="stylesheet" href="svatby.css">
-</head>
+
 
 <?php include('../header.html');?>
-<body>
+
 <div class="produkty">
         <div class="prod">
             <div class="bublina">
@@ -64,7 +59,7 @@ $cateringy = mysqli_fetch_all($vysledek, MYSQLI_ASSOC);
                 <?php endforeach; ?>
                 </div>
     </div>
-</body>
+
 <footer>
         <div class="container">
             <div class="footer-columns">
@@ -93,4 +88,5 @@ $cateringy = mysqli_fetch_all($vysledek, MYSQLI_ASSOC);
             </div>
         </div>
     </footer>
+    </body>
 </html>
