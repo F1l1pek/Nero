@@ -75,16 +75,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
 
 ?>
 
-<!DOCTYPE html>
-<html lang="cs">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link href="jidla.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="../footer.css">
     <title>Všechna jídla</title>
-</head>
-<body>
+
 <?php include('../header.html');?>
 <div class="container">
     <div class="left-column"></div> <!-- Hnědý sloupec vlevo -->

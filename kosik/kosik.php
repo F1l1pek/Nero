@@ -100,11 +100,6 @@ function provedObjednavku($ID_U, $typ_uzivatele) {
 ?>
 
 
-<!DOCTYPE html>
-<html lang="cs">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="kosik_st.css" rel="stylesheet" type="text/css">
     <title>Košík</title>
     <style>
@@ -120,11 +115,11 @@ function provedObjednavku($ID_U, $typ_uzivatele) {
         }
         
     </style>
-</head>
-<body>
+
 <?php
 include '../header.html';
-?><div class="bod">
+?>
+<div class="bod">
     <h1>Košík</h1>
     <form method="post">
         <table>
