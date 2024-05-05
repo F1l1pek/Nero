@@ -5,87 +5,135 @@ body, html {
     color: black;
 }
 
-body{
+body {
     background-color: rgb(247, 247, 208);
 }
 
-.produkty{
+.produkty {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center; /* Rozložení produktů rovnoměrně mezi okraji kontejneru */
+    justify-content: center;
     text-align: center;
     background-color: rgb(247, 247, 208);
 }
 
-.prod{
+.prod {
     display: flex;
-    align-items: center;  /*vertikální zarovnání na střed*/ 
-    width: 60%;
-    flex-direction: column; /* Sloupcové uspořádání */
-    margin-bottom: 0px;
+    align-items: center;
+    width: 80%;
+    flex-direction: column;
+    margin-bottom: 20px;
 }
 
 .produkt {
-    width: 1200px;
+    width: 100%;
     margin-bottom: 20px;
     padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 20px; /* Zakulacení rohů */
-    box-sizing: border-box; /* Zahrne border do celkové šířky */
+    box-sizing: border-box;
     display: flex;
-    flex-direction: column; /* Sloupcové uspořádání */
-    align-items: center; /* Zarovnání obsahu na střed */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     background-color: rgb(202, 202, 194);
     color: black;
     overflow: hidden;
+    border-radius: 20px; /* Zaoblení rohů */
+    border: 2px solid transparent; /* Ohraničení */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Přidáme jemný stín */
+    transition: box-shadow 0.3s ease; /* Plynulý přechod */
 }
 
-.produkt img {
-    width: 100%; /* Automatické nastavení šířky */
-    max-height: 800px; /* Nové maximální výška */
-    margin-bottom: 10px; 
-    object-fit: cover;
-    margin-top: -11px;
+.produkt:hover {
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Zvětšíme stín při najetí myší */
+    transform: translateY(-2px); /* Přidáme jemný posun nahoru */
 }
 
+.bublina {
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 2px solid black; /* Přidáme černé ohraničení pro bublinu */
+    border-radius: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgb(202, 202, 194);
+    color: black;
+    overflow: hidden;
+    position: relative; /* Přidáme relativní pozici */
+}
+
+.produkt h2 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 30px; /* Zvětšíme velikost písma pro nadpis */
+}
 
 .info {
-    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
 }
 
-.produkt h2,h1 {
-    margin-top: 0;
-    margin-bottom: 10px; /* Mezera pod nadpisem */
-    color: black;
+.img-column {
+    flex: 1;
+    margin-right: 1%; /* Přidáme odstup mezi sloupečkem pro obrázek a popis */
 }
 
-.text{
-    font-family: Arial, Helvetica, sans-serif;
+.img-column img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.text-column {
+    flex: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.text-column p {
+    font-size: 20px; /* Zvětšíme velikost písma pro popis */
+}
+
+.price-column {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.price-column p {
+    font-size: 20px; /* Zvětšíme velikost písma pro cenu */
+}
+
+.footer-columns {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.info p {
+    margin: 0;
+}
+
+.text {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Změníme typografii */
     font-size: 20px;
 }
 
-.bublina{
-    width: 150%;
-    margin-bottom: 20px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 20px; /* Zakulacení rohů */
-    box-sizing: border-box; /* Zahrne border do celkové šířky */
-    display: flex;
-    flex-direction: column; /* Sloupcové uspořádání */
-    align-items: center; /* Zarovnání obsahu na střed */
-    background-color: rgb(202, 202, 194);
-    color: black;
-    overflow: hidden;
-}
-/* Část CSS kódu pro vytvoření seznamu pomocí teček */
 .footer-column ul {
     list-style: disc;
-    padding-left: 0px; /* Resetování výchozího paddingu */
+    padding-left: 0px;
 }
 
 .footer-column ul li {
-    padding-left: 15px; /* Nastavení vlastního paddingu pro seznam */
+    padding-left: 15px;
 }
 
 .container {
@@ -94,17 +142,16 @@ body{
     padding: 0 20px;
 }
 
-/* Přidání větší mezery mezi sloupci Kontakt a Otevírací doba */
 .footer-column:nth-child(2) {
-    margin-right: 40px; /* Zvětšení mezery mezi sloupci */
+    margin-right: 40px;
 }
 
-.text h2{
+.text h2 {
     font-size: 30px;
 }
-/*--------Footer----------*/
+
 footer {
-    background-color: #504e4e !important; 
+    background-color: #504e4e !important;
     color: #fff;
     text-align: center;
     padding: 20px 0;
@@ -114,7 +161,6 @@ footer {
     margin-top: 20px;
     margin-bottom: 0px;
     font-family: Arial, Helvetica, sans-serif;
-
 }
 
 footer .container {
@@ -129,7 +175,7 @@ footer .container {
 
 .footer-column {
     flex: 1;
-    margin: 0 40px; 
+    margin: 0 40px;
     text-align: left;
 }
 
@@ -141,6 +187,13 @@ a {
     text-decoration: none;
 }
 
-ul li{
+ul li {
     list-style-type: none;
+}
+
+/* Responsivita */
+@media (max-width: 768px) {
+    .prod {
+        width: 90%; /* Přizpůsobíme šířku produktů pro menší obrazovky */
+    }
 }

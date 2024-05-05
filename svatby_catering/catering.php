@@ -40,24 +40,22 @@ $cateringy = mysqli_fetch_all($vysledek, MYSQLI_ASSOC);
         </div>
     </div>
     <div class="produkty">
-<?php foreach ($cateringy as $catering): ?>
-                <div class="prod">
-                    <div class="produkt">
-                        <?php if (!empty($catering['obrazek'])): ?>
-                            <img src="<?php echo $obrazky_adresar . htmlspecialchars($catering['obrazek']); ?>" alt="<?php echo htmlspecialchars($catering['nazev']); ?>">
-                        <?php else: ?>
-                            <p>Obrázek není k dispozici</p>
-                        <?php endif; ?>
-                        <div>
-                            <h2><?php echo $catering['nazev']; ?></h2>
-                            <div class="info">
-                                <p><strong>Cena:</strong> <?php echo htmlspecialchars($catering['cena']); ?> Kč</p>
-                                <p><strong>Popis:</strong> <?php echo htmlspecialchars($catering['popis']); ?></p>
-                            </div>
-                        </div>
+        <?php foreach ($cateringy as $catering): ?>
+            <div class="prod">
+                <div class="produkt">
+                    <?php if (!empty($catering['obrazek'])): ?>
+                        <img src="<?php echo $obrazky_adresar . htmlspecialchars($catering['obrazek']); ?>" alt="<?php echo htmlspecialchars($catering['nazev']); ?>">
+                    <?php else: ?>
+                        <p>Obrázek není k dispozici</p>
+                    <?php endif; ?>
+                    <h2><?php echo $catering['nazev']; ?></h2>
+                    <div class="info">
+                        <p><strong>Popis:</strong> <?php echo htmlspecialchars($catering['popis']); ?></p>
+                        <p><strong>Cena:</strong> <?php echo htmlspecialchars($catering['cena']); ?> Kč</p>
                     </div>
-                <?php endforeach; ?>
                 </div>
+            </div>
+        <?php endforeach; ?>
     </div>
 
 <footer>

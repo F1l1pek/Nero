@@ -41,25 +41,27 @@ $svatby = mysqli_fetch_all($vysledek, MYSQLI_ASSOC);
     </div>
     
     <div class="produkty">
-<?php foreach ($svatby as $svatba): ?>
-                <div class="prod">
-                    <div class="produkt">
-                        <?php if (!empty($svatba['obrazek'])): ?>
+    <?php foreach ($svatby as $svatba): ?>
+        <div class="prod">
+            <div class="produkt">
+                <h2><?php echo $svatba['nazev']; ?></h2>
+                <div class="info">
+                    <?php if (!empty($svatba['obrazek'])): ?>
+                        <div class="img-column">
                             <img src="<?php echo $obrazky_adresar . $svatba['obrazek']; ?>" alt="<?php echo $svatba['nazev']; ?>">
-                        <?php else: ?>
-                            <p>Obrázek není k dispozici</p>
-                        <?php endif; ?>
-                        <div>
-                            <h2><?php echo $svatba['nazev']; ?></h2>
-                            <div class="info">
-                                <p><strong>Cena:</strong> <?php echo $svatba['cena']; ?> Kč</p>
-                                <p><strong>Popis:</strong> <?php echo $svatba['popis']; ?></p>
-                            </div>
                         </div>
+                    <?php endif; ?>
+                    <div class="text-column">
+                        <p><?php echo $svatba['popis']; ?></p>
                     </div>
-                <?php endforeach; ?>
+                    <div class="price-column">
+                        <p><strong>Cena:</strong> <?php echo $svatba['cena']; ?> Kč</p>
+                    </div>
                 </div>
-                </div>
+            </div>
+        </div>
+    <?php endforeach; ?>
+</div>
     <footer>
         <div class="container">
             <div class="footer-columns">
