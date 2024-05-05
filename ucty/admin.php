@@ -31,17 +31,11 @@ if ($typ_uzivatele !== 'admin') {
     exit();
 }
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administrativní panel</title>
+
     <link rel="stylesheet" href="admin.css"> <!-- Odkaz na základní CSS soubor -->
 
-</head>
 <?php include 'header.html'; ?> <!-- Připojení souboru header.html -->
-<body>
+
     <div id="content"> <!-- Přidáváme třídu 'bublina' a id 'content' -->
         <div class="bublina"> <!-- Přidáváme třídu 'bublina' -->
             <h1>Administrativní panel</h1>

@@ -41,15 +41,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Nové heslo</title>
+
     <link rel="stylesheet" type="text/css" href="loginy.css"> <!-- Odkaz na loginy.css -->
-</head>
-<?php include 'header.html'; ?> <!-- Připojení souboru footer.html -->
-<body>
+
+<?php include '../header.html'; ?> <!-- Připojení souboru footer.html -->
+
 
     <div id="content" class="bublina"> <!-- Přidání třídy bublina pro formátování -->
         <h2>Nastavení nového hesla</h2>

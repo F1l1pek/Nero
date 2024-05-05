@@ -47,9 +47,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-    <div id="header">
-        
-    </div>
     <div id="content">
         <h2>Obnova hesla</h2>
         <?php
@@ -62,9 +59,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="email" id="email" name="email" required><br><br>
             <input type="submit" value="Odeslat odkaz pro obnovu hesla">
         </form>
-    </div>
-    <div id="footer">
-        
     </div>
 </body>
 </html>

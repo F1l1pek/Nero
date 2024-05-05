@@ -38,16 +38,10 @@ if (isset($_GET['logout'])) {
 }
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Profil</title>
     <link rel="stylesheet" type="text/css" href="admin.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</head>
 <?php include '../header.html'; ?> <!-- Připojení souboru header.html -->
-<body>
+
     
 <main>
     <div id="content" class="bublina">

@@ -48,15 +48,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Registrace</title>
+
     <link rel="stylesheet" type="text/css" href="loginy.css">
-</head>
+
 <?php include '../header.html'; ?> <!-- Připojení souboru header.html -->
-<body>
+
     <div id="content">
         <div class="bublina"> <!-- Přidána třída bublina -->
             <div class="form-ohraniceni"> <!-- Přidána třída form-ohraniceni -->

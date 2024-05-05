@@ -47,14 +47,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Obnova hesla</title>
+
     <link rel="stylesheet" type="text/css" href="loginy.css">
-</head>
-<body>
+
     <div id="content" class="bublina"> <!-- Přidána třída bublina -->
         <h2>Obnova hesla</h2>
         <?php
