@@ -113,7 +113,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $nova_hodnota = $_POST["nova_hodnota"];
             $sql_update = "UPDATE svatby SET $atribut = ? WHERE id = ?";
             $stmt = mysqli_prepare($dbSpojeni, $sql_update);
-
+            define('ERROR_MESSAGE', "Chyba při přípravě dotazu.");
+            
             if ($stmt) {
                 mysqli_stmt_bind_param($stmt, "si", $nova_hodnota, $id);
                 if (mysqli_stmt_execute($stmt)) {
@@ -123,7 +124,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
                 mysqli_stmt_close($stmt);
             } else {
-                echo "Chyba při přípravě dotazu.";
+                echo ERROR_MESSAGE;
             }
         } elseif ($atribut == "obrazek") {
             // Nahrání nového obrázku
@@ -147,7 +148,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     }
                     mysqli_stmt_close($stmt);
                 } else {
-                    echo "Chyba při přípravě dotazu.";
+                    echo ERROR_MESSAGE;
                 }
             } else {
                 echo "Nahrání nového obrázku selhalo.";
@@ -166,7 +167,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
                 mysqli_stmt_close($stmt);
             } else {
-                echo "Chyba při přípravě dotazu.";
+                echo ERROR_MESSAGE;
             }
         }
         // Přesměrování na stejnou stránku po zpracování formuláře
@@ -236,16 +237,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
             
             $result_svatby = mysqli_query($dbSpojeni, $sql_select_svatby);
-            
+            define('FORM_START', "<td><form method='post'><input type='hidden' name='id_jidla' value='");
+            define('FORM_END', "<input type='submit' value='Uložit'></form></td>");
             if (mysqli_num_rows($result_svatby) > 0) {
                 while ($row = mysqli_fetch_assoc($result_svatby)) {
                     echo "<tr>";
                     echo "<td>" . $row['id'] . "</td>";
-                    echo "<td><form method='post'><input type='hidden' name='id' value='".htmlspecialchars($row['id'])."'><input type='hidden' name='atribut' value='nazev'><input type='text' name='nova_hodnota' value='" . htmlspecialchars($row['nazev']) . "'><input type='submit' value='Uložit'></form></td>";
-                    echo "<td><form method='post'><input type='hidden' name='id' value='".htmlspecialchars($row['id'])."'><input type='hidden' name='atribut' value='cena'><input type='number' name='nova_hodnota' value='" . htmlspecialchars($row['cena']) . "'><input type='submit' value='Uložit'></form></td>";
-                    echo "<td><form method='post'><input type='hidden' name='id' value='".htmlspecialchars($row['id'])."'><input type='hidden' name='atribut' value='popis'><input type='text' name='nova_hodnota' value='" . htmlspecialchars($row['popis']) . "'><input type='submit' value='Uložit'></form></td>";
+                    echo FORM_START.htmlspecialchars($row['id'])."'><input type='hidden' name='atribut' value='nazev'><input type='text' name='nova_hodnota' value='" . htmlspecialchars($row['nazev']) . "'>" . FORM_END;
+                    echo FORM_START.htmlspecialchars($row['id'])."'><input type='hidden' name='atribut' value='cena'><input type='number' name='nova_hodnota' value='" . htmlspecialchars($row['cena']) . "'>" . FORM_END;
+                    echo FORM_START.htmlspecialchars($row['id'])."'><input type='hidden' name='atribut' value='popis'><input type='text' name='nova_hodnota' value='" . htmlspecialchars($row['popis']) . "'>" . FORM_END;
                     echo "<td><form method='post' enctype='multipart/form-data'><input type='hidden' name='id' value='".htmlspecialchars($row['id'])."'><input type='hidden' name='atribut' value='obrazek'><input type='file' name='obrazek' accept='image/*'><input type='submit' value='Nahrát nový obrázek'></form><img src='" . $obrazky_adresar . htmlspecialchars(basename($row['obrazek'])) . "' alt='" . htmlspecialchars($row['nazev']) . "' style='width:100px;height:100px;'></td>";
-                    echo "<td><form method='post'><input type='hidden' name='id' value='".htmlspecialchars($row['id'])."'><input type='hidden' name='atribut' value='delete'><input type='submit' value='Odstranit'></form></td>";
+                    echo FORM_START.htmlspecialchars($row['id'])."'><input type='hidden' name='atribut' value='delete'><input type='submit' value='Odstranit'></form></td>";
                     echo "</tr>";
                 }
             } else {
