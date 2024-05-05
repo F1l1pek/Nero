@@ -80,7 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
     <link rel="stylesheet" href="../footer.css">
     <title>Všechna jídla</title>
 
-<?php include('../header.html');?>
+    <?php include '../header.html'; ?>
 <div class="container">
     <div class="left-column"></div> <!-- Hnědý sloupec vlevo -->
     <div class="content">

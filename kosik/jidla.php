@@ -257,20 +257,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST["nazev"]) && !empty($_
             }
             
             $result_jidla = mysqli_query($dbSpojeni, $sql_select_jidla);
-            
+            define('FORM_START', "<td><form method='post'><input type='hidden' name='id_jidla' value='");
+            define('FORM_END', "<input type='submit' value='Uložit'></form></td>");
+
+
             if (mysqli_num_rows($result_jidla) > 0) {
                 while ($row = mysqli_fetch_assoc($result_jidla)) {
                     
                     echo "<tr>";
                     echo "<td>" . $row['ID_jidla'] . "</td>"; // Oprava z 'id' na 'ID_jidla'
-                    echo "<td><form method='post'><input type='hidden' name='id_jidla' value='".htmlspecialchars($row['ID_jidla'])."'><input type='hidden' name='atribut' value='název'><input type='text' name='nova_hodnota' value='" . htmlspecialchars($row['název']) . "'><input type='submit' value='Uložit'></form></td>";
-                    echo "<td><form method='post'><input type='hidden' name='id_jidla' value='".htmlspecialchars($row['ID_jidla'])."'><input type='hidden' name='atribut' value='typ'><select name='nova_hodnota'><option value='Bagety'" . (htmlspecialchars($row['typ']) == 'Bagety' ? ' selected' : '') . ">Bagety</option><option value='Chlebíčky'" . (htmlspecialchars($row['typ']) == 'Chlebíčky' ? ' selected' : '') . ">Chlebíčky</option><option value='Kaiserky'" . (htmlspecialchars($row['typ']) == 'Kaiserky' ? ' selected' : '') . ">Kaiserky</option><option value='Croissanty'" . (htmlspecialchars($row['typ']) == 'Croissanty' ? ' selected' : '') . ">Croissanty</option><option value='Dezerty'" . (htmlspecialchars($row['typ']) == 'Dezerty' ? ' selected' : '') . ">Dezerty</option></select><input type='submit' value='Uložit'></form></td>";
-                    echo "<td><form method='post'><input type='hidden' name='id_jidla' value='".htmlspecialchars($row['ID_jidla'])."'><input type='hidden' name='atribut' value='cena'><input type='number' name='nova_hodnota' value='" . htmlspecialchars($row['cena']) . "'><input type='submit' value='Uložit'></form></td>";
-                    echo "<td><form method='post'><input type='hidden' name='id_jidla' value='".htmlspecialchars($row['ID_jidla'])."'><input type='hidden' name='atribut' value='cena_s'><input type='number' name='nova_hodnota' value='" . htmlspecialchars($row['cena_s']) . "'><input type='submit' value='Uložit'></form></td>";
-                    echo "<td><form method='post'><input type='hidden' name='id_jidla' value='".htmlspecialchars($row['ID_jidla'])."'><input type='hidden' name='atribut' value='cena_f'><input type='number' name='nova_hodnota' value='" . htmlspecialchars($row['cena_f']) . "'><input type='submit' value='Uložit'></form></td>";
-                    echo "<td><form method='post'><input type='hidden' name='id_jidla' value='".htmlspecialchars($row['ID_jidla'])."'><input type='hidden' name='atribut' value='popis'><input type='text' name='nova_hodnota' value='" . htmlspecialchars($row['popis']) . "'><input type='submit' value='Uložit'></form></td>";
+                    echo FORM_START.htmlspecialchars($row['ID_jidla'])."'><input type='hidden' name='atribut' value='název'><input type='text' name='nova_hodnota' value='" . htmlspecialchars($row['název']) . "'>" . FORM_END;
+                    echo FORM_START.htmlspecialchars($row['ID_jidla'])."'><input type='hidden' name='atribut' value='typ'><select name='nova_hodnota'><option value='Bagety'" . (htmlspecialchars($row['typ']) == 'Bagety' ? ' selected' : '') . ">Bagety</option><option value='Chlebíčky'" . (htmlspecialchars($row['typ']) == 'Chlebíčky' ? ' selected' : '') . ">Chlebíčky</option><option value='Kaiserky'" . (htmlspecialchars($row['typ']) == 'Kaiserky' ? ' selected' : '') . ">Kaiserky</option><option value='Croissanty'" . (htmlspecialchars($row['typ']) == 'Croissanty' ? ' selected' : '') . ">Croissanty</option><option value='Dezerty'" . (htmlspecialchars($row['typ']) == 'Dezerty' ? ' selected' : '') . ">Dezerty</option></select><input type='submit' value='Uložit'></form></td>";
+                    echo FORM_START.htmlspecialchars($row['ID_jidla'])."'><input type='hidden' name='atribut' value='cena'><input type='number' name='nova_hodnota' value='" . htmlspecialchars($row['cena']) . "'>" . FORM_END;
+                    echo FORM_START.htmlspecialchars($row['ID_jidla'])."'><input type='hidden' name='atribut' value='cena_s'><input type='number' name='nova_hodnota' value='" . htmlspecialchars($row['cena_s']) . "'>" . FORM_END;
+                    echo FORM_START.htmlspecialchars($row['ID_jidla'])."'><input type='hidden' name='atribut' value='cena_f'><input type='number' name='nova_hodnota' value='" . htmlspecialchars($row['cena_f']) . "'>" . FORM_END;
+                    echo FORM_START.htmlspecialchars($row['ID_jidla'])."'><input type='hidden' name='atribut' value='popis'><input type='text' name='nova_hodnota' value='" . htmlspecialchars($row['popis']) . "'>" . FORM_END;
                     echo "<td><form method='post' enctype='multipart/form-data'><input type='hidden' name='id_jidla' value='".htmlspecialchars($row['ID_jidla'])."'><input type='hidden' name='atribut' value='img'><input type='file' name='obrazek' accept='image/*'><input type='submit' value='Nahrát nový obrázek'></form><img src='" . $obrazky_adresar . htmlspecialchars($row['img']) . "' alt='" . htmlspecialchars($row['název']) . "' style='width:100px;height:100px;'></td>";
-                    echo "<td><form method='post'><input type='hidden' name='id_jidla' value='".htmlspecialchars($row['ID_jidla'])."'><input type='hidden' name='atribut' value='delete'><input type='submit' value='Odstranit'></form></td>";
+                    echo FORM_START.htmlspecialchars($row['ID_jidla'])."'><input type='hidden' name='atribut' value='delete'><input type='submit' value='Odstranit'></form></td>";
                     echo "</tr>";
                 }
             } else {
