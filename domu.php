@@ -16,7 +16,7 @@ if ($vysledek) {
 
 <link rel="stylesheet" href="style.css">
 
-<?php include 'header.html'; ?>
+<?php include_once 'header.html'; ?>
 
     <main>
         <div class="main">
@@ -49,4 +49,4 @@ if ($vysledek) {
 </div>
 
     </main>
-    <?php include 'footer.html'; ?>
+    <?php include_once 'footer.html'; ?>
