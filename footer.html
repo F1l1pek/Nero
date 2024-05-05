@@ -1,113 +1,105 @@
-<!DOCTYPE html>
-<html lang="cs">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-  .footer {
-    background: #504e4e; /* šedé pozadí */
-    color: #fff;
-    text-align: center;
-    padding: 20px 0;
-    width: 100%;
-    position: relative;
-    bottom: 0;
-    margin-top: 20px; /* přidání mezeru nad footerem */
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-.footer .container {
-    display: flex;
-    justify-content: center; /* Všechny sloupce jsou vycentrovány */
-}
-
-.footer-columns {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.footer-column {
-    flex: 1;
-    margin: 0 40px; /* Zvýšení mezery mezi sloupci */
-    text-align: left; /* Zarovnání textu doleva */
-}
-
-.footer-column h3 {
-    margin-bottom: 10px;
-}
-
-footer a {
-    text-decoration: none;
-}
-
-ul li{
-    list-style-type: none; /* Odstraní tečky */
-}
-
-
-/* Část CSS kódu pro vytvoření seznamu pomocí teček */
-.footer-column ul {
-    list-style: disc;
-    padding-left: 0px; /* Resetování výchozího paddingu */
-}
-
-.footer-column ul li {
-    padding-left: 15px; /* Nastavení vlastního paddingu pro seznam */
-}
-
-body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh; /* Vytvoříme minimální výšku těla (body) na celou výšku okna pro dosažení sticky footeru */
-}
-
-main {
-    flex: 1;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-/* Přidání větší mezery mezi sloupci Kontakt a Otevírací doba */
-.footer-column:nth-child(2) {
-    margin-right: 40px; /* Zvětšení mezery mezi sloupci */
-}
-
-    </style>
-</head>
-<body> 
-    <footer class="footer"> <!-- Změna id na class -->
-        <div class="container">
-            <div class="footer-columns">
-                <div class="footer-column">
-                    <h3>Adresa</h3>
-                    <ul>
-                        <li>Matiční 2740</li>
-                        <li>Moravská Ostrava 70200</li>
-                        <li>Vchod z boku Střední průmyslové školy elektrotechniky a informatiky</li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Kontakt</h3>
-                    <ul>
-                        <li>Telefon: 773 171 883</li>
-                        <li>IČO: 08812683</li>
-                        <li><a href="https://www.instagram.com/cafenero2022/" target="_blank">Instagram</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Otevírací doba</h3>
-                    <ul>
-                        <li>Po - Pá: 8:00 - 16:00</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </footer>
-    
-</body>
-</html>
+<style>
+    .footer {
+      background: #504e4e; /* šedé pozadí */
+      color: #fff;
+      text-align: center;
+      padding: 20px 0;
+      width: 100%;
+      position: relative;
+      bottom: 0;
+      margin-top: 20px; /* přidání mezeru nad footerem */
+      font-family: Arial, Helvetica, sans-serif;
+  }
+  
+  .footer .container {
+      display: flex;
+      justify-content: center; /* Všechny sloupce jsou vycentrovány */
+  }
+  
+  .footer-columns {
+      display: flex;
+      flex-wrap: wrap;
+  }
+  
+  .footer-column {
+      flex: 1;
+      margin: 0 40px; /* Zvýšení mezery mezi sloupci */
+      text-align: left; /* Zarovnání textu doleva */
+  }
+  
+  .footer-column h3 {
+      margin-bottom: 10px;
+  }
+  
+  footer a {
+      text-decoration: none;
+  }
+  
+  ul li{
+      list-style-type: none; /* Odstraní tečky */
+  }
+  
+  
+  /* Část CSS kódu pro vytvoření seznamu pomocí teček */
+  .footer-column ul {
+      list-style: disc;
+      padding-left: 0px; /* Resetování výchozího paddingu */
+  }
+  
+  .footer-column ul li {
+      padding-left: 15px; /* Nastavení vlastního paddingu pro seznam */
+  }
+  
+  body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh; /* Vytvoříme minimální výšku těla (body) na celou výšku okna pro dosažení sticky footeru */
+  }
+  
+  main {
+      flex: 1;
+  }
+  
+  .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+  }
+  
+  /* Přidání větší mezery mezi sloupci Kontakt a Otevírací doba */
+  .footer-column:nth-child(2) {
+      margin-right: 40px; /* Zvětšení mezery mezi sloupci */
+  }
+  
+      </style> 
+      <footer class="footer"> <!-- Změna id na class -->
+          <div class="container">
+              <div class="footer-columns">
+                  <div class="footer-column">
+                      <h3>Adresa</h3>
+                      <ul>
+                          <li>Matiční 2740</li>
+                          <li>Moravská Ostrava 70200</li>
+                          <li>Vchod z boku Střední průmyslové školy elektrotechniky a informatiky</li>
+                      </ul>
+                  </div>
+                  <div class="footer-column">
+                      <h3>Kontakt</h3>
+                      <ul>
+                          <li>Telefon: 773 171 883</li>
+                          <li>IČO: 08812683</li>
+                          <li><a href="https://www.instagram.com/cafenero2022/" target="_blank">Instagram</a></li>
+                      </ul>
+                  </div>
+                  <div class="footer-column">
+                      <h3>Otevírací doba</h3>
+                      <ul>
+                          <li>Po - Pá: 8:00 - 16:00</li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+      </footer>
+  </body>
+  </html>
+  

@@ -14,16 +14,10 @@ if ($vysledek) {
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="cs">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Domovská stránka</title>
-    <link rel="stylesheet" href="style.css">
-</head>
+<link rel="stylesheet" href="style.css">
+
 <?php include('header.html');?>
-<body>
+
     <main>
         <div class="main">
             <div class="nadpis-bublina">
@@ -55,6 +49,4 @@ if ($vysledek) {
 </div>
 
     </main>
-</body>
-<?php include 'footer.html'; ?>
-</html>
+    <?php include 'footer.html'; ?>
