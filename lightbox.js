@@ -73,7 +73,7 @@
   };
 
   Lightbox.prototype.init = function() {
-    var self = this;
+    let self = this;
     // Both enable and build methods require the body tag to be in the DOM.
     $(document).ready(function() {
       self.enable();
@@ -84,7 +84,7 @@
   // Loop through anchors and areamaps looking for either data-lightbox attributes or rel attributes
   // that contain 'lightbox'. When these are clicked, start lightbox.
   Lightbox.prototype.enable = function() {
-    var self = this;
+    let self = this;
     $('body').on('click', 'a[rel^=lightbox], area[rel^=lightbox], a[data-lightbox], area[data-lightbox]', function(event) {
       self.start($(event.currentTarget));
       return false;
@@ -98,7 +98,7 @@
         return;
     }
 
-    var self = this;
+    let self = this;
 
     // The two root notes generated, #lightboxOverlay and #lightbox are given
     // tabindex attrs so they are focusable. We attach our keyboard event
@@ -211,15 +211,15 @@
 
   // Show overlay and lightbox. If the image is part of a set, add siblings to album array.
   Lightbox.prototype.start = function($link) {
-    var self    = this;
-    var $window = $(window);
+    let self    = this;
+    let $window = $(window);
 
     $window.on('resize', $.proxy(this.sizeOverlay, this));
 
     this.sizeOverlay();
 
     this.album = [];
-    var imageNumber = 0;
+    let imageNumber = 0;
 
     function addToAlbum($link) {
       self.album.push({
@@ -230,12 +230,12 @@
     }
 
     // Support both data-lightbox attribute and rel attribute implementations
-    var dataLightboxValue = $link.attr('data-lightbox');
-    var $links;
+    let dataLightboxValue = $link.attr('data-lightbox');
+    let $links;
 
     if (dataLightboxValue) {
       $links = $($link.prop('tagName') + '[data-lightbox="' + dataLightboxValue + '"]');
-      for (var i = 0; i < $links.length; i = ++i) {
+      for (let i = 0; i < $links.length; i = ++i) {
         addToAlbum($($links[i]));
         if ($links[i] === $link[0]) {
           imageNumber = i;
@@ -248,7 +248,7 @@
       } else {
         // If image is part of a set
         $links = $($link.prop('tagName') + '[rel="' + $link.attr('rel') + '"]');
-        for (var j = 0; j < $links.length; j = ++j) {
+        for (let j = 0; j < $links.length; j = ++j) {
           addToAlbum($($links[j]));
           if ($links[j] === $link[0]) {
             imageNumber = j;
@@ -258,8 +258,8 @@
     }
 
     // Position Lightbox
-    var top  = $window.scrollTop() + this.options.positionFromTop;
-    var left = $window.scrollLeft();
+    let top  = $window.scrollTop() + this.options.positionFromTop;
+    let left = $window.scrollLeft();
     this.$lightbox.css({
       top: top + 'px',
       left: left + 'px'
@@ -275,10 +275,10 @@
 
   // Hide most UI elements in preparation for the animated resizing of the lightbox.
   Lightbox.prototype.changeImage = function(imageNumber) {
-    var self = this;
-    var filename = this.album[imageNumber].link;
-    var filetype = filename.split('.').slice(-1)[0];
-    var $image = this.$lightbox.find('.lb-image');
+    let self = this;
+    let filename = this.album[imageNumber].link;
+    let filetype = filename.split('.').slice(-1)[0];
+    let $image = this.$lightbox.find('.lb-image');
 
     // Disable keyboard nav during transitions
     this.disableKeyboardNav();
@@ -290,15 +290,15 @@
     this.$outerContainer.addClass('animating');
 
     // When image to show is preloaded, we send the width and height to sizeContainer()
-    var preloader = new Image();
+    let preloader = new Image();
     preloader.onload = function() {
-      var $preloader;
-      var imageHeight;
-      var imageWidth;
-      var maxImageHeight;
-      var maxImageWidth;
-      var windowHeight;
-      var windowWidth;
+      let $preloader;
+      let imageHeight;
+      let imageWidth;
+      let maxImageHeight;
+      let maxImageWidth;
+      let windowHeight;
+      let windowWidth;
 
       $image.attr({
         'alt': self.album[imageNumber].alt,
@@ -310,7 +310,7 @@
       $image.width(preloader.width);
       $image.height(preloader.height);
 
-      var aspectRatio = preloader.width / preloader.height;
+      let aspectRatio = preloader.width / preloader.height;
 
       windowWidth = $(window).width();
       windowHeight = $(window).height();
@@ -381,7 +381,7 @@
 
   // Stretch overlay to fit the viewport
   Lightbox.prototype.sizeOverlay = function() {
-    var self = this;
+    let self = this;
     /*
     We use a setTimeout 0 to pause JS execution and let the rendering catch-up.
     Why do this? If the `disableScrolling` option is set to true, a class is added to the body
@@ -400,12 +400,12 @@
   // Animate the size of the lightbox to fit the image we are showing
   // This method also shows the the image.
   Lightbox.prototype.sizeContainer = function(imageWidth, imageHeight) {
-    var self = this;
+    let self = this;
 
-    var oldWidth  = this.$outerContainer.outerWidth();
-    var oldHeight = this.$outerContainer.outerHeight();
-    var newWidth  = imageWidth + this.containerPadding.left + this.containerPadding.right + this.imageBorderWidth.left + this.imageBorderWidth.right;
-    var newHeight = imageHeight + this.containerPadding.top + this.containerPadding.bottom + this.imageBorderWidth.top + this.imageBorderWidth.bottom;
+    let oldWidth  = this.$outerContainer.outerWidth();
+    let oldHeight = this.$outerContainer.outerHeight();
+    let newWidth  = imageWidth + this.containerPadding.left + this.containerPadding.right + this.imageBorderWidth.left + this.imageBorderWidth.right;
+    let newHeight = imageHeight + this.containerPadding.top + this.containerPadding.bottom + this.imageBorderWidth.top + this.imageBorderWidth.bottom;
 
     function postResize() {
       self.$lightbox.find('.lb-dataContainer').width(newWidth);
@@ -446,7 +446,7 @@
     // Check to see if the browser supports touch events. If so, we take the conservative approach
     // and assume that mouse hover events are not supported and always show prev/next navigation
     // arrows in image sets.
-    var alwaysShowNav = false;
+    let alwaysShowNav = false;
     try {
       document.createEvent('TouchEvent');
       alwaysShowNav = (this.options.alwaysShowNavOnTouchDevices) ? true : false;
@@ -479,13 +479,13 @@
 
   // Display caption, image number, and closing button.
   Lightbox.prototype.updateDetails = function() {
-    var self = this;
+    let self = this;
 
     // Enable anchor clicks in the injected caption html.
     // Thanks Nate Wright for the fix. @https://github.com/NateWr
     if (typeof this.album[this.currentImageIndex].title !== 'undefined' &&
       this.album[this.currentImageIndex].title !== '') {
-      var $caption = this.$lightbox.find('.lb-caption');
+      let $caption = this.$lightbox.find('.lb-caption');
       if (this.options.sanitizeTitle) {
         $caption.text(this.album[this.currentImageIndex].title);
       } else {
@@ -495,7 +495,7 @@
     }
 
     if (this.album.length > 1 && this.options.showImageNumberLabel) {
-      var labelText = this.imageCountLabel(this.currentImageIndex + 1, this.album.length);
+      let labelText = this.imageCountLabel(this.currentImageIndex + 1, this.album.length);
       this.$lightbox.find('.lb-number').text(labelText).fadeIn('fast');
     } else {
       this.$lightbox.find('.lb-number').hide();
@@ -511,11 +511,11 @@
   // Preload previous and next images in set.
   Lightbox.prototype.preloadNeighboringImages = function() {
     if (this.album.length > this.currentImageIndex + 1) {
-      var preloadNext = new Image();
+      let preloadNext = new Image();
       preloadNext.src = this.album[this.currentImageIndex + 1].link;
     }
     if (this.currentImageIndex > 0) {
-      var preloadPrev = new Image();
+      let preloadPrev = new Image();
       preloadPrev.src = this.album[this.currentImageIndex - 1].link;
     }
   };
@@ -531,11 +531,11 @@
   };
 
   Lightbox.prototype.keyboardAction = function(event) {
-    var KEYCODE_ESC        = 27;
-    var KEYCODE_LEFTARROW  = 37;
-    var KEYCODE_RIGHTARROW = 39;
+    let KEYCODE_ESC        = 27;
+    let KEYCODE_LEFTARROW  = 37;
+    let KEYCODE_RIGHTARROW = 39;
 
-    var keycode = event.keyCode;
+    let keycode = event.keyCode;
     if (keycode === KEYCODE_ESC) {
       // Prevent bubbling so as to not affect other components on the page.
       event.stopPropagation();
