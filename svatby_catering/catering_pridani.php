@@ -58,7 +58,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Aktualizace názvu obrázku v databázi
         $sql_update_obrazek = "UPDATE catering SET obrazek = ? WHERE id = ?";
         $stmt = mysqli_prepare($dbSpojeni, $sql_update_obrazek);
-
+        define('ERROR_MESSAGE', "Chyba při přípravě dotazu.");
+        
         if ($stmt) {
             // Náhodný název obrázku
             $novy_nazev_obrazku = guidv4();
@@ -71,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
             mysqli_stmt_close($stmt);
         } else {
-            echo "Chyba při přípravě dotazu.";
+            echo ERROR_MESSAGE;
         }
 
         // Nový název obrázku
@@ -125,7 +126,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
                 mysqli_stmt_close($stmt);
             } else {
-                echo "Chyba při přípravě dotazu.";
+                echo ERROR_MESSAGE;
             }
         } elseif ($atribut == "obrazek") {
             // Nahrání nového obrázku
@@ -148,7 +149,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     }
                     mysqli_stmt_close($stmt);
                 } else {
-                    echo "Chyba při přípravě dotazu.";
+                    echo ERROR_MESSAGE;
                 }
             } else {
                 echo "Nahrání nového obrázku selhalo.";
@@ -167,7 +168,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
                 mysqli_stmt_close($stmt);
             } else {
-                echo "Chyba při přípravě dotazu.";
+                echo ERROR_MESSAGE;
             }
         }
         // Přesměrování na stejnou stránku po zpracování formuláře
@@ -238,17 +239,18 @@ header("Location: " . $redirect_url);
             }
 
             $result_result_cateringsvatby = mysqli_query($dbSpojeni, $sql_select_catering);
-
+            define('FORM_START', "<td><form method='post'><input type='hidden' name='id_jidla' value='");
+            define('FORM_END', "<input type='submit' value='Uložit'></form></td>");
             if (mysqli_num_rows($result_catering) > 0) {
                 while ($row = mysqli_fetch_assoc($result_catering)) {
 
                     echo "<tr>";
                     echo "<td>" . $row['id'] . "</td>";
-                    echo "<td><form method='post'><input type='hidden' name='id' value='".htmlspecialchars($row['id'])."'><input type='hidden' name='atribut' value='nazev'><input type='text' name='nova_hodnota' value='" . htmlspecialchars($row['nazev']) . "'><input type='submit' value='Uložit'></form></td>";
-                    echo "<td><form method='post'><input type='hidden' name='id' value='".htmlspecialchars($row['id'])."'><input type='hidden' name='atribut' value='cena'><input type='number' name='nova_hodnota' value='" . htmlspecialchars($row['cena'] ). "'><input type='submit' value='Uložit'></form></td>";
-                    echo "<td><form method='post'><input type='hidden' name='id' value='".htmlspecialchars($row['id'])."'><input type='hidden' name='atribut' value='popis'><input type='text' name='nova_hodnota' value='" . htmlspecialchars($row['popis']) . "'><input type='submit' value='Uložit'></form></td>";
+                    echo FORM_START.htmlspecialchars($row['id'])."'><input type='hidden' name='atribut' value='nazev'><input type='text' name='nova_hodnota' value='" . htmlspecialchars($row['nazev']) . "'>" . FORM_END;
+                    echo FORM_START.htmlspecialchars($row['id'])."'><input type='hidden' name='atribut' value='cena'><input type='number' name='nova_hodnota' value='" . htmlspecialchars($row['cena'] ). "'>" . FORM_END;
+                    echo FORM_START.htmlspecialchars($row['id'])."'><input type='hidden' name='atribut' value='popis'><input type='text' name='nova_hodnota' value='" . htmlspecialchars($row['popis']) . "'>" . FORM_END;
                     echo "<td><form method='post' enctype='multipart/form-data'><input type='hidden' name='id' value='".htmlspecialchars($row['id'])."'><input type='hidden' name='atribut' value='obrazek'><input type='file' name='obrazek' accept='image/*'><input type='submit' value='Nahrát nový obrázek'></form><img src='" . $obrazky_adresar . htmlspecialchars(basename($row['obrazek'])) . "' alt='" . htmlspecialchars($row['nazev']) . "' style='width:100px;height:100px;'></td>";
-                    echo "<td><form method='post'><input type='hidden' name='id' value='".htmlspecialchars($row['id'])."'><input type='hidden' name='atribut' value='delete'><input type='submit' value='Odstranit'></form></td>";
+                    echo FORM_START.htmlspecialchars($row['id'])."'><input type='hidden' name='atribut' value='delete'><input type='submit' value='Odstranit'></form></td>";
                     echo "</tr>";
                 }
             } else {
