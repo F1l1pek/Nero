@@ -16,7 +16,7 @@ if ($vysledek) {
 
 <link rel="stylesheet" href="style.css">
 
-<?php include('header.html');?>
+<?php include 'header.html'; ?>
 
     <main>
         <div class="main">

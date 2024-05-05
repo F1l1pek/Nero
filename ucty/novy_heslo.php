@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <link rel="stylesheet" type="text/css" href="loginy.css"> <!-- Odkaz na loginy.css -->
 
-<?php include '../header.html'; ?> <!-- Připojení souboru footer.html -->
+<?php include_once '../header.html'; ?> <!-- Připojení souboru footer.html -->
 
 
     <div id="content" class="bublina"> <!-- Přidání třídy bublina pro formátování -->
