@@ -11,7 +11,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'];
     $dat_nar = $_POST['dat_nar'];
     $tel_cislo = !empty($_POST['tel_cislo']) ? $_POST['tel_cislo'] : null;
-    
+    $typ_uzivatele = 'standart'; // Nastavení výchozího typu uživatele
+
     // Použití předpřipraveného dotazu pro zamezení SQL Injection
     $stmt = $dbSpojeni->prepare("SELECT * FROM user WHERE email = ?");
     $stmt->bind_param("s", $email);

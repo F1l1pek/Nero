@@ -6,8 +6,8 @@ $dbSpojeni = mysqli_connect("localhost", "root", null, "nero");
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Ověření a přihlášení uživatele
     $email = isset($_POST['email']) ? $_POST['email'] : null;
-    $password = isset($_POST['password']) ? $_POST['password'] : null;
-    
+    $password = isset($_POST['heslo']) ? $_POST['heslo'] : null; // Oprava zde
+
     // Zkontrolovat, zda jsou email a heslo neprázdné
     if ($email && $password) {
         // Použití předpřipraveného dotazu pro zamezení SQL Injection
@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Získání řádku s uživatelem
             $user = $result->fetch_assoc();
             // Porovnání hesla s uloženým heslem v databázi
-            if (password_verify($password, $user['password'])) {
+            if (password_verify($password, $user['heslo'])) { // Oprava zde
                 // Přihlášení uživatele, např. nastavení session nebo cookie
                 $_SESSION['email'] = $email; // Přihlašovací údaje po registraci
                 header("Location: profil.php");
@@ -39,12 +39,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Přihlášení</title>
     <link rel="stylesheet" type="text/css" href="loginy.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+</head>
 <?php include '../header.html'; ?> <!-- Připojení souboru header.html -->
-
+<body>
     <div id="content">
         <div class="bublina"> <!-- Přidána třída bublina -->
             <div class="form-ohraniceni"> <!-- Přidána třída form-ohraniceni -->
@@ -58,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <label for="email">Email:</label>
                     <input type="email" id="email" name="email" required><br><br>
                     <label for="password">Heslo:</label>
-                    <input type="password" id="password" name="password" required><br><br>
+                    <input type="password" id="password" name="heslo" required><br><br> <!-- Oprava zde -->
                     <input type="submit" value="Přihlásit">
                 </form>
                 <p>Nemáte ještě účet? <a href="registrace.php">Zaregistrovat se</a></p>
