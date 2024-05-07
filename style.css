@@ -1,97 +1,101 @@
 h1{
-    text-align: center;
-    font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 p{
-    text-align: center;
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-.obrazky{
-    display: flex;
-    justify-content: center;
-}
-
-/* Základní styl pro obrázek */
-.obrazek-container {
-    position: relative;
-    display: inline-block;
-    width: calc(33.30%-20px);
-    margin: 0 3%;
-    background-color: whitesmoke;
-  }
-
-  .obrazek-container img{
-    width: calc(33.30%-20px);
-    height: 400px;
-    /*width: 500px;*/
-  }
-
-
-  .info{
-    background-color: yellow;
-    padding: 10px 0;
-    margin: 20px auto 20px;
-    width: 50%;
-    text-align: center;
-  }
-
-  .obrazek-container h2{
-    text-align: center;
-  }
-
-  body {
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    background-color: rgb(151, 150, 150);
-}
-.header {
-    text-align: center;
-    padding: 50px;
-    background-color: #f8f9fa;
-}
-.content-container {
-    display: flex;
-    justify-content: space-between; /* Rozdělení na dva díly */
-    align-items: center;
-    margin: 50px;
-    text-align: center;
-}
-.content-text {
-    flex: 1; /* Roztažení obsahu na zbylou šířku */
-}
-.content img {
-    max-width: 50%; /* Maximální šířka obrázku */
-    margin-right: 20px;
-}
-
-  /* Styl pro odkaz */
-  .odkaz {
-    text-decoration: none; /* Odstraní podtržení odkazu */
-    color: inherit; /* Převezme barvu textu */
-  }
-
-  .thumbnail {
-    max-width: 300px; /* Adjust as needed */
-    max-height: 300px; /* Adjust as needed */
-    width: auto;
-    height: auto;
-    margin: 10px;
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .prvni{
-  background-color: rgb(182, 175, 175);
-  padding-bottom: 20px;
-  }
+background-color: #f9ede0;
+padding-bottom: 20px;
+width: 100%;
+display: flex;
+justify-content: center;
+height: 60vh;
+}
 
-  .druhy{
-    background-color: rgb(151, 150, 150);
-    padding-bottom: 20px;
-    }
-    .treti{
-      background-color: rgb(182, 175, 175);
-      padding-bottom: 20px;
-      }
+.obrazek-container {
+  width: calc(30% - 50px); /* Šířka třetiny s mezerou mezi jednotlivými obrázky */
+  margin: 0 30px; /* Mezera mezi jednotlivými obrázky */
+  background-color: #faf9f7;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 5px; /* Zmenšení mezery na dolní části */
+  flex: 1; /* Roztáhnout na výšku dostupného místa */
+  overflow: hidden; /* Skrýt případné přetečení obsahu */
+}
+
+.obrazek-container img {
+  max-width: 100%; /* Maximální šířka obrázku je 100% šířky kontejneru */
+  height: 50%; /* Pevná výška pro zachování stejné výšky */
+  object-fit: cover; /* Zachová poměr stran a vyplní celý kontejner */
+}
+
+.obrazek-container h2{
+padding-top: 20px;
+}
+
+.odkaz{
+  background-color: #efdd8d;
+  border-radius: 15px;
+  padding: 10px 5px;
+  margin: 20px auto 10px;
+  width: 50%;
+
+  text-align: center;
+  margin-bottom: auto;
+}
+
+.obrazek-container h2{
+  text-align: center;
+  margin-top: 0;
+}
+
+.druhy{
+background-color: #faf9f7;
+height: 60vh;
+display: flex;
+justify-content: space-between; /* Rozdělení na dva díly */
+align-items: center;
+text-align: center;
+overflow: hidden;
+}
+
+.druhy img{
+  border-radius: 50% 0 0 50%;
+  width: 50%;
+}
+
+.text{
+padding: 0 5%;
+}
+
+.treti{
+background-color: #f9ede0;
+padding-bottom: 20px;
+}
+
+body {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f9ede0;
+}
+
+/* Styl pro odkaz */
+.odkaz {
+  text-decoration: none; /* Odstraní podtržení odkazu */
+  color: inherit; /* Převezme barvu textu */
+}
+
+.thumbnail {
+  max-width: 300px; /* Adjust as needed */
+  max-height: 300px; /* Adjust as needed */
+  width: auto;
+  height: auto;
+  margin: 10px;
+}
