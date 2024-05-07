@@ -1,83 +1,97 @@
-/* Resetování výchozích stylů */
-body, p, footer, header {
-    margin: 0;
-    padding: 0;
+h1{
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Základní styl pro body */
-body {
+p{
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.obrazky{
+    display: flex;
+    justify-content: center;
+}
+
+/* Základní styl pro obrázek */
+.obrazek-container {
+    position: relative;
+    display: inline-block;
+    width: calc(33.30%-20px);
+    margin: 0 3%;
+    background-color: whitesmoke;
+  }
+
+  .obrazek-container img{
+    width: calc(33.30%-20px);
+    height: 400px;
+    /*width: 500px;*/
+  }
+
+
+  .info{
+    background-color: yellow;
+    padding: 10px 0;
+    margin: 20px auto 20px;
+    width: 50%;
+    text-align: center;
+  }
+
+  .obrazek-container h2{
+    text-align: center;
+  }
+
+  body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
     font-family: Arial, sans-serif;
-    background-color: rgb(202, 202, 194); /* Nový background color */
-    margin: 0;
-    padding: 0;
+    background-color: rgb(151, 150, 150);
+}
+.header {
+    text-align: center;
+    padding: 50px;
+    background-color: #f8f9fa;
+}
+.content-container {
+    display: flex;
+    justify-content: space-between; /* Rozdělení na dva díly */
+    align-items: center;
+    margin: 50px;
+    text-align: center;
+}
+.content-text {
+    flex: 1; /* Roztažení obsahu na zbylou šířku */
+}
+.content img {
+    max-width: 50%; /* Maximální šířka obrázku */
+    margin-right: 20px;
 }
 
-/* Styl pro hlavní obsah */
-.main {
-    max-width: 1000px;
-    margin: 20px auto;
-    padding: 0 20px;
-    background-color: lemonchiffon;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  /* Styl pro odkaz */
+  .odkaz {
+    text-decoration: none; /* Odstraní podtržení odkazu */
+    color: inherit; /* Převezme barvu textu */
+  }
+
+  .thumbnail {
+    max-width: 300px; /* Adjust as needed */
+    max-height: 300px; /* Adjust as needed */
+    width: auto;
+    height: auto;
+    margin: 10px;
 }
 
-/* Styl pro bublinu nadpisu a filtru */
-.nadpis-bublina {
-    background-color: grey;
-    color: white;
-    padding: 20px;
-    border-radius: 20px;
-    border: inset 5px black;
-    display: inline-block; /* Zajistí, že bublina bude mít minimální šířku podle obsahu */
-    margin-bottom: 20px; /* Přidáme mezery pod bublinou pro lepší oddělení od dalšího obsahu */
-    width: calc(100% - 40px); /* Šířka bubliny */
-    text-align: center; /* Zarovnání textu na střed */
-}
+.prvni{
+  background-color: rgb(182, 175, 175);
+  padding-bottom: 20px;
+  }
 
-/* Styl pro bublinu Galerie */
-.galerie-bublina {
-    background-color: grey;
-    color: white;
-    padding: 20px;
-    border-radius: 20px;
-    border: inset 5px black;
-    text-align: center; /* Zarovnání textu na střed */
-    margin: 0 auto 20px auto; /* Mezery kolem bubliny */
-    max-width: 1000px; /* Omezení maximální šířky bubliny galerie na 1000px */
-}
-/* Styl pro bublinu obrázků */
-.obr {
-    text-align: center; /* Vycentruje obsah bubliny na střed */
-}
-
-/* Styl pro obrázky */
-.obrazek-bublina {
-    display: inline-block; /* Zabraňuje přerušení zarovnání na střed */
-    margin: 0 auto; /* Automatické vycentrování obrázků */
-    padding: 10px;
-    border: inset 10px black;
-    border-radius: 20px; /* Zakulacení rohů */
-    box-sizing: border-box; /* Zahrne border do celkové šířky */
-    background-color: grey;
-    color: white;
-    overflow: hidden;
-    text-align: center; /* Zarovnání obsahu na střed */
-    margin-bottom: 20px; /* Mezery mezi jednotlivými obrázky */
-    max-width: 1000px; /* Omezení šířky obrázku na 1000px */
-}
-
-/* Přidáme nový styl pro obrázky v galerii */
-.obrazek-bublina img {
-    max-width: 100%; /* Maximální šířka obrázku */
-    height: auto; /* Automatická výška obrázku pro zachování poměru stran */
-    object-fit: contain; /* Zajistí, že obrázek bude zaplněn a zachová poměr stran */
-}
-
-
-/* Responsivní design */
-@media screen and (max-width: 768px) {
-    .main {
-        padding: 0 10px;
+  .druhy{
+    background-color: rgb(151, 150, 150);
+    padding-bottom: 20px;
     }
-}
+    .treti{
+      background-color: rgb(182, 175, 175);
+      padding-bottom: 20px;
+      }
