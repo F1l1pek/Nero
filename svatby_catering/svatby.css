@@ -2,156 +2,181 @@ body, html {
     margin: 0;
     padding: 0;
     height: 100vh;
-    color: black;
+    color: white;
 }
 
-body {
-    background-color: rgb(247, 247, 208);
+body{
+    background-color: #F9EDE0;
 }
 
-.produkty {
+.produkty{
+    margin-top: 30px;
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    margin-top: -50px;
+    justify-content: center; /* Rozložení produktů rovnoměrně mezi okraji kontejneru */
     text-align: center;
-    background-color: rgb(247, 247, 208);
+    background-color: #F9EDE0;
+    
 }
 
-.prod {
-    display: flex;
-    align-items: center;
-    width: 80%;
-    flex-direction: column;
-    margin-bottom: 20px;
-}
+
 
 .produkt {
-    width: 100%;
-    margin-bottom: 20px;
-    padding: 10px;
-    box-sizing: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.126);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.304);
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: rgb(202, 202, 194);
+    background-color: #FAF9F7;
     color: black;
-    overflow: hidden;
-    border-radius: 20px; /* Zaoblení rohů */
-    border: 2px solid transparent; /* Ohraničení */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Přidáme jemný stín */
-    transition: box-shadow 0.3s ease; /* Plynulý přechod */
-}
-
-.produkt:hover {
-    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Zvětšíme stín při najetí myší */
-    transform: translateY(-2px); /* Přidáme jemný posun nahoru */
-}
-
-.bublina {
-    width: 100%;
-    margin-bottom: 20px;
-    padding: 10px;
-    border: 2px solid black; /* Přidáme černé ohraničení pro bublinu */
-    border-radius: 20px;
+    padding: 0;
     box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: rgb(202, 202, 194);
-    color: black;
     overflow: hidden;
-    position: relative; /* Přidáme relativní pozici */
+    position: relative;
+    width: 60%;
+    margin-top: 20px;
 }
 
-.produkt h2 {
-    margin-top: 0;
-    margin-bottom: 10px;
-    font-size: 30px; /* Zvětšíme velikost písma pro nadpis */
-}
-
-.info {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    width: 100%;
-    align-items: center;
-}
-
-.img-column {
-    flex: 1;
-    margin-right: 1%; /* Přidáme odstup mezi sloupečkem pro obrázek a popis */
-}
-
-.img-column img {
-    width: 100%;
-    max-height: 200px;
+.obr {
+    width: 50%;
+    height: auto; /* Výška bude automaticky přizpůsobena */
+    max-height: 300px; /* Maximální výška obrázku */
     object-fit: cover;
-    border-radius: 10px;
+    margin: 0; /* Odebrání margin */
+    position: relative;
 }
 
-.text-column {
-    flex: 2;
+.obr img {
+    width: 100%; /* Obrázek zaujme 100% šířky svého rodiče */
+    height: 100%; /* Výška bude automaticky přizpůsobena */
+}
+
+
+.obr::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%; /* Šířka gradientu */
+    height: 100%;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, #FAF9F7 100%);
+    z-index: 1; /* Gradient bude nad obsahem */
+}
+.info {
+    width: 50%;
+    padding: 20px;
+    box-sizing: border-box;
+    position: relative;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
 }
 
-.text-column p {
-    font-size: 20px; /* Zvětšíme velikost písma pro popis */
+.cena {
+    margin-left: auto; /* Posune cenu úplně vpravo */
 }
 
-.price-column {
-    flex: 1;
+.title {
+    width: 80%; /* Pevná šířka pro .title */
     display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.price-column p {
-    font-size: 20px; /* Zvětšíme velikost písma pro cenu */
-}
-
-.footer-columns {
-    display: flex;
-    flex-wrap: wrap;
     justify-content: space-between;
+    align-items: center;
+    overflow: hidden; /* Skryje přebytečný obsah */
 }
 
-.info p {
-    margin: 0;
+.spacer {
+    margin-right: 20%; /* Velká mezera mezi nadpisem a cenou relativně k šířce .info */
 }
 
-.text {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Změníme typografii */
+.info h2 {
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+
+.text p {
+    color: white;
+}
+.text{
+    position: relative; /* Text bude nad pseudo-elementem */
+    z-index: 2;
+    height: 100%;
+    margin-top: 50px;
+    padding: 10px;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
     font-size: 20px;
+    color: white;
+    opacity: 100%;
+}
+.prod {
+    display: flex;
+    flex-grow: 1; /* Roztáhne se na celou dostupnou výšku */
+    align-items: center;
+    width: 100%;
+    flex-direction: column;
+    margin-bottom: 60px;
+    margin-top: -12px;
+}
+.bublina{
+    width: 100%;
+    left: 0;
+    right: 0;
+    align-self: top;
+    margin-bottom: 50px;
+    border: 1px solid #ccc;
+    box-sizing: border-box; /* Zahrne border do celkové šířky */
+    display: flex;
+    flex-direction: column; /* Sloupcové uspořádání */
+    align-items: center; /* Zarovnání obsahu na střed */
+    
+    position: relative; /* Přizpůsobíme pozici relativní, aby bylo možné umístit barvu pozadí nad obrázek */
+    background-image: url('../obrazky_galerie/received_762684207419536.jpg');
+    
+    background-size: 100% 100%;
+    background-repeat: no-repeat; /* Zabraňuje opakování pozadí */
+    background-position: right center; /* Zarovná obrázek vpravo nahoře */
+    overflow: hidden;
+    height: 40%;
+}
+.bublina::after {
+    content: ''; /* Přidáme pseudo-element ::after pro vytvoření další vrstvy */
+    position: absolute; /* Přizpůsobíme pozici absolutní */
+    width: 100%;
+    height: 100%;
+    background-color: #2f2e2ea9; /* Barva pozadí s průhledností 50% (červená pro příklad) */
+    z-index: 1; /* Pseudo-element bude nad ostatním obsahem */
+    
 }
 
+/* Část CSS kódu pro vytvoření seznamu pomocí teček */
 .footer-column ul {
     list-style: disc;
-    padding-left: 0px;
+    padding-left: 0px; /* Resetování výchozího paddingu */
 }
 
 .footer-column ul li {
-    padding-left: 15px;
+    padding-left: 15px; /* Nastavení vlastního paddingu pro seznam */
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 100%;
     margin: 0 auto;
     padding: 0 20px;
 }
 
+/* Přidání větší mezery mezi sloupci Kontakt a Otevírací doba */
 .footer-column:nth-child(2) {
-    margin-right: 40px;
+    margin-right: 40px; /* Zvětšení mezery mezi sloupci */
 }
 
-.text h2 {
+.text h2{
     font-size: 30px;
+    color: white;
 }
-
+/*--------Footer----------*/
 footer {
-    background-color: #504e4e !important;
+    background-color: #504e4e !important; 
     color: #fff;
     text-align: center;
     padding: 20px 0;
@@ -161,6 +186,7 @@ footer {
     margin-top: 20px;
     margin-bottom: 0px;
     font-family: Arial, Helvetica, sans-serif;
+
 }
 
 footer .container {
@@ -175,7 +201,7 @@ footer .container {
 
 .footer-column {
     flex: 1;
-    margin: 0 40px;
+    margin: 0 40px; 
     text-align: left;
 }
 
@@ -187,13 +213,7 @@ a {
     text-decoration: none;
 }
 
-ul li {
+ul li{
     list-style-type: none;
 }
 
-/* Responsivita */
-@media (max-width: 768px) {
-    .prod {
-        width: 90%; /* Přizpůsobíme šířku produktů pro menší obrazovky */
-    }
-}

@@ -8,60 +8,54 @@ $sql = "SELECT * FROM svatby";
 $vysledek = mysqli_query($dbSpojeni, $sql);
 $svatby = mysqli_fetch_all($vysledek, MYSQLI_ASSOC);
 ?>
-
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Svatby</title>
     <link rel="stylesheet" href="svatby.css">
+</head>
 
-
-    <?php include '../header.html'; ?>
-
-    <div class="produkty">
-        <div class="prod">
+<?php include('../header.html');?>
+<body>
+<div class="prod">
             <div class="bublina">
                 <div class="text">
                     <h2>Informace o našich svatbách</h2>
-                        <p>Naše specializovaná služba dodání jídla a dekorativních prvků pro svatby vám přináší nejen lahodné chuťové zážitky, 
-                            ale také vizuální krásu, která dodá vaší svatbě jedinečný šarm. Nabízíme široký výběr menu od tradičních po moderní a exotické pokrmy, 
-                            které splní vaše kulinařské představy. Naše dekorativní prvky jsou pečlivě vybrány tak, aby dokonale ladily s vaším tématem a stylizací svatebního dne. 
-                            Od květinových aranžmá po stoleční dekorace a svícny, každý detail je promyšlen s láskou a péčí. S naší spolehlivou službou můžete své hosty ohromit nejen skvělým jídlem, 
-                            ale i pohádkovou atmosférou, která zůstane v jejich paměti navždy. <br>
-                            Naše specializovaná služba dodání jídla a dekorativních prvků pro svatby vám přináší nejen lahodné chuťové zážitky, 
-                            ale také vizuální krásu, která dodá vaší svatbě jedinečný šarm. Nabízíme široký výběr menu od tradičních po moderní a exotické pokrmy, 
-                            které splní vaše kulinařské představy. Naše dekorativní prvky jsou pečlivě vybrány tak, aby dokonale ladily s vaším tématem a stylizací svatebního dne. 
-                            Od květinových aranžmá po stoleční dekorace a svícny, každý detail je promyšlen s láskou a péčí. S naší spolehlivou službou můžete své hosty ohromit nejen skvělým jídlem, 
-                            ale i pohádkovou atmosférou, která zůstane v jejich paměti navždy.<br>
+                        <p>
                             Naše specializovaná služba dodání jídla a dekorativních prvků pro svatby vám přináší nejen lahodné chuťové zážitky, 
                             ale také vizuální krásu, která dodá vaší svatbě jedinečný šarm. Nabízíme široký výběr menu od tradičních po moderní a exotické pokrmy, 
                             které splní vaše kulinařské představy. Naše dekorativní prvky jsou pečlivě vybrány tak, aby dokonale ladily s vaším tématem a stylizací svatebního dne. 
                             Od květinových aranžmá po stoleční dekorace a svícny, každý detail je promyšlen s láskou a péčí. S naší spolehlivou službou můžete své hosty ohromit nejen skvělým jídlem, 
                             ale i pohádkovou atmosférou, která zůstane v jejich paměti navždy.</p>
-                        <p>V případě zájmu nás kontaktujte zde: nero@gmail.com</p>
-                </div>   
-            </div>
-        </div>
-    </div>
-    
-    <div class="produkty">
-    <?php foreach ($svatby as $svatba): ?>
-        <div class="prod">
-            <div class="produkt">
-                <h2><?php echo $svatba['nazev']; ?></h2>
-                <div class="info">
-                    <?php if (!empty($svatba['obrazek'])): ?>
-                        <div class="img-column">
-                            <img src="<?php echo $obrazky_adresar . $svatba['obrazek']; ?>" alt="<?php echo $svatba['nazev']; ?>">
-                        </div>
-                    <?php endif; ?>
-                    <div class="text-column">
-                        <p><?php echo $svatba['popis']; ?></p>
-                    </div>
-                    <div class="price-column">
-                        <p><strong>Cena:</strong> <?php echo $svatba['cena']; ?> Kč</p>
-                    </div>
+                        <p>V případě zájmu nás kontaktujte zde: <strong>nero@gmail.com</strong></p>
+                      
                 </div>
             </div>
         </div>
-    <?php endforeach; ?>
+    
+        <div class="produkty">
+    <?php foreach ($svatby as $svatba): ?>
+        <div class="produkt">
+            <?php if (!empty($svatba['obrazek'])): ?>
+                <div class="obr"> <img src="<?php echo $obrazky_adresar . htmlspecialchars($svatba['obrazek']); ?>" alt="<?php echo htmlspecialchars($svatba['nazev']); ?>"></div>
+               
+            <?php else: ?>
+                <p>Obrázek není k dispozici</p>
+            <?php endif; ?>
+            <div class="info">
+    <div class="title">
+        <h2><?php echo $svatba['nazev']; ?></h2>
+        <div class="spacer"></div>
+        <h2><strong class="cena">Cena:</strong> <?php echo htmlspecialchars($svatba['cena']); ?> Kč</h2>
+    </div>
+    <p><strong>Popis:</strong> <?php echo htmlspecialchars($svatba['popis']); ?></p>
 </div>
+        </div>
+                <?php endforeach; ?>
+                </div>
+                </div>
     <footer>
         <div class="container">
             <div class="footer-columns">
