@@ -17,7 +17,7 @@ $cateringy = mysqli_fetch_all($vysledek, MYSQLI_ASSOC);
     <link rel="stylesheet" href="svatby.css">
 </head>
 
-<?php include('../header.html');?>
+<?php include_once('../header.html');?>
 <body>
 
         <div class="prod">

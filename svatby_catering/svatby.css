@@ -10,10 +10,9 @@ body{
 }
 
 .produkty{
-    margin-top: 30px;
+    margin-top: -30px;
     display: flex;
     flex-wrap: wrap;
-    margin-top: -50px;
     justify-content: center; /* Rozložení produktů rovnoměrně mezi okraji kontejneru */
     text-align: center;
     background-color: #F9EDE0;
