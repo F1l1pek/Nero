@@ -30,7 +30,7 @@ $encoded->save('zkomprimovane_obr/jidla.jpeg');*/
     <title>Domovská stránka</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="lightbox.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl5/2+lbP/x+5l6Om8vH49YL6ifbJd2yl" crossorigin="anonymous"></script>
     <script src="lightbox.js"></script>
 </head>
 <?php include_once ('header.html');?>
