@@ -105,7 +105,7 @@ $encoded->save('zkomprimovane_obr/jidla.jpeg');*/
         ?>
     </div>
 </body>
-<?php include 'footer.html'; ?>
+<?php include_once 'footer.html'; ?>
 </html>
 
 <script>
