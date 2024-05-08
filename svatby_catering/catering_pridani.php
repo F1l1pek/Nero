@@ -223,7 +223,7 @@ header("Location: " . $redirect_url);
         <tbody>
             <!-- PHP kód pro zobrazení svateb -->
             <?php
-            $result_catering = "SELECT * FROM catering";
+            $sql_select_catering = "SELECT * FROM catering";
 
             // Přidání řazení podle zvoleného sloupce, pokud je to žádoucí
             if(isset($_GET['order'])){
