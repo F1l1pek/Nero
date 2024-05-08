@@ -102,3 +102,12 @@ body {
   height: auto;
   margin: 10px;
 }
+
+.info {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.info:hover {
+  opacity: 0.7;
+}

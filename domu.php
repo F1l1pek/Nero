@@ -100,18 +100,4 @@ $manager = new ImageManager(new Driver());
 <?php include 'footer.html'; ?>
 </html>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-  var navbarItems = document.querySelectorAll('.info');
 
-  navbarItems.forEach(function(navbarItem) {
-    navbarItem.addEventListener("mouseenter", function() {
-      navbarItem.style.opacity = "0.7";
-    });
-
-    navbarItem.addEventListener("mouseleave", function() {
-      navbarItem.style.opacity = "1";
-    });
-  });
-});
-</script>
