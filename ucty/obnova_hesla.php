@@ -47,22 +47,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-
-    <link rel="stylesheet" type="text/css" href="loginy.css">
-
-    <div id="content" class="bublina"> <!-- Přidána třída bublina -->
-        <h2>Obnova hesla</h2>
-        <?php
-        if (isset($error)) {
-            echo "<p class='error'>$error</p>";
-        }
-        ?>
-        <form action="obnova_hesla.php" method="post">
-            <label for="email">Zadejte svůj e-mail:</label>
-            <input type="email" id="email" name="email" required><br><br>
-            <input type="submit" value="Odeslat odkaz pro obnovu hesla">
-        </form>
-        <a href="profil.php" class="button">Zpět na profil</a>
-    </div>
-</body>
-</html>
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="loginy.css">
+        <title>Document</title>
+    </head>
+    <body>
+        <div id="content" class="bublina"> <!-- Přidána třída bublina -->
+            <h2>Obnova hesla</h2>
+            <?php
+            if (isset($error)) {
+                echo "<p class='error'>$error</p>";
+            }
+            ?>
+            <form action="obnova_hesla.php" method="post">
+                <label for="email">Zadejte svůj e-mail:</label>
+                <input type="email" id="email" name="email" required><br><br>
+                <input type="submit" value="Odeslat odkaz pro obnovu hesla">
+            </form>
+            <a href="profil.php" class="button">Zpět na profil</a>
+        </div>
+    </body>
+    </html>

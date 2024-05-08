@@ -51,6 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
     <link rel="stylesheet" type="text/css" href="loginy.css">
+    <link rel="stylesheet" href="../header.css">
 
 <?php include '../header.html'; ?> <!-- Připojení souboru header.html -->
 

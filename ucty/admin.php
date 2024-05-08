@@ -33,7 +33,8 @@ if ($typ_uzivatele !== 'admin') {
 ?>
 
     <link rel="stylesheet" href="admin.css"> <!-- Odkaz na základní CSS soubor -->
-
+    <link rel="stylesheet" href="../header.css">
+    
 <?php include '../header.html'; ?> <!-- Připojení souboru header.html -->
 
     <div id="content"> <!-- Přidáváme třídu 'bublina' a id 'content' -->

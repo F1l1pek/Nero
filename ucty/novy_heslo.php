@@ -43,6 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
     <link rel="stylesheet" type="text/css" href="loginy.css"> <!-- Odkaz na loginy.css -->
+    <link rel="stylesheet" href="../header.css">
 
 <?php include_once '../header.html'; ?> <!-- Připojení souboru footer.html -->
 

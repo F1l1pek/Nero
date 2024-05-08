@@ -14,3 +14,7 @@ $svatby = mysqli_fetch_all($vysledek, MYSQLI_ASSOC);
 include_once ('../header.html');
 ?>
 
+<link rel="stylesheet" href="../header.css">
+    
+</body>
+</html>
