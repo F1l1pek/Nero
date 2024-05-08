@@ -99,7 +99,7 @@ function provedObjednavku($ID_U, $typ_uzivatele) {
 }
 ?>
 
-
+    <link rel="stylesheet" href="../header.css">
     <link href="kosik_st.css" rel="stylesheet" type="text/css">
     <title>Košík</title>
     <style>

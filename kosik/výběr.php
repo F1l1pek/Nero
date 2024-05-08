@@ -64,11 +64,6 @@ if (isset($_POST['resetCart'])) {
 
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Výběr jídel</title>
     <style>
         img {
@@ -76,8 +71,9 @@ if (isset($_POST['resetCart'])) {
             height: auto; /* Zachování poměru stran */
         }
     </style>
-</head>
-<body>
+    <link rel="stylesheet" href="../header.css">
+    <link rel="stylesheet" href="zobrazeni_vyb.css">
+
     <?php
     include '../header.html';
     ?>
