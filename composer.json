@@ -1,0 +1,6 @@
+{
+    "require": {
+        "intervention/image": "^3.6",
+        "orbitale/imagemagick-php": "^3.3"
+    }
+}
