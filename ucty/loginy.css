@@ -7,53 +7,98 @@ main {
     display: flex; /* Flexbox layout pro vertikální vycentrování obsahu */
     align-items: center; /* Vertikální vycentrování obsahu */
 }
-
+h2 {
+    text-align: center;
+    height: 10px;
+    font-size: 300%;
+    margin-top: -20px;
+}
+.form{
+    margin-top: 50px;
+   
+}
 /* Styly pro bublinu */
 .bublina {
-    background-color: #f0f0f0; /* šedá výplň bubliny */
-    border-radius: 20px;
+    width: 80vh;
+    background-color: #FAF9F7; /* šedá výplň bubliny */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.448);
     padding: 20px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* lehký stín */
     margin: 20px auto; /* Horizontální vycentrování a omezení na střed */
     max-width: 600px; /* Maximální šířka bubliny */
+    align-self: center; 
 }
 
 /* Styly pro vnitřní ohraničení formuláře */
 .form-ohraniceni {
-    border: 2px solid #ccc; /* ohraničení formuláře */
+     /* ohraničení formuláře */
     padding: 20px; /* vnitřní odsazení */
-    background-color: #f5f5f5; /* světle šedý vnitřek */
+    background-color: #FAF9F7; /* světle šedý vnitřek */
     border-radius: 15px; /* zaoblené rohy */
     margin: 5px; /* Odsazení od okraje */
+    display: flex;
+    flex-direction: column;
+    
+     /* Zarovná input na střed v rámci flexboxu */
 }
 
 /* Styly pro prvky formuláře */
 input[type="email"],
 input[type="password"],
-input[type="submit"] {
-    width: calc(100% - 40px); /* Šířka obsahu minus dvojnásobná hodnota paddingu */
-    max-width: 300px; /* Pevná maximální šířka obsahu */
+input[type="tel"],
+input[type="text"] {
+    width: 150%; /* Šířka obsahu minus dvojnásobná hodnota paddingu */
+    max-width: 300px;
+    height: 30px; /* Pevná maximální šířka obsahu */
     padding: 10px;
-    margin-bottom: 15px;
+   
     border: 1px solid #ccc;
     border-radius: 5px;
+    align-self: center; /* Zarovná input na střed v rámci flexboxu */
+    box-sizing: border-box;
+}
+label {
+    display: block;
+    text-align: left;
+    margin-left: 25%;
+    /* Label bude zobrazen jako blokový element, což způsobí, že se zobrazí na novém řádku */
+}
+p{
+    margin: auto;
+  /* Vynutí, aby byl odstup mezi koncem obsahu a odkazem na přihlášení */
+}
+
+
+p a {
+    text-decoration: none; /* Zruší podtržení odkazu */
+    color: #0056b3; /* Barva textu odkazu */
+}
+
+p a:hover {
+    text-decoration: underline; /* Při najetí myší se podtrhne odkaz */
 }
 
 input[type="submit"] {
-    background-color: #007bff; /* barva tlačítka */
+    background-color: #EFDD8D; /* barva tlačítka */
     color: #fff; /* barva textu na tlačítku */
     cursor: pointer;
     margin: auto; /* Vycentrování tlačítka */
     display: block; /* Přeskočit na nový řádek, aby bylo vycentrováno */
+    width: 160px; /* Šířka obsahu minus dvojnásobná hodnota paddingu */
+    max-width: 300px;
+    height: 30px;
+    border-radius: 8px ;
+    border: #FAF9F7;
+    margin-top: 10px;
 }
 
 input[type="submit"]:hover {
-    background-color: #0056b3; /* barva tlačítka po najetí myší */
+    background-color: #eecc32; /* barva tlačítka po najetí myší */
 }
 
 body {
     overflow-y: hidden; /* Zakáže vertikální scrollování obsahu */
-    background-color: #ddcfb6; /* nová barva pozadí stránky */
+    background-color: #F9EDE0; /* nová barva pozadí stránky */
     text-align: center; /* Horizontální vycentrování obsahu */
     display: flex; /* Flexbox layout */
     align-items: center; /* Vertikální vycentrování obsahu */
@@ -64,4 +109,10 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
+}
+.obnova{/* Zarovná tlačítko doprava */
+    
+    font-size: 80%;
+    margin-left: 180px;
+     /* Odstup tlačítka od pole pro zadání hesla */
 }

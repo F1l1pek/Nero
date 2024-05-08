@@ -1,16 +1,15 @@
 <?php
 session_start();
 
-include_once '../db.php';
-$dbSpojeni = connectToDB();
+$dbSpojeni = mysqli_connect("localhost", "root", null, "nero");
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Ověření a uložení registračních údajů
     $jmeno = $_POST['jmeno'];
     $prijmeni = $_POST['prijmeni'];
     $email = isset($_POST['email']) ? $_POST['email'] : null; // Ověření existence proměnné
-    $password = $_POST['password'];
-    $dat_nar = $_POST['dat_nar'];
+    $password1 = $_POST['password1'];
+    $password2 = $_POST['password2'];
     $tel_cislo = !empty($_POST['tel_cislo']) ? $_POST['tel_cislo'] : null;
     $typ_uzivatele = 'standart'; // Nastavení výchozího typu uživatele
 
@@ -24,27 +23,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (mysqli_num_rows($existujiciUzivatel) > 0) {
         $error = "Uživatel s tímto emailem již existuje.";
     } else {
-        // Kontrola data narození
-        $today = date("Y-m-d"); // Získání aktuálního data
-        if ($dat_nar >= $today) {
-            $error = "Datum narození musí být v minulosti.";
-        } else {
+        if ($password1 === $password2) {
+            // Hesla se shodují
             // Šifrování hesla
-            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+           $hashedPassword = password_hash($password1, PASSWORD_DEFAULT);
 
             // Vložení nového uživatele do databáze
-            $sql = "INSERT INTO user (jmeno, prijmeni, email, heslo, dat_nar, tel_cislo, typ_uzivatele) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO user (jmeno, prijmeni, email, heslo, tel_cislo, typ_uzivatele) VALUES (?, ?, ?, ?, ?, ?)";
             $stmt = $dbSpojeni->prepare($sql);
-            $stmt->bind_param("sssssss", $jmeno, $prijmeni, $email, $hashedPassword, $dat_nar, $tel_cislo, $typ_uzivatele);
+            $stmt->bind_param("ssssss", $jmeno, $prijmeni, $email, $hashedPassword, $tel_cislo, $typ_uzivatele);
             $vysledek = $stmt->execute();
             if (!$vysledek) {
                 $error = mysqli_error($dbSpojeni);
             } else {
                 // Přihlášení uživatele po úspěšné registraci
                 $_SESSION['email'] = $email; // Přihlašovací údaje po registraci
-                header("Location: Profil.php");
+                header("Location: profil.php");
                 exit();
-            }
+            } 
+        } else {
+            $error = "Hesla se neshodují. Zadejte prosím stejná hesla do obou polí.";
         }
     }
 }
@@ -52,36 +50,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
     <link rel="stylesheet" type="text/css" href="loginy.css">
-    <link rel="stylesheet" href="../header.css">
 
-<?php include '../header.html'; ?> <!-- Připojení souboru header.html -->
+<?php include_once '../header.html'; ?> <!-- Připojení souboru header.html -->
 
-    <div id="content">
+    
         <div class="bublina"> <!-- Přidána třída bublina -->
             <div class="form-ohraniceni"> <!-- Přidána třída form-ohraniceni -->
-                <h2>Registrace</h2>
+                <h2>Zaregistrovat se</h2>
                 <?php
                 if (isset($error)) {
                     echo "<p class='error'>$error</p>";
                 }
                 ?>
-                <form action="registrace.php" method="post">
-                    <label for="jmeno">Jméno:</label>
+                <form action="registrace.php" method="post" class="form">
+                    <label for="jmeno">Jméno</label>
                     <input type="text" id="jmeno" name="jmeno" required><br><br>
-                    <label for="prijmeni">Příjmení:</label>
+                    <label for="prijmeni">Příjmení</label>
                     <input type="text" id="prijmeni" name="prijmeni" required><br><br>
-                    <label for="email">Email:</label>
+                    <label for="email">Email</label>
                     <input type="email" id="email" name="email" required><br><br>
-                    <label for="password">Heslo:</label>
-                    <input type="password" id="password" name="password" required><br><br>
-                    <label for="dat_nar">Datum narození:</label>
-                    <input type="date" id="dat_nar" name="dat_nar" max="<?php echo date('Y-m-d'); ?>" required><br><br>
-                    <label for="tel_cislo">Telefonní číslo:</label>
-                    <input type="tel" id="tel_cislo" name="tel_cislo" pattern="^\+?[1-9]\d{1,14}$" title="Zadejte platné mezinárodní telefonní číslo. Například: +420123456789" placeholder="+420123456789"><br><br>
-                    <input type="submit" value="Registrovat">
+                    <label for="tel_cislo">Telefonní číslo</label>
+                    <input type="tel" id="tel_cislo" name="tel_cislo"><br><br>
+                    <label for="password">Heslo</label>
+                    <input type="password" id="password1" name="password" required><br><br>
+                    <label for="password">Heslo znovu</label>
+                    <input type="password" id="password2" name="password" required><br><br>
+                    <input type="submit" value="Zaregistrovat se">
                 </form>
             </div>
+            <p>Máš už účet?<a href="prihlaseni.php">Přihlasit se</a></p>
         </div>
-    </div>
 </body>
 </html>

@@ -1,8 +1,7 @@
 <?php
 session_start();
 
-include_once '../db.php';
-$dbSpojeni = connectToDB();
+$dbSpojeni = mysqli_connect("localhost", "root", null, "nero");
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Ověření a přihlášení uživatele
@@ -40,34 +39,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-
+<!DOCTYPE html>
+<html>
+<head>
     <meta charset="UTF-8">
-    <title>Přihlášení</title>
+    <title>Přihlásit</title>
     <link rel="stylesheet" type="text/css" href="loginy.css">
-    <link rel="stylesheet" href="../header.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+</head>
 <?php include '../header.html'; ?> <!-- Připojení souboru header.html -->
-
+<body>
     <div id="content">
         <div class="bublina"> <!-- Přidána třída bublina -->
             <div class="form-ohraniceni"> <!-- Přidána třída form-ohraniceni -->
-                <h2>Přihlášení</h2>
+                <h2>Přihlásit se</h2>
                 <?php
                 if (isset($error)) {
                     echo "<p class='error'>$error</p>";
                 }
                 ?>
                 <form action="prihlaseni.php" method="post">
-                    <label for="email">Email:</label>
+                <br><br><label for="email">Email</label>
                     <input type="email" id="email" name="email" required><br><br>
-                    <label for="password">Heslo:</label>
-                    <input type="password" id="password" name="heslo" required><br><br> <!-- Oprava zde -->
+                    <label for="password">Heslo</label>
+                    <input type="password" id="password" name="heslo" required><br> <!-- Oprava zde -->
+                    <p><a href="obnova_hesla.php" class="obnova">Zapomněli jste heslo?</a></p><br><br><br>
                     <input type="submit" value="Přihlásit">
                 </form>
-                <p>Nemáte ještě účet? <a href="registrace.php">Zaregistrovat se</a></p>
-                <p>Zapomněli jste heslo? <a href="obnova_hesla.php" class="button">Zapomenuté heslo</a>
             </div>
+             <p>Nemáte ještě účet? <a href="registrace.php">Zaregistrovat se</a></p>
         </div>
     </div>
 </body>
