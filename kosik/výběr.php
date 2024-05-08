@@ -1,12 +1,8 @@
 <?php
 session_start();
-// Připojení k databázi
-$servername = "localhost";
-$username = "root";
-$password = null;
-$dbname = "nero";
 
-$conn = new mysqli($servername, $username, $password, $dbname);
+include_once '../db.php';
+$conn = connectToDB();
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
@@ -38,25 +34,19 @@ if (isset($_POST['typ_jidla']) && !empty($_POST['typ_jidla'])) {
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Výběr jídel</title>
+    <!-- Header -->
+<?php include_once '../header.html'; ?>
     <style>
         img {
-            max-width: 20px; 
-            height: auto; 
+            max-width: 20px;
+            height: auto;
         }
     </style>
-</head>
-<body>
-    <!-- Header -->
-    <?php include_once '../header.html'; ?>
+
+    <title>Výběr jídel</title>
 
     <!-- Filtr -->
-    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'); ?>" method="post" id="filtr">
+    <form method="post" id="filtr">
         <h2 style="text-align: center;">Filtr</h2> 
         <label for="typ_jidla">Vyberte typ jídla:</label>
         <select name="typ_jidla" id="typ_jidla">

@@ -1,11 +1,6 @@
 <?php
 session_start(); // Inicializace session
 
-// Připojení k databázi
-$server = "localhost";
-$username = "root";
-$password = null; // Pokud máte heslo, vyplňte ho
-$database = "nero";
 
 // Připojení k databázi
 include_once '../db.php';

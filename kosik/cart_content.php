@@ -11,4 +11,3 @@ if (isset($_SESSION['cart'])) {
 } else {
     echo "Košík je prázdný.";
 }
-?>

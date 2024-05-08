@@ -47,4 +47,3 @@ if(isset($_GET['id'])) {
 
 header("Location: výběr.php");
 exit();
-?>

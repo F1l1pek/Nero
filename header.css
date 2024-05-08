@@ -36,3 +36,7 @@ svg{
     padding-left: 50px;
     padding-right: -50px;
 }
+html, body {
+    height: 100%;
+    margin: 0;
+}
