@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 // Přihlášení uživatele po úspěšné registraci
                 $_SESSION['email'] = $email; // Přihlašovací údaje po registraci
-                header("Location: profil.php");
+                header("Location: Profil.php");
                 exit();
             }
         }
@@ -73,9 +73,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <label for="password">Heslo:</label>
                     <input type="password" id="password" name="password" required><br><br>
                     <label for="dat_nar">Datum narození:</label>
-                    <input type="date" id="dat_nar" name="dat_nar" max="<?php echo $today; ?>" required><br><br>
+                    <input type="date" id="dat_nar" name="dat_nar" max="<?php echo date('Y-m-d'); ?>" required><br><br>
                     <label for="tel_cislo">Telefonní číslo:</label>
-                    <input type="tel" id="tel_cislo" name="tel_cislo"><br><br>
+                    <input type="tel" id="tel_cislo" name="tel_cislo" pattern="^\+?[1-9]\d{1,14}$" title="Zadejte platné mezinárodní telefonní číslo. Například: +420123456789" placeholder="+420123456789"><br><br>
                     <input type="submit" value="Registrovat">
                 </form>
             </div>
