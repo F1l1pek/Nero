@@ -1,8 +1,41 @@
 <?php
-session_start();
+if (!isset($_SESSION)){
+    session_start();
+}
 
-if(isset($_GET['id'])) {
+include_once '../db.php';
+function add_to_cart(int $product_id, int $quantity = 1) : void
+{
+    if ($quantity <= 0) {
+        unset($_SESSION['cart'][$product_id]);
+        return;
+    }
+    $conn = connectToDB();
+    $sql = "SELECT název, cena FROM jidla WHERE ID_jidla = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $product_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows == 1) {
+        $row = $result->fetch_assoc();
+        $nazev = $row['název'];
+        $cena = $row['cena'];
+        if (!isset($_SESSION['cart'])) {
+            $_SESSION['cart'] = array();
+        }
+        $_SESSION['cart'][$product_id] = array(
+            'nazev' => $nazev,
+            'cena' => $cena,
+            'mnozstvi' => $quantity
+        );
+    }
+    $conn->close();
+}
+
+
+if(isset($_GET['id']) && isset($_GET['pocet'])) {
     $id = $_GET['id'];
+    $pocet = $_GET['pocet'];
     
     // Přidání položky do košíku s ošetřením neexistujícího pole $_SESSION['cart']
     if(!isset($_SESSION['cart'])) {
@@ -11,39 +44,9 @@ if(isset($_GET['id'])) {
 
     // Načtení informací o jídle z databáze na základě ID
     // Zde předpokládám, že máte přístup k databázi a můžete načíst informace o jídle pomocí dotazu SQL
-    $servername = "localhost";
-    $username = "root";
-    $password = null;
-    $dbname = "nero";
 
-    $conn = new mysqli($servername, $username, $password, $dbname);
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-
-    // Dotaz na načtení informací o jídle z databáze
-    $sql = "SELECT název, cena FROM jidla WHERE ID_jidla = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows == 1) {
-        // Načtení informací o jídle z výsledku dotazu
-        $row = $result->fetch_assoc();
-        $nazev = $row['název'];
-        $cena = $row['cena'];
-
-        // Přidání položky do košíku
-        $_SESSION['cart'][$id] = array(
-            'název' => $nazev,
-            'cena' => $cena,
-            'množství' => 1  // Přidání položky s výchozím množstvím 1
-        );
-    }
-
-    $conn->close();
+    add_to_cart((int)$id, (int)$pocet);
 }
-
-header("Location: výběr.php");
+header('Content-Type: application/json');
+echo json_encode($_SESSION['cart']);
 exit();

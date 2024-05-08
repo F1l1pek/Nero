@@ -42,6 +42,7 @@ if (isset($_POST['typ_jidla']) && !empty($_POST['typ_jidla'])) {
             height: auto;
         }
     </style>
+    <script src="vyber.js"></script>
 
     <title>Výběr jídel</title>
 
@@ -81,8 +82,20 @@ if (isset($_POST['typ_jidla']) && !empty($_POST['typ_jidla'])) {
                 echo "<td>" . $row_jidla['popis'] . "</td>";
                 echo "<td>" . $row_jidla['cena'] . "</td>";
                 echo "<td><img src='../obrazky_jidla/" . $row_jidla['img'] . "' alt='Obrázek'></td>";
-                // Přidání tlačítka "Přidat do košíku" s voláním JavaScript funkce
-                echo "<td><button onclick='addToCart(" . $row_jidla['ID_jidla'] . ")'>Přidat do košíku</button></td>";
+                //if session is set then it will show how many items there are in the cart
+                $cartItem = $_SESSION['cart'][$row_jidla['ID_jidla']];
+                if ($cartItem) {
+                    // If item is already in the cart, show the quantity and a button for adding more or removing
+                    echo "<td class='cart-item' >";
+                    echo "<button aria-label='Decrease'  class='decrease'>-</button>";
+                    echo "<input type='number' data-id='{$row_jidla['ID_jidla']}' value='{$cartItem['mnozstvi']}' min='0'>";
+                    echo "<button aria-label='Increase' class='increase'>+</button>";
+                    echo "</td>";
+                } else {
+                    echo "<td class='cart-item' >
+                            <button class='add-to-cart' data-id='{$row_jidla['ID_jidla']}'>Přidat do košíku</button>
+                          </td>";
+                }
                 echo "</tr>";
             }
         } else {
@@ -90,57 +103,5 @@ if (isset($_POST['typ_jidla']) && !empty($_POST['typ_jidla'])) {
         }
         ?>
     </table>
-
-    <!-- Obsah košíku -->
-    <div id="cartContent">
-        <?php
-        if (isset($_SESSION['cart']) && is_array($_SESSION['cart'])) {
-            echo "<h2>Obsah košíku:</h2>";
-            echo "<ul>";
-            foreach ($_SESSION['cart'] as $item) {
-                if (isset($item['nazev']) && isset($item['mnozstvi'])) {
-                    echo "<li>" . $item['nazev'] . " - Cena: " . $item['cena'] . " Kč - Množství: " . $item['mnozstvi'] . "</li>";
-                } else {
-                    echo "<li>- Název není k dispozici: Cena není k dispozici Kč - Množství: Množství není k dispozici</li>";
-                }
-            }
-            echo "</ul>";
-        } else {
-            echo "Košík je prázdný.";
-        }
-        ?>
-    </div>
-
-    <!-- JavaScript -->
-    <script>
-        function addToCart(id) {
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    var response = JSON.parse(this.responseText);
-                    if (response.status === 'success') {
-                        updateCartContent();
-                        alert("Jídlo bylo přidáno do košíku.");
-                    } else {
-                        alert("Přidání do košíku selhalo.");
-                    }
-                }
-            };
-            xhttp.open("GET", "add_to_cart.php?id=" + id, true);
-            xhttp.send();
-        }
-
-        function updateCartContent() {
-            var cartContainer = document.getElementById("cartContent");
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    cartContainer.innerHTML = this.responseText;
-                }
-            };
-            xhttp.open("GET", "cart_content.php", true);
-            xhttp.send();
-        }
-    </script>
 </body>
 </html>
