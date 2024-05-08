@@ -223,7 +223,7 @@ header("Location: " . $redirect_url);
         <tbody>
             <!-- PHP kód pro zobrazení svateb -->
             <?php
-            $sql_select_svatby = "SELECT * FROM catering";
+            $result_catering = "SELECT * FROM catering";
 
             // Přidání řazení podle zvoleného sloupce, pokud je to žádoucí
             if(isset($_GET['order'])){
@@ -235,7 +235,7 @@ header("Location: " . $redirect_url);
                 $result_catering = $stmt->get_result();
             }
 
-            $result_result_cateringsvatby = mysqli_query($dbSpojeni, $sql_select_catering);
+            $result_catering = mysqli_query($dbSpojeni, $sql_select_catering);
             define('FORM_START', "<td><form method='post'><input type='hidden' name='id_jidla' value='");
             define('FORM_END', "<input type='submit' value='Uložit'></form></td>");
             if (mysqli_num_rows($result_catering) > 0) {
