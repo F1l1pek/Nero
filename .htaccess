@@ -10,11 +10,3 @@ RewriteCond %{REQUEST_FILENAME}.php -f
 RewriteRule ^ %{REQUEST_URI}.php [NC,L]
 
 Options -Indexes
-
-ErrorDocument 401 /error/Unauthorized.php
-
-ErrorDocument 403 /error/Forbidden.php
-
-ErrorDocument 404 /error/Not-Found.php
-
-ErrorDocument 405 /error/Method-Not-Allowed.php

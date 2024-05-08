@@ -1,7 +1,8 @@
 <?php
 session_start();
 
-$dbSpojeni = mysqli_connect("localhost", "root", null, "nero");
+require_once "../db.php";
+$dbSpojeni = connectToDB();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Ověření a přihlášení uživatele

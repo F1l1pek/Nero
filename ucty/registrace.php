@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-$dbSpojeni = mysqli_connect("localhost", "root", null, "nero");
+$dbSpojeni = connectToDB();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Ověření a uložení registračních údajů
@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['email'] = $email; // Přihlašovací údaje po registraci
                 header("Location: profil.php");
                 exit();
-            } 
+            }
         } else {
             $error = "Hesla se neshodují. Zadejte prosím stejná hesla do obou polí.";
         }
