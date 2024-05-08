@@ -8,6 +8,7 @@ main {
     align-items: center; /* Vertikální vycentrování obsahu */
 }
 h2 {
+   
     text-align: center;
     height: 10px;
     font-size: 300%;
@@ -23,7 +24,6 @@ h2 {
     background-color: #FAF9F7; /* šedá výplň bubliny */
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.448);
     padding: 20px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* lehký stín */
     margin: 20px auto; /* Horizontální vycentrování a omezení na střed */
     max-width: 600px; /* Maximální šířka bubliny */
     align-self: center; 
@@ -51,7 +51,7 @@ input[type="text"] {
     max-width: 300px;
     height: 30px; /* Pevná maximální šířka obsahu */
     padding: 10px;
-   
+    background-color: #FAF9F7;
     border: 1px solid #ccc;
     border-radius: 5px;
     align-self: center; /* Zarovná input na střed v rámci flexboxu */
@@ -80,16 +80,16 @@ p a:hover {
 
 input[type="submit"] {
     background-color: #EFDD8D; /* barva tlačítka */
-    color: #fff; /* barva textu na tlačítku */
+    color: black; /* barva textu na tlačítku */
     cursor: pointer;
     margin: auto; /* Vycentrování tlačítka */
     display: block; /* Přeskočit na nový řádek, aby bylo vycentrováno */
-    width: 160px; /* Šířka obsahu minus dvojnásobná hodnota paddingu */
+    width: 35%; /* Šířka obsahu minus dvojnásobná hodnota paddingu */
     max-width: 300px;
-    height: 30px;
+    height: 3vh;
     border-radius: 8px ;
     border: #FAF9F7;
-    margin-top: 10px;
+    margin-top: 1vh;
 }
 
 input[type="submit"]:hover {
@@ -113,6 +113,6 @@ html, body {
 .obnova{/* Zarovná tlačítko doprava */
     
     font-size: 80%;
-    margin-left: 180px;
+    margin-left: 35%;
      /* Odstup tlačítka od pole pro zadání hesla */
 }

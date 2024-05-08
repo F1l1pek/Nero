@@ -2,7 +2,7 @@
 use Intervention\Image\Encoders\WebpEncoder;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Imagick\Driver;
-require 'vendor/autoload.php';
+require_once 'vendor/autoload.php';
 $manager = new ImageManager(new Driver());
 
 ?>
@@ -94,5 +94,5 @@ $manager = new ImageManager(new Driver());
         </div>
     </div>
 </body>
-<?php include 'footer.html'; ?>
+<?php include_once 'footer.html'; ?>
 </html>
