@@ -9,19 +9,16 @@ $manager = new ImageManager(new Driver());
 
 
 
-<!DOCTYPE html>
-<html lang="cs">
-<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Domovská stránka</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="lightbox.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="lightbox.js"></script>
-</head>
+    <link rel="stylesheet" href="header.css">
+
 <?php include_once ('header.html');?>
-<body>
+
     <div class="prvni">
             <div class="obrazek-container">
                 <img src="obrazky_galerie/20230322_120001.jpg" alt="Popis obrázku">
@@ -100,4 +97,8 @@ $manager = new ImageManager(new Driver());
 <?php include 'footer.html'; ?>
 </html>
 
+<<<<<<< HEAD
+=======
 
+
+>>>>>>> 7f83772068aa8664a036ae0c6e5c0ba447d75ff1

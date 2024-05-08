@@ -1,25 +1,38 @@
 header {
     background: #504e4e; /* světle šedá barva */
+    padding: 20px;
+    position: fixed; /* zajistí, že header bude vždy na vrcholu stránky */
     width: 100%;
     top: 0;
-    display: flex;
-    justify-content: left;
-    margin-bottom: 20px;
     z-index: 1000; /* zajistí, že header bude nad ostatními prvky na stránce */
 }
 
-nav ul {
-    list-style: none;
-    display: flex;
-    justify-content: center; /* zarovnání položek menu na střed */
-}
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: right; /* zarovnání položek menu na střed */
+            padding-right: 20px;
+        }
 
-nav ul li {
-    margin-right: 20px;
-}
+        nav ul li {
+            margin-right: 20px;
+        }
 
-nav ul li a {
-    text-decoration: none;
-    color: #333;
-    font-weight: bold; /* tučné písmo */
+        nav ul li a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold; /* tučné písmo */
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+    padding-top: 100px; /* Upravte hodnotu podle potřeby pro požadovaný odstup */
+}
+svg{
+    height: fit-content;
+    display: block;
+    width: 150px;
+    float: left;
+    padding-left: 50px;
+    padding-right: -50px;
 }

@@ -45,14 +45,18 @@ padding-top: 20px;
   padding: 10px 5px;
   margin: 20px auto 10px;
   width: 50%;
-
   text-align: center;
   margin-bottom: auto;
+  opacity: 1;
 }
 
 .obrazek-container h2{
   text-align: center;
   margin-top: 0;
+}
+
+.odkaz:hover {
+  opacity: 0.5;
 }
 
 .druhy{
@@ -77,6 +81,34 @@ padding: 0 5%;
 .treti{
 background-color: #f9ede0;
 padding-bottom: 20px;
+}
+
+.treti h2{
+  text-align: center;
+}
+
+.galerie{
+  margin: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.sloupce {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* Rozdělení na čtyři sloupce */
+  gap: 30px; /* Mezera mezi sloupci */
+}
+
+.obrazek {
+  width: 100%; /* Velikost obrázku */
+  position: relative; /* Umožní vytvoření relativního kontextu pro pseudo-prvek */
+  overflow: hidden; /* Skrýt případné přetečení obrázku */
+}
+
+.obrazek img {
+  width: 100%; /* Obrázek vyplní celý prostor svého rodiče */
+  height: 100%; /* Obrázek vyplní celou výšku kontejneru */
+  object-fit: cover; /* Obrázek se zmenší nebo zvětší tak, aby vyplnil kontejner */
 }
 
 
