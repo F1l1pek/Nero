@@ -184,7 +184,7 @@ header("Location: " . $redirect_url);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Úprava svateb</title>
-    <link rel="stylesheet" href="../admin.css"> <!-- Odkaz na nový CSS soubor -->
+    <link rel="stylesheet" href="../ucty/admin.css"> <!-- Odkaz na nový CSS soubor -->
 </head>
 <body>
 
