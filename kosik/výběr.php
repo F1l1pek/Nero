@@ -53,7 +53,7 @@ if (isset($_POST['typ_jidla']) && !empty($_POST['typ_jidla'])) {
 </head>
 <body>
     <!-- Header -->
-    <?php include '../header.html'; ?>
+    <?php include_once '../header.html'; ?>
 
     <!-- Filtr -->
     <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'); ?>" method="post" id="filtr">
