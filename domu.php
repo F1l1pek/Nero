@@ -1,11 +1,10 @@
 <?php
-require 'vendor/autoload.php';
+use Intervention\Image\Encoders\WebpEncoder;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Imagick\Driver;
+require 'vendor/autoload.php';
 $manager = new ImageManager(new Driver());
 
-$image = ImageManager::imagick()->read('obrazky_galerie/20230322_120001.jpg');
-$image->resize(300, 200);
 ?>
 
 
@@ -85,7 +84,9 @@ $image->resize(300, 200);
                     foreach($images as $image) {
                         // Pouze pokud je to obrázek
                         if (is_file($image) && getimagesize($image)) {
-                            echo '<div class="obrazek"><a href="' . $image . '" data-lightbox="gallery"><img class="thumbnail" src="' . $image . '" alt="Thumbnail"></a></div>';
+                            $image_r = ImageManager::imagick()->read(getcwd().'/'.$image);
+                            $image_r->resize(200, 200);
+                            echo '<div class="obrazek"><a href="' . $image . '" data-lightbox="gallery"><img class="thumbnail" src="' . $image_r->encode(new WebpEncoder(50))->toDataUri() . '" alt="Thumbnail"></a></div>';
                         }
                     }
                     echo '</div>';
