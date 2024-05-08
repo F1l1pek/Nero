@@ -18,7 +18,7 @@ $manager = new ImageManager(new Driver());
     <link rel="stylesheet" href="header.css">
 
 <?php include_once ('header.html');?>
-
+<body>
     <div class="prvni">
             <div class="obrazek-container">
                 <img src="obrazky_galerie/20230322_120001.jpg" alt="Popis obrázku">
@@ -96,9 +96,3 @@ $manager = new ImageManager(new Driver());
 </body>
 <?php include 'footer.html'; ?>
 </html>
-
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 7f83772068aa8664a036ae0c6e5c0ba447d75ff1
