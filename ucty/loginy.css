@@ -24,7 +24,6 @@ h2 {
     background-color: #FAF9F7; /* šedá výplň bubliny */
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.448);
     padding: 20px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* lehký stín */
     margin: 20px auto; /* Horizontální vycentrování a omezení na střed */
     max-width: 600px; /* Maximální šířka bubliny */
     align-self: center; 

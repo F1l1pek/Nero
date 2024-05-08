@@ -113,7 +113,7 @@ function provedObjednavku($ID_U, $typ_uzivatele) {
     </style>
 
 <?php
-include '../header.html';
+include_once '../header.html';
 ?>
 <div class="bod">
     <h1>Košík</h1>
