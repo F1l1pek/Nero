@@ -6,7 +6,8 @@ $password = null; // Pokud máte heslo, vyplňte ho
 $database = "nero";
 
 // Připojení k databázi
-$dbSpojeni = mysqli_connect($server, $username, $password, $database);
+include_once '../db.php';
+$dbSpojeni = connectToDB();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['item_id']) && isset($_POST['quantity']) && isset($_POST['order_id'])) {
     // Získání ID položky, množství a ID objednávky z požadavku

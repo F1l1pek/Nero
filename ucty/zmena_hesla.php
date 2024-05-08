@@ -9,10 +9,8 @@ if (!isset($_SESSION['email'])) {
 }
 
 // Připojení k databázi
-$dbSpojeni = mysqli_connect("localhost", "root", null, "nero");
-if (!$dbSpojeni) {
-    die("Chyba připojení k databázi: " . mysqli_connect_error());
-}
+include_once '../db.php';
+$dbSpojeni = connectToDB();
 
 // Zpracování formuláře pro změnu hesla
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

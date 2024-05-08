@@ -8,10 +8,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $znovuNoveHeslo = $_POST['znovu_nove_heslo'];
 
     // Připojení k databázi
-    $dbSpojeni = mysqli_connect("localhost", "root", null, "nero");
-    if (!$dbSpojeni) {
-        die("Chyba připojení k databázi: " . mysqli_connect_error());
-    }
+    include_once '../db.php';
+    $dbSpojeni = connectToDB();
 
     // Kontrola existence tokenu v databázi pro daný e-mail
     $stmt = $dbSpojeni->prepare("SELECT * FROM user WHERE email = ? AND reset_token = ?");

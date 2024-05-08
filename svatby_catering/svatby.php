@@ -1,6 +1,6 @@
 <?php
-$dbSpojeni = mysqli_connect("localhost", "root", null, "nero");
-mysqli_set_charset($dbSpojeni, "UTF8");
+include_once '../db.php';
+$dbSpojeni = connectToDB();
 
 // Adresář pro ukládání obrázků na serveru
 $obrazky_adresar = "../obrazky_svatby/";

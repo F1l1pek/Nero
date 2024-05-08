@@ -1,10 +1,7 @@
 <?php
 session_start();
-$dbSpojeni = mysqli_connect("localhost", "root", null, "nero");
-mysqli_set_charset($dbSpojeni, "utf8mb4");
-if (!$dbSpojeni) {
-    die("Chyba připojení k databázi: " . mysqli_connect_error());
-}
+include_once '../db.php';
+$dbSpojeni = connectToDB();
 
 // Náhodný název pro obrázek
 function guidv4($data = null) {

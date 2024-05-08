@@ -8,12 +8,8 @@ $password = null; // Pokud máte heslo, vyplňte ho
 $database = "nero";
 
 // Připojení k databázi
-$dbSpojeni = mysqli_connect($server, $username, $password, $database);
-
-// Kontrola připojení
-if (!$dbSpojeni) {
-    die("Chyba při připojení k databázi: " . mysqli_connect_error());
-}
+include_once '../db.php';
+$dbSpojeni = connectToDB();
 
 
 $email = $_SESSION['email'];
