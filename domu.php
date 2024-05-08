@@ -1,23 +1,11 @@
 <?php
-/*use Intervention\Image\ImageManagerStatic as Image;
-$manager = new ImageManager(
-    new Intervention\Image\Drivers\Gd\Driver()
-);
+require 'vendor/autoload.php';
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Imagick\Driver;
+$manager = new ImageManager(new Driver());
 
-
-$image = $manager->read('obrazky_galerie/20230322_120001.jpg');
-
-// resize image instance
-$image->resize(height: 100);
-
-// insert a watermark
-$image->place('images/watermark.png');
-
-// encode edited image
-$encoded = $image->toJpeg();
-
-// save encoded image
-$encoded->save('zkomprimovane_obr/jidla.jpeg');*/
+$image = ImageManager::imagick()->read('obrazky_galerie/20230322_120001.jpg');
+$image->resize(300, 200);
 ?>
 
 
@@ -30,7 +18,7 @@ $encoded->save('zkomprimovane_obr/jidla.jpeg');*/
     <title>Domovská stránka</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="lightbox.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl5/2+lbP/x+5l6Om8vH49YL6ifbJd2yl" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="lightbox.js"></script>
 </head>
 <?php include_once ('header.html');?>
@@ -87,25 +75,28 @@ $encoded->save('zkomprimovane_obr/jidla.jpeg');*/
             <img src="obrazky_svatby/c42dbc28-9001-4418-be72-ca7d02274f0b.jpeg">
     </div>
     <div class="treti">
-        <h2 style="text-align: center;">Galerie</h2>
-
-        <?php
-            $directory = "obrazky_galerie/";
-            $images = glob($directory . "*");
-            if (count($images) > 0) {
-                foreach($images as $image) {
-                    // Pouze pokud je to obrázek
-                    if (is_file($image) && getimagesize($image)) {
-                        echo '<a href="' . $image . '" data-lightbox="gallery"><img class="thumbnail" src="' . $image . '" alt="Thumbnail"></a>';
+        <h2>Galerie</h2>
+        <div class="galerie">
+            <?php
+                $directory = "obrazky_galerie/";
+                $images = glob($directory . "*");
+                if (count($images) > 0) {
+                    echo '<div class="sloupce">';
+                    foreach($images as $image) {
+                        // Pouze pokud je to obrázek
+                        if (is_file($image) && getimagesize($image)) {
+                            echo '<div class="obrazek"><a href="' . $image . '" data-lightbox="gallery"><img class="thumbnail" src="' . $image . '" alt="Thumbnail"></a></div>';
+                        }
                     }
+                    echo '</div>';
+                } else {
+                    echo "No images found in the directory.";
                 }
-            } else {
-                echo "No images found in the directory.";
-            }
-        ?>
+            ?>
+        </div>
     </div>
 </body>
-<?php include_once 'footer.html'; ?>
+<?php include 'footer.html'; ?>
 </html>
 
 <script>
