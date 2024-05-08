@@ -44,6 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Přihlásit</title>
+    <link rel="stylesheet" href="../header.css">
     <link rel="stylesheet" type="text/css" href="loginy.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
