@@ -1,6 +1,6 @@
 <?php
 function connectToDB() {
-    $dbSpojeni = mysqli_connect("localhost", "root", "root", "nero");
+    $dbSpojeni = mysqli_connect("localhost", "root", null, "nero");
     if (!$dbSpojeni) {
         die("Nelze se připojit k databázi: " . mysqli_connect_error());
     }
