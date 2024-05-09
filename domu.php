@@ -2,7 +2,7 @@
 use Intervention\Image\Encoders\WebpEncoder;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Imagick\Driver;
-require_once 'vendor/autoload.php';
+require 'vendor/autoload.php';
 $manager = new ImageManager(new Driver());
 
 ?>
@@ -65,7 +65,6 @@ $manager = new ImageManager(new Driver());
                         Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. 
                         Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta.
                 </p>
-                </p>
             </div>
         </div>
             <img src="obrazky_svatby/c42dbc28-9001-4418-be72-ca7d02274f0b.jpeg">
@@ -94,5 +93,5 @@ $manager = new ImageManager(new Driver());
         </div>
     </div>
 </body>
-<?php include_once 'footer.html'; ?>
+<?php include 'footer.html'; ?>
 </html>

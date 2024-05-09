@@ -5,6 +5,7 @@ header {
     width: 100%;
     top: 0;
     z-index: 1000; /* zajistí, že header bude nad ostatními prvky na stránce */
+    margin-bottom: 20px;
 }
 
         nav ul {
@@ -36,7 +37,7 @@ svg{
     padding-left: 50px;
     padding-right: -50px;
 }
-html, body {
-    height: 100%;
+
+body{
     margin: 0;
 }
