@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+require_once "../db.php";
 $dbSpojeni = connectToDB();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
