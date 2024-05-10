@@ -35,6 +35,7 @@ if (isset($_POST['typ_jidla']) && !empty($_POST['typ_jidla'])) {
 ?>
 
     <!-- Header -->
+    <link rel="stylesheet" href="../header.css">
 <?php include_once '../header.html'; ?>
     <style>
         img {
