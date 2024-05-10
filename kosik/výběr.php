@@ -83,6 +83,7 @@ if (isset($_POST['typ_jidla']) && !empty($_POST['typ_jidla'])) {
                 echo "<td>" . $row_jidla['cena'] . "</td>";
                 echo "<td><img src='../obrazky_jidla/" . $row_jidla['img'] . "' alt='Obrázek'></td>";
                 //if session is set then it will show how many items there are in the cart
+                if (isset($_SESSION['cart'])) {
                 $cartItem = $_SESSION['cart'][$row_jidla['ID_jidla']];
                 if ($cartItem) {
                     // If item is already in the cart, show the quantity and a button for adding more or removing
@@ -91,7 +92,7 @@ if (isset($_POST['typ_jidla']) && !empty($_POST['typ_jidla'])) {
                     echo "<input type='number' data-id='{$row_jidla['ID_jidla']}' value='{$cartItem['mnozstvi']}' min='0'>";
                     echo "<button aria-label='Increase' class='increase'>+</button>";
                     echo "</td>";
-                } else {
+                }} else {
                     echo "<td class='cart-item' >
                             <button class='add-to-cart' data-id='{$row_jidla['ID_jidla']}'>Přidat do košíku</button>
                           </td>";
