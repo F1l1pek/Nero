@@ -145,7 +145,7 @@ body{
     height: 100%;
     background-color: #2f2e2ea9; /* Barva pozadí s průhledností 50% (červená pro příklad) */
     z-index: 1; /* Pseudo-element bude nad ostatním obsahem */
-    
+
 }
 
 /* Část CSS kódu pro vytvoření seznamu pomocí teček */

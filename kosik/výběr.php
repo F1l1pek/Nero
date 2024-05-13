@@ -47,6 +47,11 @@ if (isset($_POST['typ_jidla']) && !empty($_POST['typ_jidla'])) {
     <script src="vyber.js"></script>
 
     <title>Výběr jídel</title>
+        <div class = "popis">
+            <h1>Produkty</h1>
+            <p>jfbdjbgjkfbgudbjkfdbjkfgbdjkgbj gdhjkgjodgjodghjgh jkhdgpjuhdughjpudsh jpkdghpgpuihgui</p>
+        </div>
+    
 
     <!-- Filtr -->
     <form method="post" id="filtr">
@@ -63,14 +68,12 @@ if (isset($_POST['typ_jidla']) && !empty($_POST['typ_jidla'])) {
         <button type="submit">Filtrovat</button>
     </form>
     <!-- Seznam jídel -->
-    <h1>Seznam jídel</h1>
     <div class = "produkty">
         <?php
         if ($result_jidla->num_rows > 0) {
             while ($row_jidla = $result_jidla->fetch_assoc()) {
                 // Výpis řádku tabulky
-                echo "
-                    <div class = produkt>";
+                echo "<div class = produkt>";
                         echo "<img src='../obrazky_jidla/" . $row_jidla['img'] . "' alt='Obrázek'>";
                         echo "<h2>" . $row_jidla['název'] .  "</h2>";
                         echo "<p>" . $row_jidla['typ'] . "</p>";
@@ -87,13 +90,13 @@ if (isset($_POST['typ_jidla']) && !empty($_POST['typ_jidla'])) {
                         echo "<input type='number' data-id='{$row_jidla['ID_jidla']}' value='{$cartItem['mnozstvi']}' min='0'>";
                         echo "<button aria-label='Increase' class='increase'>+</button>";
                         echo "</div>";
-                    }else {
+                    }}else {
                         echo "<div class='cart-item' >
                                 <button class='add-to-cart' data-id='{$row_jidla['ID_jidla']}'>Přidat do košíku</button>
                             </div>";
                     }
                     echo "</div>";
-                }
+                
             }
         } else {
             echo "Žádná data k dispozici.";
