@@ -38,12 +38,6 @@ if (isset($_POST['typ_jidla']) && !empty($_POST['typ_jidla'])) {
     <link rel="stylesheet" href="../header.css">
     <link rel="stylesheet" href="zobrazeni_vyb.css">
 <?php include_once '../header.html'; ?>
-    <style>
-        img {
-            max-width: 20px;
-            height: auto;
-        }
-    </style>
     <script src="vyber.js"></script>
 
     <title>Výběr jídel</title>
@@ -90,12 +84,13 @@ if (isset($_POST['typ_jidla']) && !empty($_POST['typ_jidla'])) {
                         echo "<input type='number' data-id='{$row_jidla['ID_jidla']}' value='{$cartItem['mnozstvi']}' min='0'>";
                         echo "<button aria-label='Increase' class='increase'>+</button>";
                         echo "</div>";
-                    }}else {
+                    }
+                } else {
                         echo "<div class='cart-item' >
                                 <button class='add-to-cart' data-id='{$row_jidla['ID_jidla']}'>Přidat do košíku</button>
                             </div>";
                     }
-                    echo "</div>";
+                echo "</div>";
                 
             }
         } else {
