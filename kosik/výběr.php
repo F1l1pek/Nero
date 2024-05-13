@@ -36,6 +36,7 @@ if (isset($_POST['typ_jidla']) && !empty($_POST['typ_jidla'])) {
 
     <!-- Header -->
     <link rel="stylesheet" href="../header.css">
+    <link rel="stylesheet" href="zobrazeni_vyb.css">
 <?php include_once '../header.html'; ?>
     <style>
         img {
@@ -49,7 +50,7 @@ if (isset($_POST['typ_jidla']) && !empty($_POST['typ_jidla'])) {
 
     <!-- Filtr -->
     <form method="post" id="filtr">
-        <h2 style="text-align: center;">Filtr</h2> 
+        <h2 style="text-align: center;">Filtr</h2>
         <label for="typ_jidla">Vyberte typ jídla:</label>
         <select name="typ_jidla" id="typ_jidla">
             <option value="">Všechny typy</option>
@@ -61,49 +62,43 @@ if (isset($_POST['typ_jidla']) && !empty($_POST['typ_jidla'])) {
         </select>
         <button type="submit">Filtrovat</button>
     </form>
-
     <!-- Seznam jídel -->
     <h1>Seznam jídel</h1>
-    <table>
-        <tr>
-            <th>Název</th>
-            <th>Typ</th>
-            <th>Popis</th>
-            <th>Cena</th>
-            <th>Obrázek</th>
-            <th>Akce</th>
-        </tr>
+    <div class = "produkty">
         <?php
         if ($result_jidla->num_rows > 0) {
             while ($row_jidla = $result_jidla->fetch_assoc()) {
                 // Výpis řádku tabulky
-                echo "<tr>";
-                echo "<td>" . $row_jidla['název'] . "</td>";
-                echo "<td>" . $row_jidla['typ'] . "</td>";
-                echo "<td>" . $row_jidla['popis'] . "</td>";
-                echo "<td>" . $row_jidla['cena'] . "</td>";
-                echo "<td><img src='../obrazky_jidla/" . $row_jidla['img'] . "' alt='Obrázek'></td>";
+                echo "
+                    <div class = produkt>";
+                        echo "<img src='../obrazky_jidla/" . $row_jidla['img'] . "' alt='Obrázek'>";
+                        echo "<h2>" . $row_jidla['název'] .  "</h2>";
+                        echo "<p>" . $row_jidla['typ'] . "</p>";
+                        echo "<p>" . $row_jidla['popis']. "</p>";
+                        echo "<p>" . $row_jidla['cena'] . "</p>";
+               
                 //if session is set then it will show how many items there are in the cart
                 if (isset($_SESSION['cart'])) {
-                $cartItem = $_SESSION['cart'][$row_jidla['ID_jidla']];
-                if ($cartItem) {
-                    // If item is already in the cart, show the quantity and a button for adding more or removing
-                    echo "<td class='cart-item' >";
-                    echo "<button aria-label='Decrease'  class='decrease'>-</button>";
-                    echo "<input type='number' data-id='{$row_jidla['ID_jidla']}' value='{$cartItem['mnozstvi']}' min='0'>";
-                    echo "<button aria-label='Increase' class='increase'>+</button>";
-                    echo "</td>";
-                }} else {
-                    echo "<td class='cart-item' >
-                            <button class='add-to-cart' data-id='{$row_jidla['ID_jidla']}'>Přidat do košíku</button>
-                          </td>";
+                    $cartItem = $_SESSION['cart'][$row_jidla['ID_jidla']];
+                    if ($cartItem) {
+                        // If item is already in the cart, show the quantity and a button for adding more or removing
+                        echo "<div class='cart-item' >";
+                        echo "<button aria-label='Decrease'  class='decrease'>-</button>";
+                        echo "<input type='number' data-id='{$row_jidla['ID_jidla']}' value='{$cartItem['mnozstvi']}' min='0'>";
+                        echo "<button aria-label='Increase' class='increase'>+</button>";
+                        echo "</div>";
+                    }else {
+                        echo "<div class='cart-item' >
+                                <button class='add-to-cart' data-id='{$row_jidla['ID_jidla']}'>Přidat do košíku</button>
+                            </div>";
+                    }
+                    echo "</div>";
                 }
-                echo "</tr>";
             }
         } else {
             echo "Žádná data k dispozici.";
         }
         ?>
-    </table>
+    </div>
 </body>
 </html>
