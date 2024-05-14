@@ -41,9 +41,17 @@ if (isset($_POST['typ_jidla']) && !empty($_POST['typ_jidla'])) {
     <script src="vyber.js"></script>
 
     <title>Výběr jídel</title>
-        <div class = "popis">
-            <h1>Produkty</h1>
-            <p>jfbdjbgjkfbgudbjkfdbjkfgbdjkgbj gdhjkgjodgjodghjgh jkhdgpjuhdughjpudsh jpkdghpgpuihgui</p>
+    <div class="prod">
+            <div class="bublina">
+                <div class="text">
+                    <h2>Produkty</h2>
+                        <p> Naše specializovaná služba dodání jídla a dekorativních prvků pro svatby vám přináší nejen lahodné chuťové zážitky, 
+                            ale také vizuální krásu, která dodá vaší svatbě jedinečný šarm. Nabízíme široký výběr menu od tradičních po moderní a exotické pokrmy, 
+                            které splní vaše kulinařské představy. Naše dekorativní prvky jsou pečlivě vybrány tak, aby dokonale ladily s vaším tématem a stylizací svatebního dne. 
+                            Od květinových aranžmá po stoleční dekorace a svícny, každý detail je promyšlen s láskou a péčí. S naší spolehlivou službou můžete své hosty ohromit nejen skvělým jídlem, 
+                            ale i pohádkovou atmosférou, která zůstane v jejich paměti navždy.</p>
+                </div>
+            </div>
         </div>
     
 
@@ -69,9 +77,11 @@ if (isset($_POST['typ_jidla']) && !empty($_POST['typ_jidla'])) {
                 // Výpis řádku tabulky
                 echo "<div class = produkt>";
                         echo "<img src='../obrazky_jidla/" . $row_jidla['img'] . "' alt='Obrázek'>";
+                        echo "<div class = textProd>";
                         echo "<h2>" . $row_jidla['název'] .  "</h2>";
                         echo "<p>" . $row_jidla['typ'] . "</p>";
                         echo "<p>" . $row_jidla['popis']. "</p>";
+                        echo "<div class = cen>";
                         echo "<p>" . $row_jidla['cena'] . "</p>";
                
                 //if session is set then it will show how many items there are in the cart
@@ -90,6 +100,8 @@ if (isset($_POST['typ_jidla']) && !empty($_POST['typ_jidla'])) {
                                 <button class='add-to-cart' data-id='{$row_jidla['ID_jidla']}'>Přidat do košíku</button>
                             </div>";
                     }
+                echo "</div>";
+                echo "</div>";
                 echo "</div>";
                 
             }
