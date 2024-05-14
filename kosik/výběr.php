@@ -41,9 +41,18 @@ if (isset($_POST['typ_jidla']) && !empty($_POST['typ_jidla'])) {
     <script src="vyber.js"></script>
 
     <title>Výběr jídel</title>
-        <div class = "popis">
-            <h1>Produkty</h1>
-            <p>jfbdjbgjkfbgudbjkfdbjkfgbdjkgbj gdhjkgjodgjodghjgh jkhdgpjuhdughjpudsh jpkdghpgpuihgui</p>
+    <div class="prod">
+            <div class="bublina">
+                <div class="text">
+                    <h2>Produkty</h2>
+                        <p>
+                            Naše specializovaná služba dodání jídla a dekorativních prvků pro svatby vám přináší nejen lahodné chuťové zážitky, 
+                            ale také vizuální krásu, která dodá vaší svatbě jedinečný šarm. Nabízíme široký výběr menu od tradičních po moderní a exotické pokrmy, 
+                            které splní vaše kulinařské představy. Naše dekorativní prvky jsou pečlivě vybrány tak, aby dokonale ladily s vaším tématem a stylizací svatebního dne. 
+                            Od květinových aranžmá po stoleční dekorace a svícny, každý detail je promyšlen s láskou a péčí. S naší spolehlivou službou můžete své hosty ohromit nejen skvělým jídlem, 
+                            ale i pohádkovou atmosférou, která zůstane v jejich paměti navždy.</p>
+                </div>
+            </div>
         </div>
     
 

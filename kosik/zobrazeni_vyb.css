@@ -4,32 +4,61 @@ body, html {
     margin: 0;
     color: black;
     background-color: #f9ede0;
+    
 }
 
-.popis{
+.text p {
+    color: white;
+}
+.text{
+    position: relative; /* Text bude nad pseudo-elementem */
+    z-index: 2;
+    height: 100%;
+    margin-top: 50px;
+    padding: 10px;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    color: white;
+    opacity: 100%;
+}
+.prod {
+    display: flex;
+    flex-grow: 1; /* Roztáhne se na celou dostupnou výšku */
+    align-items: center;
     width: 100%;
+    flex-direction: column;
+    margin-bottom: 60px;
+}
+.bublina{
+    width: 100%;
+    left: 0;
+    right: 0;
+    align-self: top;
     margin-bottom: 50px;
     border: 1px solid #ccc;
-    box-sizing: border-box;
+    box-sizing: border-box; /* Zahrne border do celkové šířky */
     display: flex;
-    flex-direction: column; 
-    align-items: center; 
-    position: relative; 
+    flex-direction: column; /* Sloupcové uspořádání */
+    align-items: center; /* Zarovnání obsahu na střed */
+    
+    position: relative; /* Přizpůsobíme pozici relativní, aby bylo možné umístit barvu pozadí nad obrázek */
     background-image: url('../obrazky_galerie/received_762684207419536.jpg');
+    
     background-size: 100% 100%;
-    background-repeat: no-repeat; 
-    background-position: right center; 
+    background-repeat: no-repeat; /* Zabraňuje opakování pozadí */
+    background-position: right center; /* Zarovná obrázek vpravo nahoře */
     overflow: hidden;
-    height: fit-content;
+    height: 40%;
 }
-
-.popis::after{
-    content: ''; 
-    position: absolute; 
+.bublina::after {
+    content: ''; /* Přidáme pseudo-element ::after pro vytvoření další vrstvy */
+    position: absolute; /* Přizpůsobíme pozici absolutní */
     width: 100%;
     height: 100%;
-    background-color: #3f3e3ea9; 
-    z-index: 1;
+    background-color: #2f2e2ea9; /* Barva pozadí s průhledností 50% (červená pro příklad) */
+    z-index: 1; /* Pseudo-element bude nad ostatním obsahem */
+
 }
 
 .center {
@@ -51,7 +80,7 @@ form{
 
 .produkt{
     background-color: #faf9f7;
-    width: 40%;
+    width: 30%;
     border: solid 5px black;
     margin: 2%;
 }
