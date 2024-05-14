@@ -156,3 +156,21 @@ table img {
 .button:hover {
     background-color: #0056b3; /* Změna barvy pozadí při najetí myší */
 }
+.settings {
+    cursor: pointer;
+    color: blue;
+    text-decoration: underline;
+}
+.menu {
+    display: none;
+    margin-top: 10px;
+}
+.menu a {
+    display: block;
+    margin: 5px 0;
+    color: black;
+    text-decoration: none;
+}
+.menu a:hover {
+    text-decoration: underline;
+}

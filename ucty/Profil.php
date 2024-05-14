@@ -22,10 +22,10 @@ $result = $stmt->get_result();
 if ($result->num_rows === 1) {
     // Uživatel nalezen, získání informací
     $user = $result->fetch_assoc();
-    $username = $email; // Uživatelské jméno je nahrazeno emailem
     $jmeno = $user['jmeno'];
     $prijmeni = $user['prijmeni'];
     $typ_uzivatele = $user['typ_uzivatele']; // Získání typu uživatele
+    $telefon = $user['tel_cislo'];
 }
 
 // Odhlášení uživatele
@@ -44,13 +44,19 @@ if (isset($_GET['logout'])) {
     
 <main>
     <div id="content" class="bublina">
-        <h2>Profil uživatele: <?php echo $username; ?></h2>
-        <p><strong>Email:</strong> <?php echo $email; ?></p>
-        <p><strong>Jméno:</strong> <?php echo $jmeno; ?></p>
-        <p><strong>Příjmení:</strong> <?php echo $prijmeni; ?></p>
-        <a href="zmena_hesla.php" class="button">Změna hesla</a>
-        <a href="obnova_hesla.php" class="button">Zapomenuté heslo</a>
-
+        <h2><?php echo $jmeno; ?><?php echo $prijmeni; ?></h2>
+        <p><strong>Typ:</strong> <?php echo $typ_uzivatele; ?></p>
+        <h3>Kontaktní údaje</h3>
+        <p><?php echo $email; ?></p>
+        <p><?php echo $telefon; ?></p>
+       
+       
+        <div class="settings" onclick="toggleMenu()">Nastavení</div>
+    <div class="menu" id="menu">
+    <a href="zmena_email.php" class="button">Upravit email</a>
+    <a href="zmena_tel.php" class="button">Upravit telefonní číslo</a>
+    <a href="zmena_hesla.php" class="button">Změna hesla</a>
+    </div>
         <?php
         // Zobrazení tlačítka pro admina
         if ($typ_uzivatele === 'admin') {
@@ -63,6 +69,16 @@ if (isset($_GET['logout'])) {
         </form>
     </div>
 </main>
+<script>
+        function toggleMenu() {
+            var menu = document.getElementById('menu');
+            if (menu.style.display === 'none' || menu.style.display === '') {
+                menu.style.display = 'block';
+            } else {
+                menu.style.display = 'none';
+            }
+        }
+    </script>
 </body>
 </html>
 
