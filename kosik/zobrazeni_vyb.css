@@ -19,7 +19,7 @@ body, html {
     text-align: center;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 20px;
-    color: white;
+    color: #faf9f7;
     opacity: 100%;
 }
 .prod {
@@ -73,58 +73,29 @@ form{
 }
 
 .produkty{
-    width: 80%;
+    width: 90%;
     display: flex;
+    flex-flow: row wrap;
     justify-content: center;
+}
+
+.produkt img{
+    height: 45%;
+    width: 100%;
+}
+
+.textProd{
+    text-align: center;
+}
+
+.cen{
+    bottom: 0.5%;
 }
 
 .produkt{
     background-color: #faf9f7;
-    width: 30%;
+    width: 25%;
     border: solid 5px black;
     margin: 2%;
-}
-
-.produkt img{
-    width: 100%;
-}
-
-.obrazek-vpravo {
-    order: 1; /* Změňte pořadí, aby obrázek byl vpravo */
-}
-
-.container {
-    display: flex;
-    justify-content: center; /* Centrování obsahu */
-    height: 100vh;
-    background-color: rgb(255, 255, 255); /* Obrázek jako pozadí */
-    background-size: cover; /* Obrázek bude pokrývat celou plochu */
-    background-position: center; /* Obrázek bude umístěn na střed */
-}
-
-.left-column, .right-column {
-    width: 275px;
-    height: 100%;
-    background-color: rgb(54, 54, 54); /* Barva sloupců */
-    opacity: 1; /* Průhlednost sloupců */
-}
-
-.content {
-    flex: 3; /* Obsah bude zabírat 3x více místa než sloupce */
-    text-align: center; /* Zarovnání obsahu na střed */
-    padding: 20px; /* Odsazení obsahu */
-    color: white; /* Barva textu */
-}
-.button-pridat {
-    background-color: rgb(247, 221, 108); /* Zelená barva pozadí */
-    color: white; /* Bílá barva textu */
-    padding: 10px 20px; /* Větší polštářkování */
-    font-size: 16px; /* Větší velikost písma */
-    border: none; /* Odstranění ohraničení */
-    border-radius: 5px; /* Zakulacené rohy */
-    cursor: pointer; /* Kurzor změní na ukazatel ruky */
-}
-
-.button-pridat:hover {
-    background-color: rgb(155, 140, 8); /* Změna barvy na ztmavenou zelenou při najetí myší */
+    height: 60vh;
 }
