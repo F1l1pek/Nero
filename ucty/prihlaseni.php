@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     echo "<p class='error'>$error</p>";
                 }
                 ?>
-                <form action="prihlaseni.php" method="post">
+                <form  method="post">
                 <br><br><label for="email">Email</label>
                     <input type="email" id="email" name="email" required><br><br>
                     <label for="password">Heslo</label>

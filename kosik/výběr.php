@@ -76,7 +76,7 @@ if (isset($_POST['typ_jidla']) && !empty($_POST['typ_jidla'])) {
                
                 //if session is set then it will show how many items there are in the cart
                 if (isset($_SESSION['cart'])) {
-                    $cartItem = $_SESSION['cart'][$row_jidla['ID_jidla']];
+                    $cartItem = $_SESSION['cart'][$row_jidla['ID_jidla']] ?? null;
                     if ($cartItem) {
                         // If item is already in the cart, show the quantity and a button for adding more or removing
                         echo "<div class='cart-item' >";

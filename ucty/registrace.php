@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     echo "<p class='error'>$error</p>";
                 }
                 ?>
-                <form action="registrace.php" method="post" class="form">
+                <form method="post" class="form">
                     <label for="jmeno">Jméno</label>
                     <input type="text" id="jmeno" name="jmeno" required><br><br>
                     <label for="prijmeni">Příjmení</label>

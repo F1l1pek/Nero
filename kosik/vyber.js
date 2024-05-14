@@ -43,7 +43,7 @@ function update_cart_product(product_id, item, event) {
  * @param {number} count
  */
 function send_to_server(product_id, count) {
-    fetch(`/kosik/add_to_cart?id=`+product_id+'&pocet='+count.toString(),{
+    fetch(`/Nero/kosik/add_to_cart?id=`+product_id+'&pocet='+count.toString(),{
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
