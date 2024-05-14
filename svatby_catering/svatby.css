@@ -7,6 +7,7 @@ body, html {
 
 body{
     background-color: #F9EDE0;
+    padding-top: 4.5%;
 }
 
 .produkty{
@@ -115,7 +116,6 @@ body{
     width: 100%;
     flex-direction: column;
     margin-bottom: 60px;
-    margin-top: -12px;
 }
 .bublina{
     width: 100%;

@@ -5,7 +5,6 @@ header {
     width: 100%;
     top: 0;
     z-index: 1000; /* zajistí, že header bude nad ostatními prvky na stránce */
-    margin-bottom: 20px;
 }
 
         nav ul {
@@ -26,9 +25,11 @@ header {
             font-family: Arial, Helvetica, sans-serif;
         }
 
-        body {
-    padding-top: 100px; /* Upravte hodnotu podle potřeby pro požadovaný odstup */
+body{
+    padding-top: 4.5%;
 }
+
+
 svg{
     height: fit-content;
     display: block;

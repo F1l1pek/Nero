@@ -1,6 +1,7 @@
 /* CSS pro rozložení produktů */
 body, html {
     height: 100vh;
+    margin: 0;
     color: black;
     background-color: #f9ede0;
 }
