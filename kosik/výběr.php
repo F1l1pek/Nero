@@ -67,7 +67,7 @@ if (isset($_POST['typ_jidla']) && !empty($_POST['typ_jidla'])) {
             <option value="Croissanty">Croissanty</option>
             <option value="Dezerty">Dezerty</option>
         </select>
-        <button type="submit">Filtrovat</button>
+        <button type="submit" class="filt">Filtrovat</button>
     </form>
     <!-- Seznam jídel -->
     <div class = "produkty">
@@ -94,8 +94,7 @@ if (isset($_POST['typ_jidla']) && !empty($_POST['typ_jidla'])) {
                         echo "<input type='number' data-id='{$row_jidla['ID_jidla']}' value='{$cartItem['mnozstvi']}' min='0'>";
                         echo "<button aria-label='Increase' class='increase'>+</button>";
                         echo "</div>";
-                    }
-                } else {
+                    } else {
                         echo "<div class='cart-item' >
                                 <button class='add-to-cart' data-id='{$row_jidla['ID_jidla']}'>Přidat do košíku</button>
                             </div>";
@@ -103,7 +102,7 @@ if (isset($_POST['typ_jidla']) && !empty($_POST['typ_jidla'])) {
                 echo "</div>";
                 echo "</div>";
                 echo "</div>";
-                
+            }
             }
         } else {
             echo "Žádná data k dispozici.";

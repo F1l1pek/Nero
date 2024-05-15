@@ -82,6 +82,7 @@ form{
 .produkt img{
     height: 45%;
     width: 100%;
+    mask-image: linear-gradient(to bottom, #faf9f7 0%, transparent 100%);
 }
 
 .textProd{
@@ -95,7 +96,15 @@ form{
 .produkt{
     background-color: #faf9f7;
     width: 25%;
-    border: solid 5px black;
     margin: 2%;
     height: 60vh;
+}
+
+button{
+    background-color: #efdd8d;
+    border: solid 1px ;
+}
+
+.filt{
+    background-color: white;
 }
