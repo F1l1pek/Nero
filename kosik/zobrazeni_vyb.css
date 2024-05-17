@@ -61,13 +61,6 @@ body, html {
 
 }
 
-.center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-}
-
 form{
     margin: 0 auto;
 }
@@ -75,18 +68,20 @@ form{
 .produkty{
     width: 90%;
     display: flex;
-    flex-flow: row wrap;
     justify-content: center;
+    flex-flow: row wrap;
+    margin: 0 5%;
 }
 
 .produkt img{
-    height: 45%;
+    height: 50%;
     width: 100%;
     mask-image: linear-gradient(to bottom, #faf9f7 0%, transparent 100%);
 }
 
 .textProd{
     text-align: center;
+    padding: 7%;
 }
 
 .cen{
@@ -103,8 +98,14 @@ form{
 button{
     background-color: #efdd8d;
     border: solid 1px ;
+    padding: 2%;
+    width: 40%;
+    border: solid 1px #efdd8d;
+    border-radius: 5%;
+    font-size: 16px;
 }
 
 .filt{
     background-color: white;
+    padding: 0;
 }

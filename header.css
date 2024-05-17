@@ -1,39 +1,87 @@
-header {
-    background: #504e4e; /* světle šedá barva */
-    padding: 20px;
-    position: fixed; /* zajistí, že header bude vždy na vrcholu stránky */
-    width: 100%;
-    top: 0;
-    z-index: 1000; /* zajistí, že header bude nad ostatními prvky na stránce */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
 }
 
-        nav ul {
-            list-style: none;
-            display: flex;
-            justify-content: right; /* zarovnání položek menu na střed */
-            padding-right: 20px;
-        }
 
-        nav ul li {
-            margin-right: 20px;
-        }
-
-        nav ul li a {
-            text-decoration: none;
-            color: white;
-            font-weight: bold; /* tučné písmo */
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-body{
-    padding-top: 4.5%;
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    padding: 10px 20px;
 }
 
+.nav-links, .nav-icons {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+.nav-links li, .nav-icons li {
+    margin: 0 5%;
+}
+
+.nav-links a, .nav-icons a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.nav-links a:hover, .nav-icons a:hover {
+    text-decoration: underline;
+}
+
+.logo {
+    text-align: center;
+    color: white;
+}
+
+.logo svg {
+    fill: white;
+}
+
+/* Center the logo and align items on the sides */
+.navbar {
+    position: relative;
+}
+
+.nav-links {
+    position: absolute;
+    left: 20px;
+}
+
+.nav-icons {
+    position: absolute;
+    right: 20px;
+}
+
+.logo {
+    margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+    }
+
+    .nav-links, .nav-icons {
+        flex-direction: row;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+    .nav-links li, .nav-icons li {
+        margin: 5px 10px;
+    }
+}
 
 svg{
     height: fit-content;
     display: block;
     width: 150px;
-    float: left;
+    display: flex;
+    justify-content: center;
     padding-left: 50px;
 }

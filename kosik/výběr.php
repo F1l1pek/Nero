@@ -96,7 +96,7 @@ if (isset($_POST['typ_jidla']) && !empty($_POST['typ_jidla'])) {
                         echo "</div>";
                     } else {
                         echo "<div class='cart-item' >
-                                <button class='add-to-cart' data-id='{$row_jidla['ID_jidla']}'>Přidat do košíku</button>
+                                <button class='add-to-cart' data-id='{$row_jidla['ID_jidla']}'><strong>Přidat do košíku</strong></button>
                             </div>";
                     }
                 echo "</div>";
