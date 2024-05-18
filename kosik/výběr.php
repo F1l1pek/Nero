@@ -101,7 +101,7 @@ if (isset($_POST['typ_jidla']) && !empty($_POST['typ_jidla'])) {
                     }
                 echo "</div>";
                 echo "</div>";
-                
+                echo "</div>";
             }
             }
         } else {
