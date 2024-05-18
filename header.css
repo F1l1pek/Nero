@@ -3,7 +3,6 @@ body {
     font-family: Arial, sans-serif;
 }
 
-
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -85,3 +84,13 @@ svg{
     justify-content: center;
     padding-left: 50px;
 }
+
+header img{
+    height: 75%;
+}
+
+.left img{
+    height: 5vh;
+    filter: brightness(0) invert(1) grayscale(1);
+}
+
