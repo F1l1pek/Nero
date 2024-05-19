@@ -1,4 +1,14 @@
-/* Styly pro hlavní obsah */
+body {
+    overflow-y: hidden; /* Zakáže vertikální scrollování obsahu */
+    background-color: #F9EDE0; /* nová barva pozadí stránky */
+    text-align: center; /* Horizontální vycentrování obsahu */
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}/* Styly pro hlavní obsah */
 main {
     width: 100%;
     max-width: 100%; /* Obsah bude zabírat maximálně 100% šířky */
@@ -96,23 +106,9 @@ input[type="submit"]:hover {
     background-color: #eecc32; /* barva tlačítka po najetí myší */
 }
 
-body {
-    overflow-y: hidden; /* Zakáže vertikální scrollování obsahu */
-    background-color: #F9EDE0; /* nová barva pozadí stránky */
-    text-align: center; /* Horizontální vycentrování obsahu */
-    display: flex; /* Flexbox layout */
-    align-items: center; /* Vertikální vycentrování obsahu */
-    justify-content: center; /* Horizontální vycentrování obsahu */
-}
 
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
 .obnova{/* Zarovná tlačítko doprava */
-    
     font-size: 80%;
-    margin-left: 35%;
+    margin-left: 33%;
      /* Odstup tlačítka od pole pro zadání hesla */
 }

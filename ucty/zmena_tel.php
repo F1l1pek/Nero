@@ -11,20 +11,26 @@ if (!isset($_SESSION['email'])) {
 // Připojení k databázi
 include_once '../db.php';
 $dbSpojeni = connectToDB();
+$email = $_SESSION['email'];
+$stmt = $dbSpojeni->prepare("SELECT * FROM user WHERE email = ?");
+$stmt->bind_param("s", $email);
+$stmt->execute();
+$result = $stmt->get_result();
 
+if ($result->num_rows === 1) {
+    // Uživatel nalezen, získání informací
+    $user = $result->fetch_assoc();
+    $ulozeneHeslo = $user['heslo'];
+    $telefon = $user['tel_cislo'];
+}
 // Zpracování formuláře pro změnu telefonu
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = $_SESSION['email'];
+    
     $novyTelefon = $_POST['novy_telefon'];
     $heslo = $_POST['heslo'];
 
     // Kontrola, zda je heslo správné pro daného uživatele
-    $stmt = $dbSpojeni->prepare("SELECT heslo FROM user WHERE email = ?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $row = $result->fetch_assoc();
-    $ulozeneHeslo = $row['heslo'];
+
 
     if (password_verify($heslo, $ulozeneHeslo)) {
         // Heslo je správné, provedení změny telefonu v databázi
@@ -59,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ?>
         <form action="zmena_tel.php" method="post" class="form-ohraniceni">
             <label for="aktualni_telefon">Aktuální telefon:</label>
-            <input type="text" id="aktualni_telefon" name="aktualni_telefon" value="<?php echo htmlspecialchars($_SESSION['tel_cislo']); ?>" disabled><br><br>
+            <input type="text" id="aktualni_telefon" name="aktualni_telefon" value="<?php echo $telefon; ?>" disabled><br><br>
             <label for="novy_telefon">Nový telefon:</label>
             <input type="text" id="novy_telefon" name="novy_telefon" required><br><br>
             <label for="heslo">Heslo:</label>

@@ -11,10 +11,9 @@ if (!isset($_SESSION['email'])) {
 // Připojení k databázi
 include_once '../db.php';
 $dbSpojeni = connectToDB();
-
+ $staryEmail = $_SESSION['email'];
 // Zpracování formuláře pro změnu emailu
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $staryEmail = $_SESSION['email'];
     $novyEmail = $_POST['novy_email'];
     $heslo = $_POST['heslo'];
 
@@ -39,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['email'] = $novyEmail;
 
             // Přesměrování na profil s potvrzením změny emailu
-            header("Location: profil.php?email_zmenen=true");
+            header("Location: profil.php");
             exit();
         
         } else {
@@ -52,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Změna emailu</title>
+    <title>Změna email</title>
     <link rel="stylesheet" type="text/css" href="loginy.css">
 </head>
 <body>
@@ -63,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo "<p class='error'>$error</p>";
         }
         ?>
-        <form action="zmena_emailu.php" method="post" class="form-ohraniceni">
+        <form action="zmena_email.php" method="post" class="form-ohraniceni">
             <label for="stary_email">Aktuální email:</label>
             <input type="email" id="stary_email" name="stary_email" value="<?php echo $_SESSION['email']; ?>" disabled><br><br>
             <label for="novy_email">Nový email:</label>

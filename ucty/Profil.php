@@ -38,24 +38,32 @@ if (isset($_GET['logout'])) {
 
     <link rel="stylesheet" type="text/css" href="admin.css">
     <link rel="stylesheet" href="../header.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<?php include '../header.html'; ?> <!-- Připojení souboru header.html -->
+<?php include_once '../header.html'; ?> <!-- Připojení souboru header.html -->
 
     
 <main>
     <div id="content" class="bublina">
-        <h2><?php echo $jmeno; ?><?php echo $prijmeni; ?></h2>
-        <p><strong>Typ:</strong> <?php echo $typ_uzivatele; ?></p>
+        <div class="zarovnani">
+            <h2><?php echo $jmeno; ?> <?php echo $prijmeni; ?></h2>
+        <p class="typ"> <?php echo $typ_uzivatele; ?></p>
+    </div>
+       
         <h3>Kontaktní údaje</h3>
-        <p><?php echo $email; ?></p>
-        <p><?php echo $telefon; ?></p>
        
-       
-        <div class="settings" onclick="toggleMenu()">Nastavení</div>
+         <div class="snizeni"> <p><span class="material-symbols-outlined">alternate_email</span><div class="text"><?php echo $email; ?></div></p></div>
+        <div class="snizeni"> <p><span class="material-symbols-outlined">call</span><div class="text"><?php echo $telefon; ?></div></p></div>
+        
+        <form action="profil.php" method="GET">
+            <input type="hidden" name="logout" value="true">
+            <input type="submit" value="Odhlásit se" class="button">
+        </form>
+        <div class="settings" onclick="toggleMenu()"><span class="material-symbols-outlined">tune</span><div class="text-m">Nastavení</div></div>
     <div class="menu" id="menu">
-    <a href="zmena_email.php" class="button">Upravit email</a>
-    <a href="zmena_tel.php" class="button">Upravit telefonní číslo</a>
-    <a href="zmena_hesla.php" class="button">Změna hesla</a>
+    <a href="zmena_email.php" class="button"><span class="material-symbols-outlined">alternate_email</span><div class="text-m">Upravit email</div></a>
+    <a href="zmena_tel.php" class="button"><span class="material-symbols-outlined">call</span><div class="text-m">Upravit telefonní číslo</div></a>
+    <a href="zmena_hesla.php" class="button"><span class="material-symbols-outlined">lock</span><div class="text-m">Změna hesla</div></a>
     </div>
         <?php
         // Zobrazení tlačítka pro admina
@@ -63,10 +71,7 @@ if (isset($_GET['logout'])) {
            ?><a href="admin.php" class="button">Administrace</a><?php
         }
         ?>
-        <form action="profil.php" method="GET">
-            <input type="hidden" name="logout" value="true">
-            <input type="submit" value="Odhlásit se" class="button">
-        </form>
+        
     </div>
 </main>
 <script>

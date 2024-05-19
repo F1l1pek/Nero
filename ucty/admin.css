@@ -5,7 +5,7 @@ body {
     background-color: #ddcfb6; /* světle béžové pozadí */
     display: flex;
     flex-direction: column; /* Uložení prvků ve sloupci */
-    align-items: center; /* Zarovnání obsahu na střed horizontálně */
+   /* align-items: center; /* Zarovnání obsahu na střed horizontálně */
     justify-content: flex-start; /* Zarovnání obsahu na začátek vertikálně */
     height: 100vh;
     text-align: center; /* Zarovnání textu do středu */
@@ -34,13 +34,15 @@ body {
 
 /* Základní styly bubliny */
 .bublina {
+    margin: auto;
     background-color: #f0f0f0; /* šedá výplň bubliny */
-    border-radius: 20px;
+    margin-top: 2%;
     padding: 20px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* lehký stín */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.448);
     max-width: 500px; /* Maximální šířka bubliny */
     width: 100%; /* 100% šířka bubliny pro responsivitu */
-    margin: 0 auto; /* Odsazení na stranách - vycentrování bubliny */
+    /* Odsazení na stranách - vycentrování bubliny */
+    text-align: left;
 }
 
 
@@ -74,15 +76,17 @@ select {
 }
 
 input[type="submit"] {
-    background-color: #007bff; /* barva tlačítka */
-    color: #fff; /* barva textu na tlačítku */
+    border-radius: 5px;
+    font-weight: bold;
+    margin-right: -75%;
+    background-color: #EFDD8D; /* barva tlačítka */
+    color: black; /* barva textu na tlačítku */
     cursor: pointer;
-    margin: auto; /* Vycentrování tlačítka */
     display: block; /* Přeskočit na nový řádek, aby bylo vycentrováno */
 }
 
 input[type="submit"]:hover {
-    background-color: #0056b3; /* barva tlačítka po najetí myší */
+    background-color: #e7c738; /* barva tlačítka po najetí myší */
 }
 
 /* Styly pro tabulku jídel */
@@ -143,34 +147,65 @@ table img {
 
  /* Styly pro tlačítka */
  .button {
-    background-color: #007bff; /* Barva pozadí */
     color: #fff; /* Barva textu */
     padding: 10px 20px; /* Velikost vnitřního odsazení */
     margin-bottom: 10px; /* Mezera pod tlačítkem */
-    border-radius: 5px; /* Zaoblené rohy */
     cursor: pointer; /* Změna kurzoru na ukazovátko */
     border: none; /* Odstranění ohraničení */
     transition: background-color 0.3s ease; /* Plynulá změna barvy pozadí při najetí myší */
 }
 
 .button:hover {
-    background-color: #0056b3; /* Změna barvy pozadí při najetí myší */
+    background-color: #52514f48; /* Změna barvy pozadí při najetí myší */
 }
 .settings {
+    margin-top: -12%;
     cursor: pointer;
-    color: blue;
-    text-decoration: underline;
+    color: black;
+    font-size: 120%;
 }
 .menu {
+    font-size: 90%;
+    border-left: 2px solid #52514f79;
     display: none;
     margin-top: 10px;
 }
 .menu a {
     display: block;
-    margin: 5px 0;
+    background-color: #f0f0f0;
     color: black;
     text-decoration: none;
+    
 }
 .menu a:hover {
     text-decoration: underline;
 }
+.zarovnani{
+    text-align: center;
+}
+.typ{
+    color: #52514f92;
+    font-size: 80%;
+    margin-left: -25%;
+    margin-top: -4%;
+}
+
+.text{
+    margin-left: 10%;
+    margin-top: -7.5%;
+}
+.text-m{
+    margin-left: 10%;
+    margin-top: -4.5%;
+}
+.snizeni{
+    margin-top: 5%;
+}
+
+.material-symbols-outlined {
+    font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24
+  }
