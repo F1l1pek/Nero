@@ -1,13 +1,13 @@
 <?php
 session_start();
 
-require_once "../db.php";
+require_once '../db.php';
 $dbSpojeni = connectToDB();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Ověření a přihlášení uživatele
     $email = isset($_POST['email']) ? $_POST['email'] : null;
-    $password = isset($_POST['heslo']) ? $_POST['heslo'] : null; // Oprava zde
+    $password = isset($_POST['password']) ? $_POST['password'] : null; // Oprava zde
 
     // Zkontrolovat, zda jsou email a heslo neprázdné
     if ($email && $password) {
@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Získání řádku s uživatelem
             $user = $result->fetch_assoc();
             // Porovnání hesla s uloženým heslem v databázi
-            if (password_verify($password, $user['heslo'])) { // Oprava zde
+            if (password_verify($password, $user['password'])) { // Oprava zde
                 // Přihlášení uživatele, např. nastavení session nebo cookie
                 $_SESSION['email'] = $email; // Přihlašovací údaje po registraci
                 header("Location: profil.php");
@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <br><br><label for="email">Email</label>
                     <input type="email" id="email" name="email" required><br><br>
                     <label for="password">Heslo</label>
-                    <input type="password" id="password" name="heslo" required><br> <!-- Oprava zde -->
+                    <input type="password" id="password" name="password" required><br> <!-- Oprava zde -->
                     <p><a href="obnova_hesla.php" class="obnova">Zapomněli jste heslo?</a></p><br><br><br>
                     <input type="submit" value="Přihlásit">
                 </form>
