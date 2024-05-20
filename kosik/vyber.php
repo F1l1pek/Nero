@@ -79,10 +79,10 @@ if (isset($_POST['typ_jidla']) && !empty($_POST['typ_jidla'])) {
                         echo "<img src='../obrazky_jidla/" . $row_jidla['img'] . "' alt='Obrázek'>";
                         echo "<div class = textProd>";
                         echo "<h2>" . $row_jidla['název'] .  "</h2>";
-                        echo "<p>" . $row_jidla['typ'] . "</p>";
-                        echo "<p>" . $row_jidla['popis']. "</p>";
+                        /*echo "<p>" . $row_jidla['typ'] . "</p>";*/
+                        /*echo "<p>" . $row_jidla['popis']. "</p>";*/
                         echo "<div class = cen>";
-                        echo "<p>" . $row_jidla['cena'] . "</p>";
+                        echo "<p>" . $row_jidla['cena'] . " Kč</p>";
                
                 //if session is set then it will show how many items there are in the cart
                 $cartItem = $_SESSION['cart'][$row_jidla['ID_jidla']] ?? null;
@@ -95,7 +95,7 @@ if (isset($_POST['typ_jidla']) && !empty($_POST['typ_jidla'])) {
                     echo "</div>";
                 } else {
                     echo "<div class='cart-item' >
-                            <button class='add-to-cart' data-id='{$row_jidla['ID_jidla']}'><strong>Přidat do košíku</strong></button>
+                            <button class='add-to-cart' data-id='{$row_jidla['ID_jidla']}'>Přidat do košíku</button>
                         </div>";
                 }
                 echo "</div>";
