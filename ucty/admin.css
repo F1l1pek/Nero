@@ -2,7 +2,7 @@
 body {
     margin: 0;
     padding: 0;
-    background-color: #ddcfb6; /* světle béžové pozadí */
+    background-color: #F9EDE0; /* světle béžové pozadí */
     display: flex;
     flex-direction: column; /* Uložení prvků ve sloupci */
    /* align-items: center; /* Zarovnání obsahu na střed horizontálně */
@@ -147,7 +147,16 @@ table img {
 
  /* Styly pro tlačítka */
  .button {
-    color: #fff; /* Barva textu */
+    color: black; /* Barva textu */
+    padding: 10px 20px; /* Velikost vnitřního odsazení */
+    margin-bottom: 10px; /* Mezera pod tlačítkem */
+    cursor: pointer; /* Změna kurzoru na ukazovátko */
+    border: none; /* Odstranění ohraničení */
+    transition: background-color 0.3s ease; /* Plynulá změna barvy pozadí při najetí myší */
+    width: 80%;
+}
+.button1 {
+    color: black; /* Barva textu */
     padding: 10px 20px; /* Velikost vnitřního odsazení */
     margin-bottom: 10px; /* Mezera pod tlačítkem */
     cursor: pointer; /* Změna kurzoru na ukazovátko */
@@ -165,20 +174,15 @@ table img {
     font-size: 120%;
 }
 .menu {
-    font-size: 90%;
-    border-left: 2px solid #52514f79;
+    margin-left:5%;
+    border-left: 1px solid #52514f3d;
     display: none;
     margin-top: 10px;
 }
-.menu a {
-    display: block;
-    background-color: #f0f0f0;
-    color: black;
-    text-decoration: none;
-    
-}
-.menu a:hover {
-    text-decoration: underline;
+.menu1 {
+    display: none;
+    margin-top: 10px;
+    margin-left: 5%;
 }
 .zarovnani{
     text-align: center;
@@ -195,6 +199,7 @@ table img {
     margin-top: -7.5%;
 }
 .text-m{
+    font-size: 100%;
     margin-left: 10%;
     margin-top: -4.5%;
 }
@@ -209,3 +214,47 @@ table img {
     'GRAD' 0,
     'opsz' 24
   }
+  .zarovnani1{
+    margin-right: 97%;
+}
+.modal-overlay {
+    display: none; /* Skryto na začátku */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Poloprůhledné černé pozadí */
+    justify-content: center;
+    align-items: center;
+}
+
+/* Styl pro samotné vyskakovací okno */
+.modal {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Skrytí vyskakovacího okna na začátku */
+.modal.hidden {
+    display: none;
+}
+label {
+    display: block;
+    margin-left: 3%;
+    font-size: 90%;
+}
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+input[type="text"] {
+    width: 100%; /* Šířka obsahu minus dvojnásobná hodnota paddingu */
+    max-width: 300px;
+    height: 30px; /* Pevná maximální šířka obsahu */
+    padding: 10px;
+    background-color: #FAF9F7;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
