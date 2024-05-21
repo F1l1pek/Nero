@@ -182,13 +182,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Úprava svateb</title>
-    <link rel="stylesheet" href="../admin.css"> <!-- Odkaz na nový CSS soubor -->
+    <link rel="stylesheet" href="../ucty/admin.css"> <!-- Odkaz na nový CSS soubor -->
 </head>
 <body>
 
 <div class="bublina" id="bublina-priprava-jidel">
     <h1>Přidávání svateb</h1> <!-- Popis přidávání svateb nad formulářem -->
-    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" enctype="multipart/form-data" class="form-ohraniceni"> <!-- Přidání třídy form-ohraniceni pro ohraničení formuláře -->
+    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" enctype="multipart/form-data" class="form_ohraniceni"> <!-- Přidání třídy form-ohraniceni pro ohraničení formuláře -->
         <input type="text" name="nazev" placeholder="Název" required><br>
         <input type="number" name="cena" placeholder="Cena" min="0" step="1" required><br>
         <input type="text" name="popis" placeholder="Popis"><br>
@@ -200,11 +200,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <!-- Tlačítko pro návrat na admin.php -->
 <div class="bublina" id="navrat-bublina">
-<a href="../admin.php" class="navrat-button">Zpět na administrační panel</a>
+<a href="../admin.php" class="navrat_button">Zpět na administrační panel</a>
 </div>
 
 
-<div class="bublina" id="bublina-tabulka-jidel">
+<div class="bublina" class="bublina-tabulka-jidel">
     <h1>Úprava svateb</h1> <!-- Popis úpravy svateb -->
     <!-- Tabulka svateb -->
     <table>
@@ -232,7 +232,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $stmt->execute();
                 $result_svatby = $stmt->get_result();
             }
-            
             $result_svatby = mysqli_query($dbSpojeni, $sql_select_svatby);
             define('FORM_START', "<td><form method='post'><input type='hidden' name='id_jidla' value='");
             define('FORM_END', "<input type='submit' value='Uložit'></form></td>");

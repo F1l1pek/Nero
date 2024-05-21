@@ -50,11 +50,6 @@ h1{
     height: 30%;
 }
 
-.odkazy{
-
-}
-
-
 /* Styly pro vnitřní ohraničení bublin */
 .form-ohraniceni {
     border: 2px solid #ccc; /* ohraničení bubliny */
@@ -72,27 +67,16 @@ form {
     margin-bottom: 20px; /* Přidáno pro oddělení formuláře od tabulky */
 }
 
-input[type="text"],
-input[type="number"],
-input[type="file"],
-select {
-    width: calc(100% - 40px); /* Šířka obsahu minus dvojnásobná hodnota paddingu */
-    max-width: 300px; /* Pevná maximální šířka obsahu */
+
+
+.prid{
+    width: 90%; /* Šířka obsahu minus dvojnásobná hodnota paddingu */
     padding: 10px;
     margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 5px;
 }
 
-input[type="submit"] {
-    border-radius: 5px;
-    font-weight: bold;
-    margin-right: -75%;
-    background-color: #EFDD8D; /* barva tlačítka */
-    color: black; /* barva textu na tlačítku */
-    cursor: pointer;
-    display: block; /* Přeskočit na nový řádek, aby bylo vycentrováno */
-}
 
 input[type="submit"]:hover {
     background-color: #e7c738; /* barva tlačítka po najetí myší */
@@ -111,7 +95,7 @@ table {
 th, td {
     border: 1px solid #ddd;
     padding: 8px;
-    text-align: left;
+    text-align: center;
 }
 
 th {
@@ -208,54 +192,3 @@ h1 {
 .button:hover {
     background-color: #52514f48; /* Změna barvy pozadí při najetí myší */
 }
-.settings {
-    margin-top: -12%;
-    cursor: pointer;
-    color: black;
-    font-size: 120%;
-}
-.menu {
-    font-size: 90%;
-    border-left: 2px solid #52514f79;
-    display: none;
-    margin-top: 10px;
-}
-.menu a {
-    display: block;
-    background-color: #f0f0f0;
-    color: black;
-    text-decoration: none;
-    
-}
-.menu a:hover {
-    text-decoration: underline;
-}
-.zarovnani{
-    text-align: center;
-}
-.typ{
-    color: #52514f92;
-    font-size: 80%;
-    margin-left: -25%;
-    margin-top: -4%;
-}
-
-.text{
-    margin-left: 10%;
-    margin-top: -7.5%;
-}
-.text-m{
-    margin-left: 10%;
-    margin-top: -4.5%;
-}
-.snizeni{
-    margin-top: 5%;
-}
-
-.material-symbols-outlined {
-    font-variation-settings:
-    'FILL' 0,
-    'wght' 400,
-    'GRAD' 0,
-    'opsz' 24
-  }
