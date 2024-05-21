@@ -25,6 +25,7 @@ if ($result->num_rows === 1) {
     $user = $result->fetch_assoc();
     $jmeno = $user['jmeno'];
     $prijmeni = $user['prijmeni'];
+    $heslo = $user['password'];
     $typ_uzivatele = $user['typ_uzivatele']; // Získání typu uživatele
     $telefon = $user['tel_cislo'];
 }
@@ -92,7 +93,18 @@ if (isset($_GET['logout'])) {
         }
         ?>
         
-    </>
+        <div id="passwordokno" class="okno">
+        <div class="okno-content">
+            <span class="close">&times;</span>
+            <form id="changeForm">
+                <h2>Potvrdit změnu</h2>
+                <p>Opravdu chcete provést tuo změnu?</p>
+                <label for="currentPassword">Zadejte heslo:</label>
+                <input type="password" id="currentPassword" name="currentPassword" required><br><br>
+                <button type="submit">Změnit email</button>
+            </form>
+        </div>
+    </div>
 </main>
 <script>
         function toggleMenu() {
@@ -101,12 +113,17 @@ if (isset($_GET['logout'])) {
                 menu.style.display = 'block';
             } else {
                 menu.style.display = 'none';
+                Email.style.display = 'none';
+                Tel.style.display = 'none';
+                Heslo.style.display = 'none';
             }
         }
         function toggleEmail() {
             var Email = document.getElementById('Email');
             if (Email.style.display === 'none' || Email.style.display === '') {
                 Email.style.display = 'block';
+                Tel.style.display = 'none';
+                Heslo.style.display = 'none';
             } else {
                 Email.style.display = 'none';
             }
@@ -115,14 +132,8 @@ if (isset($_GET['logout'])) {
             var Tel = document.getElementById('Tel');
             if (Tel.style.display === 'none' || Tel.style.display === '') {
                 Tel.style.display = 'block';
-            } else {
-                Tel.style.display = 'none';
-            }
-        }
-        function toggleTel() {
-            var Tel = document.getElementById('Tel');
-            if (Tel.style.display === 'none' || Tel.style.display === '') {
-                Tel.style.display = 'block';
+                Email.style.display = 'none';
+                Heslo.style.display = 'none';
             } else {
                 Tel.style.display = 'none';
             }
@@ -131,10 +142,56 @@ if (isset($_GET['logout'])) {
             var Heslo = document.getElementById('Heslo');
             if (Heslo.style.display === 'none' || Heslo.style.display === '') {
                 Heslo.style.display = 'block';
+                Email.style.display = 'none';
+                Tel.style.display = 'none';
             } else {
                 Heslo.style.display = 'none';
             }
         }
+
+        /*----------------------------------------------------------------------*/
+        var okno = document.getElementById("passwordokno");
+
+// Získání elementu <span>, který zavře modální okno
+var span = document.getElementsByClassName("close")[0];
+
+// Když uživatel klikne na <span> (x), zavře se modální okno
+span.onclick = function() {
+    okno.style.display = "none";
+}
+
+// Když uživatel klikne kdekoli mimo modální okno, zavře se
+window.onclick = function(event) {
+    if (event.target == okno) {
+        okno.style.display = "none";
+    }
+}
+
+// Funkce pro otevření modálního okna
+function openokno() {
+    okno.style.display = "block";
+}
+
+// Přidání event listeneru pro tlačítko odeslání emailu
+        document.getElementById("submitButton1").addEventListener("click", function() {
+            openokno();
+        });
+
+        document.getElementById("submitButton2").addEventListener("click", function() {
+            openokno();
+        });
+
+        document.getElementById("submitButton3").addEventListener("click", function() {
+            openokno();
+        });
+
+// Přidání event listeneru pro odeslání formuláře
+document.getElementById("changeForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+    // Přidejte logiku pro změnu hesla zde
+    alert("Změna byla úspěšně provedena!");
+    okno.style.display = "none";
+});
     </script>
 </body>
 </html>
