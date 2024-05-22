@@ -192,3 +192,18 @@ h1 {
 .button:hover {
     background-color: #52514f48; /* Změna barvy pozadí při najetí myší */
 }
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+}
+th {
+    background-color: #f2f2f2;
+}
+form {
+    display: inline;
+}

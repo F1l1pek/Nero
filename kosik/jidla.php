@@ -1,215 +1,123 @@
 <?php
-session_start();
-include_once '../db.php';
+require_once '../db.php';
 $dbSpojeni = connectToDB();
+$obrazky_adresar = '../obrazky_jidla/';
 
-// Funkce pro generování GUID
-function guidv4($data = null) {
-    $data = $data ?? random_bytes(16);
-    assert(strlen($data) == 16);
-    $data[6] = chr(ord($data[6]) & 0x0f | 0x40);
-    $data[8] = chr(ord($data[8]) & 0x3f | 0x80);
-    return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
+if (!$dbSpojeni) {
+    die("Connection failed: " . mysqli_connect_error());
 }
 
-
-// Získání informací o přihlášeném uživateli
-$email = $_SESSION['email'];
-// Ověření, zda je hodnota $_SESSION['email'] legitimní
-if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    // Pouze pokračujeme, pokud je e-mailová adresa v platném formátu
-    $stmt = $dbSpojeni->prepare("SELECT * FROM user WHERE email = ?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows === 1) {
-        // Uživatel nalezen, získání informací
-        $user = $result->fetch_assoc();
-        $ID_U = $user['ID_user'];
-        $typ_uzivatele = $user['typ_uzivatele']; // Získání typu uživatele
-    }
-} else {
-    // Pokud uživatel není nalezen, přesměrovat na stránku přihlášení
-    header("Location: prihlaseni.php");
-    exit();
-}
-
-// Kontrola, zda je uživatel přihlášen a je "admin"
-if ($typ_uzivatele !== 'admin') {
-    // Pokud uživatel není přihlášen jako admin, přesměrovat ho na jinou stránku nebo zobrazit chybu
-    header("Location: Profil.php"); // Uprav podle potřeby
-    exit();
-}
-
-// Adresář pro ukládání obrázků na serveru
-$obrazky_adresar = "../obrazky_jidla/";
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Zkontrolovat, zda byl odeslán formulář pro úpravu nebo odstranění jídla
-    if (isset($_POST["id_jidla"]) && isset($_POST["atribut"])) {
-        $id_jidla = $_POST["id_jidla"];
-        $atribut = $_POST["atribut"];
-
-        // Aktualizace záznamu v databázi
-        if ($atribut != "img" && $atribut != "delete") {
-            $nova_hodnota = $_POST["nova_hodnota"];
-            $sql_update = "UPDATE jidla SET $atribut = ? WHERE ID_jidla = ?";
-            $stmt = mysqli_prepare($dbSpojeni, $sql_update);
-            define('ERROR_MESSAGE', "Chyba při přípravě dotazu.");
-            
-            // Zabezpečení proti SQL injection pomocí bind_param
-            if ($stmt) {
-                mysqli_stmt_bind_param($stmt, "si", $nova_hodnota, $id_jidla);
-                if (mysqli_stmt_execute($stmt)) {
-                    echo "Záznam byl úspěšně aktualizován.";
-                } else {
-                    echo "Chyba při aktualizaci záznamu v databázi: " . mysqli_error($dbSpojeni);
-                }
-                mysqli_stmt_close($stmt);
-            } else {
-                echo ERROR_MESSAGE;
-            }
-        } elseif ($atribut == "img") {
-            // Náhodný název pro obrázek
-            // Nový název obrázku
-            $novy_nazev_obrazku = guidv4();
-
-            // Nahrání nového obrázku
-            $obrazek = $_FILES["obrazek"];
-            $nazev_souboru = $obrazky_adresar . basename($novy_nazev_obrazku);
-            $cesta_k_souboru = $nazev_souboru;
-
-            // Uložení obrázku do složky na serveru
-            if (move_uploaded_file($obrazek["tmp_name"], $cesta_k_souboru)) {
-                // Aktualizace názvu obrázku v databázi
-                $sql_update_obrazek = "UPDATE jidla SET img = ? WHERE ID_jidla = ?";
-                $stmt = mysqli_prepare($dbSpojeni, $sql_update_obrazek);
-
-                // Zabezpečení proti SQL injection pomocí bind_param
-                if ($stmt) {
-                    mysqli_stmt_bind_param($stmt, "si", $novy_nazev_obrazku, $id_jidla);
-                    if (mysqli_stmt_execute($stmt)) {
-                        echo "Nový obrázek byl úspěšně nahrán a aktualizován.";
-                    } else {
-                        echo "Chyba při aktualizaci obrázku v databázi: " . mysqli_error($dbSpojeni);
-                    }
-                    mysqli_stmt_close($stmt);
-                } else {
-                    echo ERROR_MESSAGE;
-                }
-            } else {
-                echo "Nahrání nového obrázku selhalo.";
-            }
-        } elseif ($atribut == "delete") {
-            // Odstranění záznamu z databáze
-            $sql_delete = "DELETE FROM jidla WHERE ID_jidla = ?";
-            $stmt = mysqli_prepare($dbSpojeni, $sql_delete);
-        
-            // Zabezpečení proti SQL injection pomocí bind_param
-            if ($stmt) {
-                mysqli_stmt_bind_param($stmt, "i", $id_jidla);
-                if (mysqli_stmt_execute($stmt)) {
-                    echo "Záznam byl úspěšně odstraněn.";
-                } else {
-                    echo "Chyba při odstraňování záznamu z databáze: " . mysqli_error($dbSpojeni);
-                }
-                mysqli_stmt_close($stmt);
-            } else {
-                echo ERROR_MESSAGE;
-            }
-        }
-        // Přesměrování na stejnou stránku po zpracování formuláře
-        header("Location: ".$_SERVER['PHP_SELF']);
-        exit();
-    } else {
-        echo "Některé potřebné parametry nebyly poskytnuty.";
-    }
-}
-
-// Přidání nového jídla do databáze
-if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST["nazev"]) && !empty($_POST["typ"]) && !empty($_POST["cena"]) && isset($_FILES["obrazek"])) {
+// Zpracování formuláře pro přidání nového jídla
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["akce"]) && $_POST["akce"] == "pridat") {
     $nazev = mysqli_real_escape_string($dbSpojeni, $_POST["nazev"]);
     $typ = mysqli_real_escape_string($dbSpojeni, $_POST["typ"]);
-    $cena = floatval($_POST["cena"]); // Nebo jiné vhodné formátování čísla
+    $cena = floatval($_POST["cena"]);
     $cena_s = floatval($_POST["cena_s"]);
     $cena_f = floatval($_POST["cena_f"]);
     $popis = mysqli_real_escape_string($dbSpojeni, $_POST["popis"]);
 
-    // Náhodný název obrázku
-    $novy_nazev_obrazku = guidv4();
+    // Zpracování obrázku
+    $obrazek = $_FILES['obr']['name'];
 
-    // Nahrání obrázku na server
-    $obrazek = $_FILES["obrazek"];
-    $nazev_souboru = $obrazky_adresar . basename($novy_nazev_obrazku);
-    $cesta_k_souboru = $nazev_souboru;
-
-    // Uložení obrázku do složky na serveru
-    if (move_uploaded_file($obrazek["tmp_name"], $cesta_k_souboru)) {
-        // Vložení dat do databáze
-        $sql_insert = "INSERT INTO jidla (název, typ, cena, popis, img) VALUES (?, ?, ?, ?, ?)";
-        $stmt_insert = mysqli_prepare($dbSpojeni, $sql_insert);
-        
-        if ($stmt_insert) {
-            mysqli_stmt_bind_param($stmt_insert, "ssdss", $nazev, $typ, $cena, $popis, $novy_nazev_obrazku);
-            if (mysqli_stmt_execute($stmt_insert)) {
-                echo "Nové jídlo bylo úspěšně přidáno.";
-            } else {
-                echo "Chyba při přidávání nového jídla: " . mysqli_error($dbSpojeni);
-            }
-            mysqli_stmt_close($stmt_insert);
-        } else {
-            echo "Chyba při přípravě dotazu na přidání nového jídla.";
-        }
-        // Přesměrování na stejnou stránku po zpracování formuláře
-        header("Location: ".$_SERVER['PHP_SELF']);
-        exit();
+    if ($obrazek) {
+        $obrazekTmp = $_FILES['obr']['tmp_name'];
+        $obrazekCesta = $obrazky_adresar . basename($obrazek);
+        move_uploaded_file($obrazekTmp, $obrazekCesta);
+        $sql_insert = "INSERT INTO jidla (název, typ, cena, cena_s, cena_f, popis, img) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $stmt = mysqli_prepare($dbSpojeni, $sql_insert);
+        mysqli_stmt_bind_param($stmt, "ssdddss", $nazev, $typ, $cena, $cena_s, $cena_f, $popis, basename($obrazek));
+        mysqli_stmt_execute($stmt);
+        header("Location: jidla.php");
     } else {
-        echo "Nahrání nového obrázku selhalo.";
+        $sql_insert = "INSERT INTO jidla (nazev, typ, cena, cena_s, cena_f, popis) VALUES (?, ?, ?, ?, ?, ?)";
+        $stmt = mysqli_prepare($dbSpojeni, $sql_insert);
+        mysqli_stmt_bind_param($stmt, "ssddds", $nazev, $typ, $cena, $cena_s, $cena_f, $popis);
+        mysqli_stmt_execute($stmt);
+        header("Location: jidla.php");
+    }
+}
+
+// Zpracování formuláře pro úpravu nebo odstranění existujícího jídla
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST["id_jidla"]) && isset($_POST["atribut"])) {
+        $id_jidla = $_POST["id_jidla"];
+        $atribut = $_POST["atribut"];
+
+        if ($atribut == "update") {
+            $nazev = mysqli_real_escape_string($dbSpojeni, $_POST["nazev"]);
+            $typ = mysqli_real_escape_string($dbSpojeni, $_POST["typ"]);
+            $cena = floatval($_POST["cena"]);
+            $cena_s = floatval($_POST["cena_s"]);
+            $cena_f = floatval($_POST["cena_f"]);
+            $popis = mysqli_real_escape_string($dbSpojeni, $_POST["popis"]);
+
+            // Zpracování obrázku
+            $obrazek = $_FILES['obrazek']['name'];
+
+            if ($obrazek) {
+                $obrazekTmp = $_FILES['obrazek']['tmp_name'];
+                $obrazekCesta = $obrazky_adresar . basename($obrazek);
+                move_uploaded_file($obrazekTmp, $obrazekCesta);
+                $sql_update = "UPDATE jidla SET název = ?, typ = ?, cena = ?, cena_s = ?, cena_f = ?, popis = ?, img = ? WHERE ID_jidla = ?";
+                $stmt = mysqli_prepare($dbSpojeni, $sql_update);
+                mysqli_stmt_bind_param($stmt, "ssdddssi", $nazev, $typ, $cena, $cena_s, $cena_f, $popis, $obrazekCesta, $id_jidla);
+            } else {
+                $sql_update = "UPDATE jidla SET název = ?, typ = ?, cena = ?, cena_s = ?, cena_f = ?, popis = ? WHERE ID_jidla = ?";
+                $stmt = mysqli_prepare($dbSpojeni, $sql_update);
+                mysqli_stmt_bind_param($stmt, "ssdddsi", $nazev, $typ, $cena, $cena_s, $cena_f, $popis, $id_jidla);
+            }
+
+            mysqli_stmt_execute($stmt);
+        } elseif ($atribut == "delete") {
+            $sql_delete = "DELETE FROM jidla WHERE ID_jidla = ?";
+            $stmt = mysqli_prepare($dbSpojeni, $sql_delete);
+            mysqli_stmt_bind_param($stmt, "i", $id_jidla);
+            mysqli_stmt_execute($stmt);
+        }
     }
 }
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="cs">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Úprava jídla</title>
-    <link rel="stylesheet" href="prid_jid.css"> <!-- Odkaz na nový CSS soubor -->
+    <title>Úprava jídel</title>
+
+    <link rel="stylesheet" href="prid_jid.css">
 </head>
 <body>
-
-<div class="bublina" id="bublina-priprava-jidel">
-    <h1>Přidávání jídla</h1> <!-- Popis přidávání jídla nad formulářem -->
-    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'); ?>" method="post" enctype="multipart/form-data" class="form-ohraniceni">
-        <select id="typ" class="prid" name="typ" required>
-            <option value="Bagety">Bagety</option>
-            <option value="Chlebíčky">Chlebíčky</option>
-            <option value="Kaiserky">Kaiserky</option>
-            <option value="Croissanty">Croissanty</option>
-            <option value="Dezerty">Dezerty</option>
-        </select><br>
-        <input type="text" class="prid" name="nazev" placeholder="Nazev" required><br>
-        <input type="number" class="prid" name="cena" placeholder="Cena" min="0" step="0.01" required><br>
-        <input type="number" class="prid" name="cena_s" placeholder="Cena pro školy" min="0" step="0.01" required><br>
-        <input type="number" class="prid" name="cena_f" placeholder="Cena pro firmy" min="0" step="0.01" required><br>
-        <input type="text" class="prid" name="popis" placeholder="Popis"><br>
-        <label for="obrazek">Vyberte obrázek:</label>
-        <input type="file" class="prid" name="obrazek" id="obrazek" accept="image/*" required><br>
-        <input type="submit" class="prid" value="Uložit">
-    </form>
-</div>
-
-<!-- Tlačítko pro návrat na admin.php -->
-<div class="bublina" id="navrat-bublina">
-<a href="../ucty/admin.php" class="navrat-button">Zpět na administrační panel</a>
-</div>
-
-
+    <a href="../ucty/admin.php">Zpět na administraci</a>
+    <div class="prid_jidla">
+        <form method="POST" enctype="multipart/form-data">
+            <label for="nazev">Název:</label>
+            <input type="text" name="nazev" id="nazev">
+            <label for="typ">Typ jídla:</label>
+            <select name="typ" id="typ">
+                <option value="" selected>---Vyberte typ---</option>
+                <option value="Bagety">Bagety</option>
+                <option value="Chlebíčky">Chlebíčky</option>
+                <option value="Kaiserky">Kaiserky</option>
+                <option value="Croissanty">Croissanty</option>
+                <option value="Dezerty">Dezerty</option>
+            </select>
+            <label for="cena">Cena pro klasické uživatele:</label>
+            <input type="number" name="cena" id="cena">
+            <label for="cena_s">Cena pro školy:</label>
+            <input type="number" name="cena_s" id="cena_s">
+            <label for="cena_f">Cena pro firmy:</label>
+            <input type="number" name="cena_f" id="cena_f">
+            <label for="popis">Popis produktu:</label>
+            <input type="text" name="popis" id="popis">
+            <label for="obr">Obrázek produktu:</label>
+            <input type="file" name="obr" id="obr">
+            <input type="hidden" name="akce" value="pridat">
+            <input type="submit" value="Odeslat">
+        </form>
+    </div>
 <div class="bublina" id="bublina-tabulka-jidel">
-    <h1>Úprava jídla</h1> <!-- Popis úpravy jídla -->
-    <!-- Tabulka jídel -->
+    <h1>Úprava jídla</h1>
     <table>
         <thead>
             <tr>
@@ -221,51 +129,66 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST["nazev"]) && !empty($_
                 <th><a href="?order=cena_f">Cena pro firmy</a></th>
                 <th>Popis</th>
                 <th>Obrázek</th>
-                <th>Odstranit</th>
+                <th>Akce</th>
             </tr>
         </thead>
         <tbody>
-            <!-- PHP kód pro zobrazení jídel -->
             <?php
             $sql_select_jidla = "SELECT * FROM jidla";
         
-            // Přidání řazení podle zvoleného sloupce, pokud je to žádoucí
-            if(isset($_GET['order'])){
+            if (isset($_GET['order'])) {
                 $order = $_GET['order'];
-                $sql_select_jidla .= " ORDER BY ?";
-                $stmt = $dbSpojeni->prepare($sql_select_jidla);
-                $stmt->bind_param("s", $order);
-                $stmt->execute();
-                $result_jidla = $stmt->get_result();
+                $sql_select_jidla .= " ORDER BY $order";
             }
             
             $result_jidla = mysqli_query($dbSpojeni, $sql_select_jidla);
-            define('FORM_START', "<form method='post' enctype = 'multipart/form-data'><input type='hidden' name='id_jidla' value='");
-            define('FORM_END', "<input type='submit' value='Uložit'></form></td>");
-            define('SELECTED', ";selected");
-            $td = "<td>\n";
-            $konTD = '</td>';
             if (mysqli_num_rows($result_jidla) > 0) {
                 while ($row = mysqli_fetch_assoc($result_jidla)) {
                     echo "<tr>";
-                    echo "<td>" . $row['ID_jidla'] . "</td>"; // Oprava z 'id' na 'ID_jidla'
-                    echo $td.FORM_START.htmlspecialchars($row['ID_jidla'])."'><input type='hidden' name='atribut' value='název'><input type='text' name='nova_hodnota' value='" . htmlspecialchars($row['název']) . "'>" . FORM_END . $konTD;
-                    echo $td.FORM_START.htmlspecialchars($row['ID_jidla'])."'><input type='hidden' name='atribut' value='typ'><select name='nova_hodnota'><option value='Bagety'" . (htmlspecialchars($row['typ']) == 'Bagety' ? ' selected' : '') . ">Bagety</option><option value='Chlebíčky'" . (htmlspecialchars($row['typ']) == 'Chlebíčky' ? ' selected' : '') . ">Chlebíčky</option><option value='Kaiserky'" . (htmlspecialchars($row['typ']) == 'Kaiserky' ? ' selected' : '') . ">Kaiserky</option><option value='Croissanty'" . (htmlspecialchars($row['typ']) == 'Croissanty' ? ' selected' : '') . ">Croissanty</option><option value='Dezerty'" . (htmlspecialchars($row['typ']) == 'Dezerty' ? ' selected' : '') . ">Dezerty</option></select><input type='submit' value='Uložit'></form>".$konTD;
-                    echo $td.FORM_START.htmlspecialchars($row['ID_jidla'])."'><input type='hidden' name='atribut' value='cena'><input type='number' name='nova_hodnota' value='" . htmlspecialchars($row['cena']) . "'>" . FORM_END . $konTD;
-                    echo $td.FORM_START.htmlspecialchars($row['ID_jidla'])."'><input type='hidden' name='atribut' value='cena_s'><input type='number' name='nova_hodnota' value='" . htmlspecialchars($row['cena_s']) . "'>" . FORM_END . $konTD;
-                    echo $td.FORM_START.htmlspecialchars($row['ID_jidla'])."'><input type='hidden' name='atribut' value='cena_f'><input type='number' name='nova_hodnota' value='" . htmlspecialchars($row['cena_f']) . "'>" . FORM_END . $konTD;
-                    echo $td.FORM_START.htmlspecialchars($row['ID_jidla'])."'><input type='hidden' name='atribut' value='popis'><input type='text' name='nova_hodnota' value='" . htmlspecialchars($row['popis']) . "'>" . FORM_END . $konTD;
-                    echo $td."<form method='post' enctype='multipart/form-data'><input type='hidden' name='id' value='".htmlspecialchars($row['ID_jidla'])."'><input type='hidden' name='atribut' value='obrazek'><input type='file' name='obrazek' accept='image/*'><input type='submit' value='Nahrát nový obrázek'></form><img src='" . $obrazky_adresar . htmlspecialchars(basename($row['img'])) . "' alt='" . htmlspecialchars($row['název']) . "' style='width:100px;height:100px;'></td>";
-                    echo $td.FORM_START.htmlspecialchars($row['ID_jidla'])."'><input type='hidden' name='atribut' value='delete'><input type='submit' value='Odstranit'></form>" . $konTD;
+                    echo "<td>" . htmlspecialchars($row['ID_jidla']) . "</td>";
+                    echo "<td><input type='text' form = 'jidlo_{$row['ID_jidla']}' name='nazev' value='" . htmlspecialchars($row['název']) . "'></td>";
+                    echo "<td>
+                            <select name='typ' form = 'jidlo_{$row['ID_jidla']}'>
+                                <option form = 'jidlo_{$row['ID_jidla']}' value='Bagety'" . (htmlspecialchars($row['typ']) == 'Bagety' ? ' selected' : '') . ">Bagety</option>
+                                <option form = 'jidlo_{$row['ID_jidla']}' value='Chlebíčky'" . (htmlspecialchars($row['typ']) == 'Chlebíčky' ? ' selected' : '') . ">Chlebíčky</option>
+                                <option form = 'jidlo_{$row['ID_jidla']}' value='Kaiserky'" . (htmlspecialchars($row['typ']) == 'Kaiserky' ? ' selected' : '') . ">Kaiserky</option>
+                                <option form = 'jidlo_{$row['ID_jidla']}' value='Croissanty'" . (htmlspecialchars($row['typ']) == 'Croissanty' ? ' selected' : '') . ">Croissanty</option>
+                                <option form = 'jidlo_{$row['ID_jidla']}' value='Dezerty'" . (htmlspecialchars($row['typ']) == 'Dezerty' ? ' selected' : '') . ">Dezerty</option>
+                            </select>
+                          </td>";
+                    echo "<td><input type='number' form = 'jidlo_{$row['ID_jidla']}' name='cena' value='" . htmlspecialchars($row['cena']) . "' step='0.01'></td>";
+                    echo "<td><input type='number' form = 'jidlo_{$row['ID_jidla']}' name='cena_s' value='" . htmlspecialchars($row['cena_s']) . "' step='0.01'></td>";
+                    echo "<td><input type='number' form = 'jidlo_{$row['ID_jidla']}' name='cena_f' value='" . htmlspecialchars($row['cena_f']) . "' step='0.01'></td>";
+                    echo "<td><input type='text' form = 'jidlo_{$row['ID_jidla']}' name='popis' value='" . htmlspecialchars($row['popis']) . "'></td>";
+                    echo "<td>
+                            <input type='file' name='obrazek' form = 'jidlo_{$row['ID_jidla']}' accept='image/*'>
+                            <img src='" . $obrazky_adresar . htmlspecialchars($row['img']) . "' alt='" . htmlspecialchars($row['název']) . "' style='width:100px;height:100px;'>
+                          </td>";
+                    echo "<td>
+                            <form method='post' enctype='multipart/form-data' id = 'jidlo_{$row['ID_jidla']}'>
+                            <input type='hidden' form = 'jidlo_{$row['ID_jidla']}' name='id_jidla' value='" . htmlspecialchars($row['ID_jidla']) . "'>
+                            <input type='hidden' name='atribut' value='update'>
+                            <input type='submit' value='Uložit'>
+                            </form>
+                            <form method='post'>
+                            <input type='hidden' name='id_jidla' value='" . htmlspecialchars($row['ID_jidla']) . "'>
+                            <input type='hidden' name='atribut' value='delete'>
+                            <input type='submit' value='Odstranit'>
+                            </form>
+                          </td>";
                     echo "</tr>";
                 }
             } else {
-                echo "<tr><td colspan='7'>Žádná jídla k zobrazení.</td></tr>";
+                echo "<tr><td colspan='9'>Žádná jídla k zobrazení.</td></tr>";
             }
             ?>
         </tbody>
     </table>
 </div>
-
 </body>
 </html>
+
+<?php
+// Uzavření připojení k databázi
+mysqli_close($dbSpojeni);
+?>

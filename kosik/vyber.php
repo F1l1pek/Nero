@@ -56,7 +56,7 @@ if (isset($_POST['typ_jidla']) && !empty($_POST['typ_jidla'])) {
     
 
     <!-- Filtr -->
-    <form method="post" id="filtr">
+    <!--<form method="post" id="filtr">
         <h2 style="text-align: center;">Filtr</h2>
         <label for="typ_jidla">Vyberte typ jídla:</label>
         <select name="typ_jidla" id="typ_jidla">
@@ -68,7 +68,7 @@ if (isset($_POST['typ_jidla']) && !empty($_POST['typ_jidla'])) {
             <option value="Dezerty">Dezerty</option>
         </select>
         <button type="submit" class="filt">Filtrovat</button>
-    </form>
+    </form>-->
     <!-- Seznam jídel -->
     <div class = "produkty">
         <?php
