@@ -1,4 +1,4 @@
-/* Styly pro body stránky */
+@import url('https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap');
 body {
     margin: 0;
     padding: 0;
@@ -9,6 +9,7 @@ body {
     justify-content: flex-start; /* Zarovnání obsahu na začátek vertikálně */
     height: 100vh;
     text-align: center; /* Zarovnání textu do středu */
+    font-family: "Almarai", sans-serif;
 }
 
 h1{

@@ -1,11 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap');
 h1{
   text-align: center;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Almarai", sans-serif;
 }
 
 p{
   text-align: center;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Almarai", sans-serif;
 }
 
 header{
@@ -118,11 +119,12 @@ padding-bottom: 20px;
 
 
 
+
 body {
   width: 100%;
   margin: 0;
   padding: 0;
-  font-family: Arial, sans-serif;
+  font-family: "Almarai", sans-serif;
   background-color: #f9ede0;
 }
 
@@ -138,8 +140,4 @@ body {
   width: auto;
   height: auto;
   margin: 10px;
-}
-
-.left img{
-  height: ;
 }

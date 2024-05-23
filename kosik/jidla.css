@@ -1,12 +1,13 @@
-/* Resetování výchozích stylů */
+@import url('https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap');
 body, p, footer, header {
     margin: 0;
     padding: 0;
 }
 
+
 /* Základní styl pro body */
 body {
-    font-family: Arial, sans-serif;
+    font-family: "Almarai", sans-serif;
     background-color: rgb(202, 202, 194); /* Nový background color */
     margin: 0;
     padding: 0;

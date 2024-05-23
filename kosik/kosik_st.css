@@ -1,6 +1,9 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap');
 body {
     width: 100%;
     margin: 0 auto;
+    font-family: "Almarai", sans-serif;
 }
 .bod {
     width: 80%;
