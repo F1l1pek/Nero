@@ -1,178 +1,162 @@
 <?php
-session_start();
-include_once '../db.php';
+require_once '../db.php';
 $dbSpojeni = connectToDB();
+$obrazky_adresar = '../obrazky_svatby/';
 
-// Náhodný název pro obrázek
-function guidv4($data = null) {
-    // Generate 16 bytes (128 bits) of random data or use the data passed into the function.
-    $data = $data ?? random_bytes(16);
-    assert(strlen($data) == 16);
-
-    // Set version to 0100
-    $data[6] = chr(ord($data[6]) & 0x0f | 0x40);
-    // Set bits 6-7 to 10
-    $data[8] = chr(ord($data[8]) & 0x3f | 0x80);
-
-    // Output the 36 character UUID.
-    return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
+if (!$dbSpojeni) {
+    die("Connection failed: " . mysqli_connect_error());
 }
 
-// Získání informací o přihlášeném uživateli
-$email = $_SESSION['email'];
-$stmt = $dbSpojeni->prepare("SELECT typ_uzivatele FROM user WHERE email = ?");
-$stmt->bind_param("s", $email);
-$stmt->execute();
-$result = $stmt->get_result();
+// Zpracování formuláře pro přidání nového jídla
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["akce"]) && $_POST["akce"] == "pridat") {
+    $nazev = mysqli_real_escape_string($dbSpojeni, $_POST["nazev"]);
+    $cena = floatval($_POST["cena"]);
+    $popis = mysqli_real_escape_string($dbSpojeni, $_POST["popis"]);
 
-if ($result->num_rows === 1) {
-    // Uživatel nalezen, získání typu uživatele
-    $user = $result->fetch_assoc();
-    $typ_uzivatele = $user['typ_uzivatele'];
-} else {
-    // Pokud uživatel není nalezen, přesměrovat na stránku přihlášení
-    header("Location: prihlaseni.php");
-    exit();
+    // Zpracování obrázku
+    $obrazek = $_FILES['obr']['name'];
+
+    if ($obrazek) {
+        $obrazekTmp = $_FILES['obr']['tmp_name'];
+        $obrazekCesta = $obrazky_adresar . basename($obrazek);
+        move_uploaded_file($obrazekTmp, $obrazekCesta);
+        $sql_insert = "INSERT INTO svatby (nazev, cena, popis, obrazek) VALUES (?, ?, ?, ?)";
+        $stmt = mysqli_prepare($dbSpojeni, $sql_insert);
+        mysqli_stmt_bind_param($stmt, "sdss", $nazev, $cena, $popis, basename($obrazek));
+        mysqli_stmt_execute($stmt);
+        header("Location: svatby_pridani.php");
+    } else {
+        $sql_insert = "INSERT INTO svatby (nazev, cena, popis) VALUES (?, ?, ?)";
+        $stmt = mysqli_prepare($dbSpojeni, $sql_insert);
+        mysqli_stmt_bind_param($stmt, "sds", $nazev, $cena, $popis);
+        mysqli_stmt_execute($stmt);
+        header("Location: svatby_pridani.php");
+    }
 }
 
-// Kontrola, zda je uživatel přihlášen a je "admin"
-if ($typ_uzivatele !== 'admin') {
-    // Pokud uživatel není přihlášen jako admin, přesměrovat ho na jinou stránku nebo zobrazit chybu
-    header("Location: Profil.php"); // Uprav podle potřeby
-    exit();
-}
-
-// Adresář pro ukládání obrázků na serveru
-$obrazky_adresar = "../obrazky_svatby/";
-
+// Zpracování formuláře pro úpravu nebo odstranění existujícího jídla
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Zkontrolovat, zda byl odeslán formulář pro přidání nové svatby
-    if (!empty($_POST["nazev"]) && !empty($_POST["cena"]) && !empty($_POST["popis"]) && isset($_FILES["obrazek"])) {
-        $nazev = mysqli_real_escape_string($dbSpojeni, $_POST["nazev"]);
-        $cena = intval($_POST["cena"]);
-        $popis = mysqli_real_escape_string($dbSpojeni, $_POST["popis"]);
-
-        // Aktualizace názvu obrázku v databázi
-        $sql_update_obrazek = "UPDATE svatby SET obrazek = ? WHERE id = ?";
-        $stmt = mysqli_prepare($dbSpojeni, $sql_update_obrazek);
-
-        if ($stmt) {
-            // Náhodný název obrázku
-            $novy_nazev_obrazku = guidv4();
-            
-            mysqli_stmt_bind_param($stmt, "si", $novy_nazev_obrazku, $id);
-            if (mysqli_stmt_execute($stmt)) {
-                echo "Nový obrázek byl úspěšně nahrán a aktualizován.";
-            } else {
-                echo "Chyba při aktualizaci obrázku v databázi: " . mysqli_error($dbSpojeni);
-            }
-            mysqli_stmt_close($stmt);
-        }
-
-        // Nový název obrázku
-        $novy_nazev_obrazku = guidv4();
-
-        // Nahrání obrázku na server
-        $obrazek = $_FILES["obrazek"];
-        $nazev_souboru = $obrazky_adresar . basename($novy_nazev_obrazku);
-        $cesta_k_souboru = $nazev_souboru;
-
-        // Uložení obrázku do složky na serveru
-        if (move_uploaded_file($obrazek["tmp_name"], $cesta_k_souboru)) {
-            // Vložení dat do databáze
-            $sql_insert = "INSERT INTO svatby (nazev, cena, popis, obrazek) VALUES (?, ?, ?, ?)";
-            $stmt_insert = mysqli_prepare($dbSpojeni, $sql_insert);
-            
-            if ($stmt_insert) {
-                mysqli_stmt_bind_param($stmt_insert, "siss", $nazev, $cena, $popis, $novy_nazev_obrazku);
-                if (mysqli_stmt_execute($stmt_insert)) {
-                    echo "Nová svatba byla úspěšně přidána.";
-                } else {
-                    echo "Chyba při přidávání nové svatby: " . mysqli_error($dbSpojeni);
-                }
-                mysqli_stmt_close($stmt_insert);
-            } else {
-                echo "Chyba při přípravě dotazu na přidání nové svatby.";
-            }
-            // Přesměrování na stejnou stránku po zpracování formuláře
-            header("Location: ".$_SERVER['PHP_SELF']);
-            exit();
-        } else {
-            echo "Nahrání nového obrázku selhalo.";
-        }
-    } elseif (isset($_POST["id"]) && isset($_POST["atribut"])) {
-        // Zkontrolovat, zda byl odeslán formulář pro úpravu nebo odstranění svatby
-        $id = $_POST["id"];
+    if (isset($_POST["id"]) && isset($_POST["atribut"])) {
+        $id_svatby = $_POST["id"];
         $atribut = $_POST["atribut"];
 
-        // Aktualizace záznamu v databázi
-        if ($atribut != "obrazek" && $atribut != "delete") {
-            $nova_hodnota = $_POST["nova_hodnota"];
-            $sql_update = "UPDATE svatby SET $atribut = ? WHERE id = ?";
-            $stmt = mysqli_prepare($dbSpojeni, $sql_update);
-            define('ERROR_MESSAGE', "Chyba při přípravě dotazu.");
-            
-            if ($stmt) {
-                mysqli_stmt_bind_param($stmt, "si", $nova_hodnota, $id);
-                if (mysqli_stmt_execute($stmt)) {
-                    echo "Záznam byl úspěšně aktualizován.";
-                } else {
-                    echo "Chyba při aktualizaci záznamu v databázi: " . mysqli_error($dbSpojeni);
-                }
-                mysqli_stmt_close($stmt);
-            } else {
-                echo ERROR_MESSAGE;
-            }
-        } elseif ($atribut == "obrazek") {
-            // Nahrání nového obrázku
-            $obrazek = $_FILES["obrazek"];
-            $novy_nazev_obrazku = guidv4();
-            $nazev_souboru = $obrazky_adresar . basename($novy_nazev_obrazku);
-            $cesta_k_souboru = $nazev_souboru;
+        if ($atribut == "update") {
+            $nazev = mysqli_real_escape_string($dbSpojeni, $_POST["nazev"]);
+            $cena = floatval($_POST["cena"]);
+            $popis = mysqli_real_escape_string($dbSpojeni, $_POST["popis"]);
 
-            // Uložení obrázku do složky na serveru
-            if (move_uploaded_file($obrazek["tmp_name"], $cesta_k_souboru)) {
-                // Aktualizace názvu obrázku v databázi
-                $sql_update_obrazek = "UPDATE svatby SET obrazek = ? WHERE id = ?";
-                $stmt = mysqli_prepare($dbSpojeni, $sql_update_obrazek);
+            // Zpracování obrázku
+            $obrazek = $_FILES['obrazek']['name'];
 
-                if ($stmt) {
-                    mysqli_stmt_bind_param($stmt, "si", $novy_nazev_obrazku, $id);
-                    if (mysqli_stmt_execute($stmt)) {
-                        echo "Nový obrázek byl úspěšně nahrán a aktualizován.";
-                    } else {
-                        echo "Chyba při aktualizaci obrázku v databázi: " . mysqli_error($dbSpojeni);
-                    }
-                    mysqli_stmt_close($stmt);
-                } else {
-                    echo ERROR_MESSAGE;
-                }
+            if ($obrazek) {
+                $obrazekTmp = $_FILES['obrazek']['tmp_name'];
+                $obrazekCesta = $obrazky_adresar . basename($obrazek);
+                move_uploaded_file($obrazekTmp, $obrazekCesta);
+                $sql_update = "UPDATE svatby SET nazev = ?, cena = ?, popis = ?, obrazek = ? WHERE id = ?";
+                $stmt = mysqli_prepare($dbSpojeni, $sql_update);
+                mysqli_stmt_bind_param($stmt, "sdssi", $nazev, $cena, $popis, $obrazekCesta, $id_svatby);
             } else {
-                echo "Nahrání nového obrázku selhalo.";
+                $sql_update = "UPDATE svatby SET nazev = ?, cena = ?, popis = ? WHERE id = ?";
+                $stmt = mysqli_prepare($dbSpojeni, $sql_update);
+                mysqli_stmt_bind_param($stmt, "sdsi", $nazev, $cena, $popis, $id_svatby);
+                echo mysqli_error($dbSpojeni);
             }
+
+            mysqli_stmt_execute($stmt);
         } elseif ($atribut == "delete") {
-            // Odstranění záznamu z databáze
             $sql_delete = "DELETE FROM svatby WHERE id = ?";
             $stmt = mysqli_prepare($dbSpojeni, $sql_delete);
-
-            if ($stmt) {
-                mysqli_stmt_bind_param($stmt, "i", $id);
-                if (mysqli_stmt_execute($stmt)) {
-                    echo "Záznam byl úspěšně odstraněn.";
-                } else {
-                    echo "Chyba při odstraňování záznamu z databáze: " . mysqli_error($dbSpojeni);
-                }
-                mysqli_stmt_close($stmt);
-            } else {
-                echo ERROR_MESSAGE;
-            }
+            mysqli_stmt_bind_param($stmt, "i", $id_svatby);
+            mysqli_stmt_execute($stmt);
         }
-        // Přesměrování na stejnou stránku po zpracování formuláře
-        header("Location: ".$_SERVER['PHP_SELF']);
-        exit();
-    } else {
-        echo "Některé potřebné parametry nebyly poskytnuty.";
     }
 }
 ?>
 
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Úprava svateb</title>
+
+    <link rel="stylesheet" href="../kosik/prid_jid.css">
+</head>
+<body>
+    <a href="../ucty/admin.php">Zpět na administraci</a>
+    <div class="prid">
+        <form method="POST" enctype="multipart/form-data">
+            <label for="nazev">nazev:</label>
+            <input type="text" name="nazev" id="nazev">
+            <label for="cena">Cena:</label>
+            <input type="number" name="cena" id="cena">
+            <label for="popis">Popis produktu:</label>
+            <input type="text" name="popis" id="popis">
+            <label for="obr">Obrázek produktu:</label>
+            <input type="file" name="obr" id="obr">
+            <input type="hidden" name="akce" value="pridat">
+            <input type="submit" value="Odeslat">
+        </form>
+    </div>
+<div class="bublina" id="bublina-tabulka-jidel">
+    <h1>Úprava svateb</h1>
+    <table>
+        <thead>
+            <tr>
+                <th><a href="?order=id">ID</a></th>
+                <th><a href="?order=nazev">nazev</a></th>
+                <th><a href="?order=cena">Cena</a></th>
+                <th>Popis</th>
+                <th>Obrázek</th>
+                <th>Akce</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            $sql_select_svatby = "SELECT * FROM svatby";
+        
+            if (isset($_GET['order'])) {
+                $order = $_GET['order'];
+                $sql_select_svatby .= " ORDER BY $order";
+            }
+            
+            $result_svatba = mysqli_query($dbSpojeni, $sql_select_svatby);
+            if (mysqli_num_rows($result_svatba) > 0) {
+                while ($row = mysqli_fetch_assoc($result_svatba)) {
+                    echo "<tr>";
+                    echo "<td>" . htmlspecialchars($row['id']) . "</td>";
+                    echo "<td><input type='text' form = 'jidlo_{$row['id']}' name='nazev' value='" . htmlspecialchars($row['nazev']) . "'></td>";
+                    echo "<td><input type='number' form = 'jidlo_{$row['id']}' name='cena' value='" . htmlspecialchars($row['cena']) . "' step='0.01'></td>";
+                    echo "<td><input type='text' form = 'jidlo_{$row['id']}' name='popis' value='" . htmlspecialchars($row['popis']) . "'></td>";
+                    echo "<td>
+                            <input type='file' name='obrazek' form = 'jidlo_{$row['id']}' accept='image/*'>
+                            <img src='" . $obrazky_adresar . htmlspecialchars($row['obrazek']) . "' alt='" . htmlspecialchars($row['nazev']) . "' style='width:100px;height:100px;'>
+                          </td>";
+                    echo "<td>
+                            <form method='post' enctype='multipart/form-data' id = 'jidlo_{$row['id']}'>
+                            <input type='hidden' form = 'jidlo_{$row['id']}' name='id' value='" . htmlspecialchars($row['id']) . "'>
+                            <input type='hidden' name='atribut' value='update'>
+                            <input type='submit' value='Uložit'>
+                            </form>
+                            <form method='post'>
+                            <input type='hidden' name='id' value='" . htmlspecialchars($row['id']) . "'>
+                            <input type='hidden' name='atribut' value='delete'>
+                            <input type='submit' value='Odstranit'>
+                            </form>
+                          </td>";
+                    echo "</tr>";
+                }
+            } else {
+                echo "<tr><td colspan='9'>Žádná jídla k zobrazení.</td></tr>";
+            }
+            ?>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
+
+<?php
+// Uzavření připojení k databázi
+mysqli_close($dbSpojeni);
+?>

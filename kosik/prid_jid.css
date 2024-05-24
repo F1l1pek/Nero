@@ -2,7 +2,7 @@
 body {
     margin: 0;
     padding: 0;
-    background-color: #ddcfb6; /* světle béžové pozadí */
+    background-color: #f9ede0; /* světle béžové pozadí */
     display: flex;
     flex-direction: column; /* Uložení prvků ve sloupci */
    /* align-items: center; /* Zarovnání obsahu na střed horizontálně */
@@ -28,7 +28,7 @@ h1{
 
 /* Styly pro bublinu pro tabulku jídel */
 #bublina-tabulka-jidel {
-    background-color: #f0f0f0; /* šedá výplň bubliny */
+    background-color: #faf9f7; /* šedá výplň bubliny */
     border-radius: 20px;
     padding: 20px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* lehký stín */
@@ -83,6 +83,10 @@ input[type="submit"]:hover {
     background-color: #e7c738; /* barva tlačítka po najetí myší */
 }
 
+.bublina-tabulka-jidel{
+    background-color: #faf9f7;
+}
+
 /* Styly pro tabulku jídel */
 table {
     border-collapse: collapse;
@@ -119,36 +123,6 @@ table img {
     border-radius: 10px; /* Zaoblené rohy */
     padding: 10px; /* Vnitřní odsazení */
     margin-bottom: 20px; /* Mezera mezi tlačítkem a dalším obsahem */
-}
-
-/* Styly pro tlačítko pro návrat */
-.navrat-button {
-    background-color: #007bff; /* Barva pozadí tlačítka */
-    color: white; /* Barva textu */
-    padding: 10px 20px; /* Velikost vnitřního odsazení */
-    text-align: center; /* Zarovnání textu na střed */
-    text-decoration: none; /* Odstranění podtržení */
-    display: inline-block; /* Řádkový prvek */
-    border-radius: 5px; /* Zaoblené rohy */
-    transition: background-color 0.3s ease; /* Plynulá změna barvy pozadí při najetí myší */
-    cursor: pointer; /* Změna kurzoru na ukazovátko */
-    border: none; /* Odstranění ohraničení */
-}
-
-.navrat-button:hover {
-    background-color: #0056b3; /* Změna barvy pozadí při najetí myší */
-}
-
- /* Styly pro tlačítka */
- body {
-    margin: 0;
-    padding: 0;
-    background-color: #ddcfb6; /* světle béžové pozadí */
-    display: flex;
-    flex-direction: column; /* Uložení prvků ve sloupci */
-    justify-content: flex-start; /* Zarovnání obsahu na začátek vertikálně */
-    height: 100vh;
-    text-align: center; /* Zarovnání textu do středu */
 }
 
 h1 {

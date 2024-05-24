@@ -116,7 +116,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input type="submit" value="Odeslat">
         </form>
     </div>
-<div class="bublina" id="bublina-tabulka-jidel">
+<div class="bublina_prid" id = "bublina-tabulka-jidel">
     <h1>Úprava jídla</h1>
     <table>
         <thead>
